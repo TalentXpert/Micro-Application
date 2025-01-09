@@ -1,0 +1,24 @@
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Asset')
+BEGIN
+
+CREATE TABLE [dbo].[Asset](
+	[Id] [uniqueidentifier] NOT NULL,
+	[AddedByUserId] [uniqueidentifier] NULL,
+	[OrganizationId] [uniqueidentifier] NULL,
+	[Data] [nvarchar](max) NULL,
+	[GroupId] [uniqueidentifier] NOT NULL,
+	[SubgroupId] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](64) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+	[InventoryNumber] [nvarchar](64) NOT NULL,
+	[Tag] [nvarchar](64) NULL,
+	[Quantity] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_Asset] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+END
