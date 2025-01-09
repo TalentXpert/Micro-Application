@@ -1,0 +1,28 @@
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ApplicationUser')
+BEGIN
+
+CREATE TABLE [dbo].[ApplicationUser](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](64) NULL,
+	[Email] [nvarchar](64) NULL,
+	[ContactNumber] [nvarchar](16) NULL,
+	[OrganizationId] [uniqueidentifier] NULL,
+	[LoginId] [nvarchar](64) NOT NULL,
+	[Password] [nvarchar](32) NOT NULL,
+	[Salt] [int] NULL,
+	[IsBlocked] [bit] NOT NULL,
+	[BlockReason] [nvarchar](max) NULL,
+	[LastLogin] [datetime] NOT NULL,
+	[SessionId] [uniqueidentifier] NULL,
+	[IsOrgAdmin] [bit] NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+	[Data] [nvarchar](max) NULL,
+	[AddedByUserId] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_ApplicationUser] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+END

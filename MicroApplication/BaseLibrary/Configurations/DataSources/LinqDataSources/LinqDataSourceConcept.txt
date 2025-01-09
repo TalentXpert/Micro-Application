@@ -1,0 +1,10 @@
+﻿1. Linq query return DataSource
+
+public List<FormControlValueDataSource> GetCityData()
+        {
+            var query = from ct in unitOfWork.PageDataStore
+                        join s in unitOfWork.PageDataStore on ct.ParentId equals s.Id
+                        join c in unitOfWork.PageDataStore on s.ParentId equals c.Id
+                        select new FormControlValueDataSource { City = ct, State = s, Country = c };
+            return query.ToList();
+        }

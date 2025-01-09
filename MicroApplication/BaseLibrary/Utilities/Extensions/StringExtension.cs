@@ -1,0 +1,52 @@
+﻿using System.Collections.Generic;
+using System.Globalization;
+
+namespace BaseLibrary.Utilities
+{
+    public class StringExtension
+    {
+        public string RemoveEmptySpace(string input)
+        {
+            return input.Trim().Replace(" ", "");
+        }
+
+        public bool IsInteger(string input)
+        {
+            foreach (char c in input)
+            {
+                if (char.IsDigit(c)) continue;
+                return false;
+            }
+            return true;
+        }
+
+        public string Join<T>(IEnumerable<T> items, string separator = ",", string prefix = "'", string sufix = "'")
+        {
+            string result = null;
+            if (prefix == null) prefix = "";
+            if (sufix == null) sufix = "";
+            if (separator == null) separator = ",";
+
+            foreach (var item in items)
+            {
+                if (result == null)
+                    result = prefix + item + sufix;
+                else
+                    result += separator + prefix + item + sufix;
+            }
+            return result;
+        }
+
+        public string TitleCase(string input)
+        {
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            var output = textInfo.ToTitleCase(input);
+            return output;
+        }
+
+        public bool AreEqual(string input1,string input2)
+        {
+            return input1.Equals(input2, System.StringComparison.OrdinalIgnoreCase);
+        }
+    }
+}

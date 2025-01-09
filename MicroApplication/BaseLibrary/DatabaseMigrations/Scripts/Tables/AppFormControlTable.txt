@@ -1,0 +1,42 @@
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'AppFormControl')
+BEGIN
+
+CREATE TABLE [dbo].[AppFormControl](
+	[Id] [uniqueidentifier] NOT NULL,
+	[AppFormId] [uniqueidentifier] NOT NULL,
+	[AppControlId] [uniqueidentifier] NOT NULL,
+	[Position] [int] NOT NULL,
+	[IsEditable] [bit] NOT NULL,
+	[IsMandatory] [bit] NOT NULL,
+	[OrganisationId] [uniqueidentifier] NULL,
+	[LayoutControlId] [uniqueidentifier] NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+	[IsUnique] [bit] NOT NULL,
+	[Minimum] [bigint] NULL,
+	[Maximum] [bigint] NULL,
+	[DisplayLabel] [nvarchar](max) NULL,
+	[IsGlobalControl] [bit] NULL,
+	[Options] [nvarchar](max) NULL,
+	[IsSingleLine] [bit] NOT NULL,
+	[Tooltip] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AppFormControl] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+ALTER TABLE [dbo].[AppFormControl]  WITH CHECK ADD  CONSTRAINT [FK_AppFormControl_AppControl] FOREIGN KEY([AppControlId])
+REFERENCES [dbo].[AppControl] ([Id])
+
+
+ALTER TABLE [dbo].[AppFormControl] CHECK CONSTRAINT [FK_AppFormControl_AppControl]
+
+
+ALTER TABLE [dbo].[AppFormControl]  WITH CHECK ADD  CONSTRAINT [FK_AppFormControl_AppForm] FOREIGN KEY([AppFormId])
+REFERENCES [dbo].[AppForm] ([Id])
+
+
+ALTER TABLE [dbo].[AppFormControl] CHECK CONSTRAINT [FK_AppFormControl_AppForm]
+
+END

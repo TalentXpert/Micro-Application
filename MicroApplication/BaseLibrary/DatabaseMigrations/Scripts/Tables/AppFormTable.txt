@@ -1,0 +1,18 @@
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'AppForm')
+BEGIN
+
+CREATE TABLE [dbo].[AppForm](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [varchar](32) NOT NULL,
+	[MenuId] [uniqueidentifier] NOT NULL,
+	[Position] [int] NOT NULL,
+	[IsCustomizable] [bit] NOT NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+ CONSTRAINT [PK_AppForm] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+END

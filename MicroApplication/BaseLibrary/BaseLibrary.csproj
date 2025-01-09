@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DatabaseMigrations\Scripts\Tables\AppControlTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\AppFormControlTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\AppFormTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ApplicationRolePermissionTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ApplicationRoleTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ApplicationSettingTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ApplicationUserSettingTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ApplicationUserTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\AppPageTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ComponentSchemaTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\DatabaseMigrationTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\ExceptionLogTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\FormDataStoreTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\SQLDataSourceTable.txt" />
+    <None Remove="DatabaseMigrations\Scripts\Tables\UserRoleTable.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\AppControlTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\AppFormControlTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\AppFormTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ApplicationRolePermissionTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ApplicationRoleTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ApplicationSettingTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ApplicationUserSettingTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ApplicationUserTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\AppPageTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ComponentSchemaTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\DatabaseMigrationTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\ExceptionLogTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\FormDataStoreTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\SQLDataSourceTable.txt" />
+    <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\UserRoleTable.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\DataViews\" />
+  </ItemGroup>
+
+</Project>
