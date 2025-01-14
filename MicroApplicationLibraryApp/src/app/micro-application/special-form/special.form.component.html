@@ -1,0 +1,9 @@
+<div class="modal-header ps-4">
+    <h5 class="modal-title" id="headerTitle">{{inputSelectFromListForm.Text}}</h5>
+    <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body ps-4 pe-4 pb-2 ModalBodyHeight text-left">
+    <app-SelectFromListForm [InputSelectFromListForm]="inputSelectFromListForm" (IsFormResponseSaved)="formResponseSaved()"></app-SelectFromListForm>
+</div>

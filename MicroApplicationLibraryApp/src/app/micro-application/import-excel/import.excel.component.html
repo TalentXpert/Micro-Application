@@ -1,0 +1,85 @@
+<div class="modal-header ps-4">
+    <h5 class="modal-title" id="headerTitle">Import Excel</h5>
+    <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body ps-4 pe-4 pb-2 text-left">
+    <div >
+        <form [formGroup]="importExcelFB" autocomplete="off">
+            <div class="row ps-3" *ngIf="globalControls.length > 0">
+                <div class="col-md-12" *ngFor="let control of globalControls">
+                    <div *ngIf="control.ControlType =='Dropdown'">
+                        <label class="form-group has-float-label">
+                            <select class="form-control" [formControlName]="control.DisplayLabel"
+                                [required]="control.IsMandatory" [attr.readonly]="true">
+                                <option [disabled]="true" [selected]="true" value="">Select {{control.DisplayLabel}}
+                                </option>
+                                <option *ngFor="let option of control.Options" [ngValue]="option.Value">
+                                    {{option.Label}}
+                                </option>
+                            </select>
+                            <span>{{control.DisplayLabel}}</span>
+                        </label>
+                    </div>
+                    <div *ngIf="control.ControlType =='TextBox'">
+                        <label class="form-group has-float-label"><span>{{control.DisplayLabel}}</span> </label>
+                        <input type="text" class="form-control" [formControlName]="control.DisplayLabel"
+                            [placeholder]="control.DisplayLabel" autocomplete="off" [required]="control.IsMandatory"
+                            [attr.readonly]="true" />
+                    </div>
+                    <!-- <div *ngIf="control.ControlType=='Typeahead'">
+                <label class="form-group has-float-label">
+                  <ng-select [items]="getOptionList(control)" [formControlName]="control.DisplayLabel"
+                    (search)="getSearchItems($event, control)" bindLabel="Label" bindValue="Value" [multiple]="false"
+                    maxSelectedItems="1" [clearable]="false" [typeToSearchText]="true" [required]="control.IsMandatory"
+                    placeholder="select item" [(ngModel)]="control.Value" [minTermLength]="3">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                      <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                        <span class="ng-value-label"> {{item.Label}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                  <span>{{control.DisplayLabel}}</span>
+                </label>
+              </div> -->
+                    <div class="ErrorMsgBox"></div>
+                </div>
+            </div>
+            <div class="cl-md-12">
+                <div class="col-md-12">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" (change)="uploadTemplate($event)"
+                            formControlName="File" data-buttonText="Upload CV" />
+                        <label class="custom-file-label" for="validatedCustomFile">Upload File</label>
+                        <label class="custom-file-label" for="validatedCustomFile" *ngIf="checkUplaodedFile(uplaodedFile)">{{uplaodedFile[0].name}}</label> 
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p class="mt-1 mb-0"><small> Note: Only .xlsx format files are supported.</small></p>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2">
+                <label class="form-group has-float-label">
+                    <input type="text" class="form-control" id="Amount" required formControlName="Rows"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                    <span>Rows</span>
+                  </label>
+                <div class="ErrorMsgBox">
+                  <div class="text-danger " *ngIf="importExcelFB.controls['Rows'].invalid && (importExcelFB.controls['Rows'].dirty || importExcelFB.controls['Rows'].touched)">
+                    <div *ngIf="importExcelFB.controls['Rows'].errors['required']"> {{validationMessage.RowsCountRequired}}</div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-12">
+                <button class="btn Cbtn-primary btnMain me-2" (click)="downloadTemplate()">Download Template</button>
+                <button class="btn Cbtn-primary btnMain"  [disabled]="!checkUplaodedFile(uplaodedFile)" (click)="importExcel()">Import Excel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer pe-4 pt-2 pb-2">
+    <button type="button" class="btn Cbtn-primary me-2" (click)="close()">Close</button>
+</div>

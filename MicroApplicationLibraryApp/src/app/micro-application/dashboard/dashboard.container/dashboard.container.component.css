@@ -1,0 +1,86 @@
+.dashboard-container {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.dashboard-card{
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 -20px 0 20px rgba(0,0,0,.1);
+}
+.dashboard-header {
+  background-color: #ffffff;
+  color: #1b1b1b;
+  text-align: center;
+}
+.dashboard-title {
+  margin: 0;
+  font-size: 1.4em;
+  padding: 3px;
+  border-radius: 4px;
+  background-color: var(--theme-titlebg);
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #fcf9f9;
+}
+.card-body {
+  background-color: #ffffff;
+  border: 3px solid #565656cc;
+  border-radius: 12px;
+  padding: 2px;
+  padding-top:0px ;
+}
+.card-body h6 {
+  background-color: var(--theme-titlebg);  
+  color: #fff;
+  padding: 5px;
+  margin: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: 2px solid #0056b3;
+}
+.modal-title {
+  margin: 0;
+  font-size: 1.5em;
+}
+.modal-body {
+  padding: 15px;
+}
+.table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+.candidatebtn {
+  background-color: #007bff;
+  color: #fff;
+}
+.scrollable-row{
+  overflow-x: auto;
+}
+.bound{
+  background-color:none ;
+  border: 1px solid rgb(196, 195, 195);
+  border-radius: 8px;
+  margin-top: 70px;
+  margin-left: 2px;
+  padding: 10px;
+}
+.dashtab{
+  border-collapse: separate; 
+  border-spacing:12px 4px;
+}
+.chart{
+  margin-top: 80px;
+  margin-bottom:80px; 
+  margin-left: 10px;
+  margin-right: 10px;
+  /* padding: 2px ; */
+}

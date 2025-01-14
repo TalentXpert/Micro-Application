@@ -1,0 +1,41 @@
+<div class="modal-header ps-4">
+    <h5 class="modal-title w-100"> View Details</h5>
+    <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body ListJobProviderScrollbar pb-0 ps-4 pe-4">
+        <div class="OnlineTextSummary pe-1" id="style-5" *ngIf="pageContentView">
+            <div class="text-left" *ngFor="let item of pageContentView.Contents; let rowIndex=index">
+                <div class="row ms-2">
+                    <div class="col-md-8">
+                        <h6 class="success font-text mb-1 ms-1">{{item.Title}}</h6>
+                    </div>
+                </div>
+                <hr class="mt-0 mb-1">
+                <div class="row ms-2">
+                    <table class="mt-2 CandidateCardTable">
+                        <tr *ngFor="let content of item.PageContentItemViews; let rowIndex=index">
+                            <td *ngIf="!content.IsSingleLine">
+                                <div class="col-md-12" *ngIf="content.Label">
+                                    <p class="mb-1 ms-1"><strong>{{content.Label}}</strong></p>
+                                </div>
+                                <div class="col-md-12">
+                                    <p class="mb-1 ms-1">{{content.Value ? content.Value: '-'}}</p>
+                                </div>
+                            </td>
+                            <td *ngIf="content.IsSingleLine">
+                                <div class="col-md-12" *ngIf="content.Label">
+                                    <p class="mb-1 ms-1"><strong>{{content.Label}} </strong> <span>
+                                            {{content.Value ? content.Value: '-'}}</span></p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="modal-footer pe-4 pt-2 pb-2">
+    <button class="btn Cbtn-primary" (click)="close()">Close</button>
+</div>

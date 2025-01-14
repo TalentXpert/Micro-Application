@@ -1,0 +1,186 @@
+<div *ngIf="uIForm && uIControl">
+    <form [formGroup]="smartFb">
+        <div *ngFor="let control of uIControl">
+            <div class="row">
+                <div class="col-md-12 mb-0 mt-0" *ngIf="control.ControlType=='TextBox' && control.DataType=='string'">
+                    <label class="form-group has-float-label"><span>{{control.DisplayLabel}}</span>
+                        <input type="text" class="form-control" [formControlName]="control.DisplayLabel"
+                            id="control.DisplayLabel" [readonly]="setControlReadOnly(control)"
+                            [placeholder]="control.DisplayLabel" autocomplete="off" [required]="control.IsMandatory" />
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                            <div
+                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
+                                    {{control.Maximum}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-0 mt-0"
+                    *ngIf="control.ControlType=='TextBox' && control.DataType=='int'">
+                    <label class="form-group has-float-label"><span>{{control.DisplayLabel}}</span>
+                        <input type="text" class="form-control" [formControlName]="control.DisplayLabel"
+                            [readonly]="setControlReadOnly(control)" [placeholder]="control.DisplayLabel"
+                            autocomplete="off" [required]="control.IsMandatory" id="control.DisplayLabel"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="smartFb.get(control.DisplayLabel).invalid && (smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                            <div
+                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
+                                    {{control.Maximum}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-0 mt-0"  *ngIf="control.ControlType=='TextBox' && control.DataType=='double'">
+                    <label class="form-group has-float-label"><span>{{control.DisplayLabel}}</span>
+                        <input type="text" class="form-control" [formControlName]="control.DisplayLabel"
+                            [readonly]="setControlReadOnly(control)" [placeholder]="control.DisplayLabel"
+                            autocomplete="off" [required]="control.IsMandatory" id="control.DisplayLabel"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="smartFb.get(control.DisplayLabel).invalid && (smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                            <div
+                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
+                                    {{control.Maximum}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="control.ControlType=='TextArea'">
+                    <label class="form-group has-float-label">
+                        <textarea class="form-control" rows="3" [formControlName]="control.DisplayLabel"
+                            [readonly]="setControlReadOnly(control)" [placeholder]="control.DisplayLabel"
+                            id="control.DisplayLabel"></textarea>
+                        <span>{{control.DisplayLabel}}</span>
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                            <div
+                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
+                                    {{control.Maximum}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="control.ControlType=='Typeahead'">
+                    <label class="form-group has-float-label">
+                        <ng-select [items]="control.Options" [formControlName]="control.DisplayLabel"
+                            (search)="getSearchItems($event, control)" bindLabel="Label" bindValue="Value"
+                            [multiple]="false" maxSelectedItems="1" [clearable]="false" typeToSearchText=true
+                            [required]="control.IsMandatory" placeholder="select item" [(ngModel)]="control.Value"
+                            [minTermLength]="3" id="control.DisplayLabel">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                    <span class="ng-value-label"> {{item.Label }}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <span>{{control.DisplayLabel}}</span>
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-1" *ngIf="control.ControlType=='Dropdown'">
+                    <label class="form-group has-float-label">
+                        <select class="form-control" [formControlName]="control.DisplayLabel" id="control.DisplayLabel"
+                            [attr.disabled]="setControlReadOnly(control)" [required]="control.IsMandatory"
+                            (ngModelChange)="loadChildOptions(control)">
+                            <option *ngFor="let option of control.Options" [ngValue]="option.Value">{{option.Label}}
+                            </option>
+                        </select>
+                        <span>{{control.DisplayLabel}}</span>
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-12" *ngIf="control.ControlType=='DatePicker'">
+                    <label class="form-group has-float-label">
+                        <my-date-picker id="control.DisplayLabel" class="DashboardInterview" name="date"
+                        [placeholder]="utilsService.datePlaceholder" [locale]="utilsService.calenderCultureFormat"
+                        [formControlName]="control.DisplayLabel" (ngModelChange)="onSelectedDate($event)"  [disabled]="setControlReadOnly(control)"
+                        ></my-date-picker>
+                    <span for="date" id="control.DisplayLabel">{{control.DisplayLabel}}</span>
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-info" *ngIf="selectedDate">
+                            <p class="mb-0"> {{selectedDate}}</p>
+                        </div>
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-12" *ngIf="control.ControlType=='MultipleSelection'">
+                    <label class="form-group has-float-label">
+                        <ng-select [items]="control.Options" [formControlName]="control.DisplayLabel" bindLabel="Label"
+                            bindValue="Value" [multiple]="true" [clearable]=false typeToSearchText=true
+                            [required]="control.IsMandatory" placeholder="select item"
+                            [ngModel]="control.ListOfSelectedValue" [minTermLength]="3">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                    <span class="ng-value-label"> {{item.Label}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+                                <div class="ng-value" *ngIf="items.length > 2">
+                                    <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <span>{{control.DisplayLabel}}</span>
+                    </label>
+                    <div class="ErrorMsgBox">
+                        <div class="text-danger"
+                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                                <strong>{{control.DisplayLabel}} is required</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn Cbtn-primary btnMain" [disabled]="smartFb.invalid" (click)="save()">Save</button>
+    </form>
+</div>

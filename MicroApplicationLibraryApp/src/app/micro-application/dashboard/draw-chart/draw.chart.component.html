@@ -1,0 +1,11 @@
+
+<div *ngIf="showChart">
+  <google-chart *ngIf="type !='PieChart'"
+    [type]="type"
+    [data]="data"
+    [columns]="columnsNames"
+    [options]="options"
+  ></google-chart>
+
+  <google-chart *ngIf="type =='PieChart'"  [options]="options" [type]="type" [data]="data"></google-chart>
+</div>

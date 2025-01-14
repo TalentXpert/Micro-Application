@@ -1,0 +1,60 @@
+<div *ngIf="selectFromListFormInput && selectFromListFormInput.FormDataLabel">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <form [formGroup]="selectFromListFormInputForm">
+                <div class="row">
+                    <div class="col-md-12 mb-0 mt-0">
+                        <label class="form-group has-float-label"><span>{{selectFromListFormInput.FormDataLabel}}</span>
+                            <input type="text" class="form-control"
+                                [formControlName]="selectFromListFormInput.FormDataLabel" [readonly]="true"
+                                autocomplete="off" />
+                        </label>
+                        <div class="ErrorMsgBox">
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 ">
+            <h6 class="success font-text mb-1">{{selectFromListFormInput.ItemLabel}}</h6>
+        </div>
+
+        <div class="col-md-12" *ngIf="selectFromListFormModel.selectFromListFormInputItemVM.length > 0">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr class="TableHeader">
+                        <label class="w-20 check">
+                            <input type="checkbox" [(ngModel)]="selectFromListFormModel.selectedAll"
+                                [checked]="selectFromListFormModel.selectedAll" (click)="onclickedSelectAllCheckbox()">
+                            <span class="checkmark"></span>
+                        </label>
+                        <th class="w-80">{{selectFromListFormInput.ItemLabel}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of  selectFromListFormModel.selectFromListFormInputItemVM; let i = index">
+                        <td class="text-center">
+                            <label class="check">
+                                <input type="checkbox" [(ngModel)]="item.IsSelected"
+                                    [checked]=item.IsSelected (click)="onclickedCheckbox(item)">
+                                <span class="checkmark CheckBoxM"></span>
+                            </label>
+                        </td>
+                        <td class="text-left">
+                            <label>{{item.Title}}</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="btn Cbtn-primary btnMain" [disabled]="selectFromListFormInputForm.invalid"
+            (click)="save()">Save</button>
+    </div>
+</div>

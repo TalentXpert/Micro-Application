@@ -1,0 +1,115 @@
+<div class="modal-header ps-4">
+  <h5 class="modal-title">{{mode}} Form</h5>
+  <button type="button" class="close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body ps-4 pe-4">
+  <div class="row">
+    <div class="col-md-12 text-left">
+      <form [formGroup]="addEditForm" novalidate>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input id="UserName" type="text" class="form-control" formControlName="Name" required
+              placeholder="Enter Name" />
+            <span>Name</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="(addEditForm.controls['Name'].invalid) && ( addEditForm.controls['Name'].dirty || addEditForm.controls['Name'].touched)">
+              <div *ngIf="addEditForm.controls['Name'].errors['required']"> {{validationMessage.NameRequired}} </div>
+              <div
+                *ngIf="addEditForm.controls['Name'].errors.minlength || addEditForm.controls['Name'].errors.maxlength">
+                {{validationMessage.NameMinMax}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input type="text" class="form-control" id="Amount" required formControlName="Position"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span>Position</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger "
+              *ngIf="addEditForm.controls['Position'].invalid && (addEditForm.controls['Position'].dirty || addEditForm.controls['Position'].touched)">
+              <div *ngIf="addEditForm.controls['Position'].errors['required']"> {{validationMessage.PositionRequired}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <select class="form-control" id="selecteUserType" formControlName="MenuId" required>
+              <option selected value="">Select Menu</option>
+              <option *ngFor="let option of topMenus" [value]="option.Id">{{option.Name}}</option>
+            </select>
+            <span>Menu</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="addEditForm.controls['MenuId'].invalid && (addEditForm.controls['MenuId'].dirty || addEditForm.controls['MenuId'].touched)">
+              <div *ngIf="addEditForm.controls['MenuId'].errors['required']">{{validationMessage.MenuRequired}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <select class="form-control" id="selecteUserType" formControlName="EditPermission" required>
+              <option selected value="">Select Permission</option>
+              <option *ngFor="let option of permissionVM" [value]="option.Code">{{option.Name}}</option>
+            </select>
+            <span>Edit Permission</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="addEditForm.controls['EditPermission'].invalid && (addEditForm.controls['EditPermission'].dirty || addEditForm.controls['EditPermission'].touched)">
+              <div *ngIf="addEditForm.controls['EditPermission'].errors['required']">
+                {{validationMessage.EditPermissionRequired}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <select class="form-control" id="selecteUserType" formControlName="DeletePermission" required>
+              <option selected value="">Select Permission</option>
+              <option *ngFor="let option of permissionVM" [value]="option.Code">{{option.Name}}</option>
+            </select>
+            <span>Delete Permission</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="addEditForm.controls['DeletePermission'].invalid && (addEditForm.controls['DeletePermission'].dirty || addEditForm.controls['DeletePermission'].touched)">
+              <div *ngIf="addEditForm.controls['DeletePermission'].errors['required']">
+                {{validationMessage.DeletePermissionRequired}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <select class="form-control" id="selecteUserType" formControlName="ViewPermission" required>
+              <option selected value="">Select Permission</option>
+              <option *ngFor="let option of permissionVM" [value]="option.Code">{{option.Name}}</option>
+            </select>
+            <span>View Permission</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="addEditForm.controls['ViewPermission'].invalid && (addEditForm.controls['ViewPermission'].dirty || addEditForm.controls['ViewPermission'].touched)">
+              <div *ngIf="addEditForm.controls['ViewPermission'].errors['required']">
+                {{validationMessage.ViewPermissionRequired}}</div>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-footer pt-2 pb-2 ps-2 pe-4">
+  <button id="RegisterClose" type="button" class="btn Cbtn-primary" (click)="close()">Close</button>
+  <button id="RegisterSubmit" type="submit" class="btn Cbtn-primary btnMain" [disabled]="addEditForm.invalid"
+    (click)="saveForm()">Submit</button>
+</div>

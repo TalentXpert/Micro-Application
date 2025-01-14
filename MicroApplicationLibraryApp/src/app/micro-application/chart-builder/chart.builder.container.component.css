@@ -1,0 +1,10 @@
+.ChartBuilderHeight {
+    height: calc(100vh - 6.7rem) !important;
+  }
+  
+  .ChartBuilderHeight
+ {
+    background: #fff;
+    overflow-x: scroll;
+    overflow-y: scroll;
+  }

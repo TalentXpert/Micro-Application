@@ -1,0 +1,340 @@
+<div class="col-md-12 mt-3 ps-3 pe-3 ">
+  <div class="row" *ngIf="dashboardPageId ==''">
+    <div class="InternalCard mb-2">
+      <div class="card-body ps-1 pe-2 pb-0">
+        <div *ngIf="globalControls.length > 0">
+          <form [formGroup]="globalControlFB" autocomplete="off">
+            <div class="row hgt">
+              <div class="col-md-4 ps-0" *ngFor="let control of globalControls">
+                <div *ngIf="control.ControlType =='Dropdown'">
+                  <label class="form-group has-float-label">
+                    <select class="form-control" [formControlName]="control.DisplayLabel"
+                      [required]="control.IsMandatory" (ngModelChange)="loadChildOptions(control)">
+                      <option [disabled]="true" [selected]="true" value="">Select {{control.DisplayLabel}}</option>
+                      <option *ngFor="let option of control.Options" [ngValue]="option.Value">
+                        {{option.Label}}
+                      </option>
+                    </select>
+                    <span>{{control.DisplayLabel}}</span>
+                  </label>
+                </div>
+                <div *ngIf="control.ControlType =='TextBox'">
+                  <label class="form-group has-float-label"><span>{{control.DisplayLabel}}</span> </label>
+                  <input type="text" class="form-control" [formControlName]="control.DisplayLabel"
+                    [placeholder]="control.DisplayLabel" autocomplete="off" [required]="control.IsMandatory" />
+                </div>
+                <div *ngIf="control.ControlType=='Typeahead'">
+                  <label class="form-group has-float-label">
+                    <ng-select [items]="getOptionList(control)" [formControlName]="control.DisplayLabel"
+                      (search)="getSearchItems($event, control)" bindLabel="Label" bindValue="Value" [multiple]="false"
+                      maxSelectedItems="1" [clearable]="false" [typeToSearchText]=true
+                      [required]="control.IsMandatory" placeholder="select item" [(ngModel)]="control.Value"
+                      [minTermLength]="3">
+                      <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                          <span class="ng-value-label"> {{item.Label}}</span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                    <span>{{control.DisplayLabel}}</span>
+                  </label>
+                </div>
+                <div class="ErrorMsgBox"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="row pt-3 pb-2" *ngIf="showFilters">
+          <div class="col-md-8 ps-1">
+            <div class="row">
+              <div class="col-md-6 ps-2 pe-0">
+                <div class="input-group-prepend">
+
+                  <div class=" input-group pe-2 mb-1 flex-grow-1 searchbar">
+                    <div class="input-group-text b-0 rrb"><i class="fa fa-search"></i></div>
+                    <input type="text" placeholder="Search here" [(ngModel)]="searchText" class="form-control rlb "
+                      name="search-id" (keyup)="searchDataGloballyInTable($event)" />
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-3 ps-1 pe-0" *ngIf="applicationPageViewModel.smartGrid">
+                <label class="has-float-label">
+                  <select class="form-control" id="Filter" [(ngModel)]="applicationPageViewModel.filterId"
+                    (ngModelChange)="getFilteredData($event)">
+                    <option class="text-nowrap" [selected]="true" value="">Select Saved Filter</option>
+                    <option *ngFor="let filter of applicationPageViewModel.smartGrid.UserGridFilters"
+                      [value]="filter.Id">
+                      {{filter.FilterName}}
+                    </option>
+                  </select>
+                  <span class="text-nowrap">Select Filter</span>
+                </label>
+              </div>
+              <div class="col-md-3 ms-0 ps-0">
+                <button id="Filter&Summary"
+                  class="AdvanceFilter CustomPtr float-left border-0 p-0 ms-1 btn cbtn-primary"
+                  *ngIf="applicationPageViewModel.smartPage && applicationPageViewModel.smartPage.PageActions.length > 0"
+                  ngbTooltip="Search filter" placement="bottom" title="setting">
+                  <div class="ms-auto">
+                    <div class="text-right">
+                      <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="optdropdow p-0 " data-toggle="dropdown"
+                          aria-haspopup="true">
+                          <i class="fa fa-cog hover"></i>
+                        </button>
+                        <div class="dropdown-menu butndropdown" id="MainMenudropdown" aria-labelledby="btnGroupDrop1">
+                          <div class="btn-group w-100"
+                            *ngFor="let action of applicationPageViewModel.smartPage.PageActions; let i = index">
+                            <button class="dropdown-item"
+                              (click)="executeRespectiveEvent(action, null)">{{action.Text}}</button>
+                          </div>
+                          <div class="btn-group w-100">
+                            <button class="dropdown-item" (click)="opengridColumnSetting()">Data Configuration</button>
+                          </div>
+                          <div class="btn-group w-100">
+                            <button class="dropdown-item" (click)="exportExcel()">Excel Export</button>
+                          </div>
+                          <div class="btn-group w-100">
+                            <button class="dropdown-item">CSV Export</button>
+                          </div>
+                          <div class="btn-group w-100">
+                            <button class="dropdown-item" (click)="importExcel()">Excel Import</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                <button id="Filter&Summary"
+                  class="AdvanceFilter CustomPtr float-left  border-0 p-0 ms-1 btn cbtn-primary "
+                  ngbTooltip="Delete filter" placement="bottom" (click)="deleteUserFilter()" title="Delete">
+                  <i class="fa fa-trash  hover"></i>
+                </button>
+                <button id="Filter&Summary"
+                  class="AdvanceFilter CustomPtr float-left  border-0 p-0 ms-1 btn cbtn-primary"
+                  ngbTooltip="Search filter" placement="bottom" (click)="openFilters()" title="search"><i
+                    class="fa fa-search  hover"></i>
+                </button>
+                <button id="Filter&Summary" class="AdvanceFilter CustomPtr border-0 p-0 ms-1 btn cbtn-primary"
+                  ngbTooltip="View Mode" placement="bottom" (click)="changeViewMode()" title="change layout"><i
+                    class="fa fa-eye hover"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ms-auto" id="applicationPageViewModel.rows.length > 0">
+            <div class="row ms-auto">
+              <div class="col-md-4 ms-auto " *ngIf="applicationPageViewModel.gridModel">
+                <div class="flex-fill">
+                  <table class="mt-1">
+                    <tbody>
+                      <td>
+                        <p class="mb-0"><strong>{{applicationPageViewModel.paginationStartIndex}}</strong></p>
+                      </td>
+                      <td>
+                        <p class="mb-0"><strong>-</strong></p>
+                      </td>
+                      <td>
+                        <p class="mb-0"><strong>{{applicationPageViewModel.paginationEndIndex}}</strong></p>
+                      </td>
+                      <td>
+                        <p class="mb-0"><strong>of</strong></p>
+                      </td>
+                      <td>
+                        <p class="mb-0"><strong>{{applicationPageViewModel.gridModel.Rows.length}}</strong></p>
+                      </td>
+                      <td><a class="hreflink font-weight-bold me-1" title="Previous" [ngClass]="getPreviousBtnClass()">
+                          <i class="fa fa-chevron-left" aria-hidden="true" (click)="loadPreviousData()"></i></a>
+                      </td>
+                      <td><a class="CustomPtr hreflink font-weight-bold ms-1" title="Next"
+                          [ngClass]="getNextBtnClass()"><i class="fa fa-chevron-right" aria-hidden="true"
+                            (click)="loadNextData()"></i></a></td>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-5 ps-auto">
+                <label class="has-float-label">
+                  <select class="form-control" id="Filter" [(ngModel)]="applicationPageViewModel.pageSize"
+                    (ngModelChange)="onChangePageSize()">
+                    <option *ngFor="let size of pageSizeList" [ngValue]="size">
+                      {{size}}
+                    </option>
+                  </select>
+                  <span class="text-nowrap">Page Size</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="viewMode == 'Grid View' && showFilters">
+    <div class="col-md-12 px-0 mt-3">
+      <div [ngClass]="getClassGridView()" id="style-1 pt-1" *ngIf="applicationPageViewModel.rows.length >0">
+        <table class="table mb-0 table-striped table-hover  "
+          *ngIf="applicationPageViewModel.gridModel && applicationPageViewModel.gridHeaders">
+          <thead>
+            <tr>
+              <th *ngFor="let header of applicationPageViewModel.gridHeaders; let i = index"
+                [style.text-align]="header.Alignment" class="sticky-top px-2">
+                <div class="d-flex" *ngIf="header.IsVisible">
+                  <div class="flex-fill me-1 text-center">
+                    <label class="text-nowrap p-1">{{header.HeaderText}}</label>
+                  </div>
+                  <div class="ms-auto">
+                    <span class="position-relative me-3">
+                      <i *ngIf="header.SortingType === '' || header.SortingType === 'desc'"
+                        class="fa fa-sort-asc  pt-1 ps-1 CustomPtr DescArrow" title="Sort" (click)="sortBy(header)"
+                        [ngStyle]="{'color': header.SortingType === '' ? '#D3D3D3' : null}"></i>
+                      <i *ngIf="header.SortingType === '' || header.SortingType === 'asc'"
+                        class="fa fa-sort-desc pt-1 ps-1 CustomPtr DescArrow" title="Sort" (click)="sortBy(header)"
+                        [ngStyle]="{'color': header.SortingType === '' ? '#D3D3D3' : null}"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="d-flex CustomTableWidth" *ngIf="!header.IsVisible && i ==0">
+                  <div class="flex-fill me-1 text-center">
+                    <label class="text-nowrap p-1">Sr.No</label>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of applicationPageViewModel.rows;let i = index" class="minWidth">
+              <td class="align-middle p-1 minWidth"
+                *ngFor="let header of applicationPageViewModel.gridHeaders; let j = index">
+                <div class="d-flex">
+                  <div class="flex-fill me-1" *ngIf="header.IsVisible">
+                    <div class="text-nowrap mt-1">
+                      {{row[j].T}}
+                    </div>
+                  </div>
+                  <div class="flex-fill me-1" *ngIf="j =='0'">
+                    <div class="text-nowrap mt-1">
+                      {{i+1}}
+                    </div>
+                  </div>
+                  <div class="ms-auto float-right me-1" *ngIf="j =='0'">
+                    <div [ngClass]="getClassforAction(null)">
+                      <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="optdropdow" data-toggle="dropdown"
+                          aria-haspopup="true"
+                          *ngIf="applicationPageViewModel.gridModel && applicationPageViewModel.gridModel.Headers">
+                          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu butndropdown" id="MainMenudropdown" aria-labelledby="btnGroupDrop1">
+                          <div *ngFor="let action of getMenuList()">
+
+                            <div class="btn-group w-100">
+                              <button class="dropdown-item"
+                                (click)="executeRespectiveEvent(action, row)">{{action.Text}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-1" *ngIf="viewMode == 'List View' && showFilters && dashboardPageId ==''">
+    <div class="col-md-7 ps-0 pe-2">
+      <div [ngClass]="getClassListView()" id="style-5" #scroller>
+        <div *ngFor="let lv of applicationPageViewModel.listView">
+          <div class="card mb-2 rounded-2 m-2 cdstyle">
+            <div class="card-body p-2">
+              <table class="table table-hover table-borderless rounded m-0 custom-table" id="listtable">
+                <tr *ngFor="let item of lv.SingleLineList; let i = index">
+                  <td class="p-0 listhead">
+                    <span *ngIf="i === 0" class="d-flex outer">
+                      <a class="hreflink CustomPointer p-1 " (click)="getViewPageContents(lv.Row)">{{item}}</a>
+                      <div class="ms-auto ">
+                        <div [ngClass]="getClassforAction(lv.Actions)">
+                          <div class="btn-group btngalign list" role="group">
+                            <button
+                              *ngIf="applicationPageViewModel.gridModel && applicationPageViewModel.gridModel.Headers"
+                              id="btnGroupDrop1" type="button" class="optdropdow" data-toggle="dropdown"
+                              aria-haspopup="true">
+                              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <div class="dropdown-menu butndropdown" id="MainMenudropdown2"
+                              aria-labelledby="btnGroupDrop1">
+                              <div *ngFor="let action of lv.Actions">
+                                <div class="btn-group w-100">
+                                  <button class="dropdown-item" (click)="executeRespectiveEvent(action, lv.Row)">
+                                    {{action.Text}}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                    <span *ngIf="i !== 0" class="innerlist">{{item}}</span>
+                  </td>
+                </tr>
+                <tr *ngIf="lv.HeaderValuestring.length > 0">
+                  <td colspan="2" class="ps-1">
+                    <table class="header-table ">
+                      <tr *ngFor="let item of lv.HeaderValuestring; let j = index">
+                        <td class="p-0">
+                          <span>{{item.Header}}</span>: <span>{{item.Value}}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 px-1">
+      <div [ngClass]="getClassForViewDetails()" id="style-5">
+        <div *ngIf="pageContentView">
+          <div class="text-left" *ngFor="let item of pageContentView.Contents">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="text-info mb-2 ms-3">{{item.Title}}</h5>
+              </div>
+            </div>
+            <hr class="mt-0 mb-1">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="mt-2 CandidateCardTable">
+                  <tr *ngFor="let content of item.PageContentItemViews">
+                    <td *ngIf="!content.IsSingleLine">
+                      <div class="col-md-12" *ngIf="content.Label">
+                        <p class="mb-1 ms-1"><strong>{{content.Label}}</strong></p>
+                      </div>
+                      <div class="col-md-12">
+                        <p class="mb-1 ms-1">{{content.Value ? content.Value: '-'}}</p>
+                      </div>
+                    </td>
+                    <td *ngIf="content.IsSingleLine">
+                      <div class="col-md-12" *ngIf="content.Label">
+                        <p class="mb-1 ms-1"><strong>{{content.Label}} </strong> <span>
+                            {{content.Value ? content.Value: '-'}}</span></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

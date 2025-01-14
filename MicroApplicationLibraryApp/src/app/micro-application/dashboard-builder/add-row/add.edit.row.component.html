@@ -1,0 +1,88 @@
+<div class="modal-header ps-4">
+  <h5 class="modal-title">{{mode}} Row</h5>
+  <button type="button" class="close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body ps-4 pe-4">
+  <div class="row">
+    <div class="col-md-6" *ngIf="selectDashboardSchema && selectDashboardSchema.Rows.length > 0">
+      <table class="table  table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="w-25 TableHeader sticky-top">Position</th>
+            <th class="w-75 TableHeader sticky-top">Height</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of selectDashboardSchema.Rows; let i = index">
+            <td class="text-left">{{row.Position}}</td>
+            <td class="text-left">
+              <div class="d-flex">
+                <div class="flex-fill me-1">
+                  <div class="text-nowrap mt-1">{{row.Height}}</div>
+                </div>
+                <div class="ms-auto">
+                  <div class="text-right">
+                    <div class="btn-group" role="group">
+                      <button id="btnGroupDrop1" type="button" class="optiondropdow" data-toggle="dropdown"
+                        aria-haspopup="true">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu btndropdown" id="AllCandidatedropdown" aria-labelledby="btnGroupDrop1">
+                        <div class="btn-group w-100">
+                          <button class="dropdown-item" title="Edit Row" (click)="editRow(row)">Edit</button>
+                        </div>
+                        <div class="btn-group w-100">
+                          <button class="dropdown-item" title="Delete Row" (click)="deleteRow(row)">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6 text-left">
+      <form [formGroup]="addEditRowForm" novalidate>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input type="text" class="form-control" id="Position" required formControlName="Position"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span>Position</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="(addEditRowForm.controls['Position'].invalid) && ( addEditRowForm.controls['Position'].dirty || addEditRowForm.controls['Position'].touched)">
+              <div *ngIf="addEditRowForm.controls['Position'].errors.required"> {{validationMessage.PositionRequired}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input type="text" class="form-control" id="Height" required formControlName="Height"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span>Height</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="(addEditRowForm.controls['Height'].invalid) && ( addEditRowForm.controls['Height'].dirty || addEditRowForm.controls['Height'].touched)">
+              <div *ngIf="addEditRowForm.controls['Height'].errors.required"> {{validationMessage.HeightRequired}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</div>
+<div class="modal-footer pt-2 pb-2 ps-2 pe-4">
+  <button id="RegisterClose" type="button" class="btn Cbtn-primary" (click)="close()">Close</button>
+  <button id="RegisterSubmit" type="submit" class="btn Cbtn-primary btnMain" [disabled]="addEditRowForm.invalid"
+    (click)="saveForm()">Submit</button>
+</div>
