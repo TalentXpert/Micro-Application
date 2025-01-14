@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApplicationPageService } from '../services/application.page.service';
 import { DateVM, UIControl, UIForm, SmartFormGenerateRequest, SmartFormTemplateRequest } from '../application-page-container/application.page.model';
-import { IMyDateModel } from 'mydatepicker';
 import { UtilityService } from '../library/utility.service';
 import { UIFormClientVM } from './UI.form.model';
 
@@ -165,9 +164,9 @@ export class UIFormComponent implements OnInit, OnDestroy {
     }
 
 
-    onSelectedDate(event: IMyDateModel) {
-        event ? this.selectedDate = this.utilsService.convertDateToReadableFormat(event.date) : this.selectedDate = "";
-    }
+    // onSelectedDate(event: IMyDateModel) {
+    //     event ? this.selectedDate = this.utilsService.convertDateToReadableFormat(event.date) : this.selectedDate = "";
+    // }
 
     addSmartSelectionOption(Options, childControl) {
         let index = this.uIControl.findIndex(control => control.ControlId == childControl.ControlId);

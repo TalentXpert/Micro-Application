@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IMyDpOptions } from "mydatepicker";
+
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({
@@ -12,11 +12,11 @@ export class UtilityService {
   datePlaceholder: string = 'Select Date';
   calenderCultureFormat: string;
   
-  datePickerConfig: IMyDpOptions = {
-    disableUntil: { year: 0, month: 0, day: 0 },
-    dateFormat: 'dd/mm/yyyy',
-    editableDateField: false
-  };
+  // datePickerConfig: IMyDpOptions = {
+  //   disableUntil: { year: 0, month: 0, day: 0 },
+  //   dateFormat: 'dd/mm/yyyy',
+  //   editableDateField: false
+  // };
  
   sortDataForOptions(array: Array<any>, key: any): Array<any> {
     if (array) {
