@@ -95,7 +95,7 @@
                             [minTermLength]="3" id="control.DisplayLabel">
                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                 <div class="ng-value" *ngFor="let item of items | slice:0:2">
-                                    <span class="ng-value-label"> {{item.Label }}</span>
+                                    <span class="ng-value-label"> {{$any(item).Label}}</span>
                                     <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                                 </div>
                             </ng-template>
@@ -160,7 +160,7 @@
                             [ngModel]="control.ListOfSelectedValue" [minTermLength]="3">
                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                 <div class="ng-value" *ngFor="let item of items | slice:0:2">
-                                    <span class="ng-value-label"> {{item.Label}}</span>
+                                    <span class="ng-value-label">{{$any(item).Label}}</span>
                                     <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                                 </div>
                                 <div class="ng-value" *ngIf="items.length > 2">

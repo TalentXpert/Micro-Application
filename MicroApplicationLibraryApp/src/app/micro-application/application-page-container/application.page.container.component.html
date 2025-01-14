@@ -27,12 +27,12 @@
                   <label class="form-group has-float-label">
                     <ng-select [items]="getOptionList(control)" [formControlName]="control.DisplayLabel"
                       (search)="getSearchItems($event, control)" bindLabel="Label" bindValue="Value" [multiple]="false"
-                      maxSelectedItems="1" [clearable]="false" [typeToSearchText]=true
+                      maxSelectedItems="1" [clearable]="false" typeToSearchText=true
                       [required]="control.IsMandatory" placeholder="select item" [(ngModel)]="control.Value"
                       [minTermLength]="3">
                       <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                         <div class="ng-value" *ngFor="let item of items | slice:0:2">
-                          <span class="ng-value-label"> {{item.Label}}</span>
+                          <span class="ng-value-label"> {{$any(item).Label}}</span>
                           <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         </div>
                       </ng-template>
@@ -213,12 +213,12 @@
                       {{row[j].T}}
                     </div>
                   </div>
-                  <div class="flex-fill me-1" *ngIf="j =='0'">
+                  <div class="flex-fill me-1" *ngIf="j ==0">
                     <div class="text-nowrap mt-1">
                       {{i+1}}
                     </div>
                   </div>
-                  <div class="ms-auto float-right me-1" *ngIf="j =='0'">
+                  <div class="ms-auto float-right me-1" *ngIf="j ==0">
                     <div [ngClass]="getClassforAction(null)">
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="optdropdow" data-toggle="dropdown"
