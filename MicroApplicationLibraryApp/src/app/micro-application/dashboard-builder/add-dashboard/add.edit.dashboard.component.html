@@ -19,7 +19,7 @@
               *ngIf="(addEditDashboardBuilderForm.controls['Name'].invalid) && ( addEditDashboardBuilderForm.controls['Name'].dirty || addEditDashboardBuilderForm.controls['Name'].touched)">
               <div *ngIf="addEditDashboardBuilderForm.controls['Name'].errors['required']"> {{validationMessage.NameRequired}} </div>
               <div
-                *ngIf="addEditDashboardBuilderForm.controls['Name'].errors.minlength || addEditDashboardBuilderForm.controls['Name'].errors.maxlength">
+                *ngIf="addEditDashboardBuilderForm.controls['Name'].errors['minlength'] || addEditDashboardBuilderForm.controls['Name'].errors['maxlength']">
                 {{validationMessage.NameMinMax}}
               </div>
             </div>
@@ -36,7 +36,7 @@
               *ngIf="(addEditDashboardBuilderForm.controls['Description'].invalid) && ( addEditDashboardBuilderForm.controls['Description'].dirty || addEditDashboardBuilderForm.controls['Description'].touched)">
               
               <div
-                *ngIf="addEditDashboardBuilderForm.controls['Description'].errors.minlength || addEditDashboardBuilderForm.controls['Description'].errors.maxlength">
+                *ngIf="addEditDashboardBuilderForm.controls['Description'].errors['minlength'] || addEditDashboardBuilderForm.controls['Description'].errors['maxlength']">
                 {{validationMessage.DescriptionRange}}
               </div>
             </div>
