@@ -19,7 +19,7 @@
               *ngIf="(addEditForm.controls['Name'].invalid) && ( addEditForm.controls['Name'].dirty || addEditForm.controls['Name'].touched)">
               <div *ngIf="addEditForm.controls['Name'].errors['required']"> {{validationMessage.NameRequired}} </div>
               <div
-                *ngIf="addEditForm.controls['Name'].errors.minlength || addEditForm.controls['Name'].errors.maxlength">
+                *ngIf="addEditForm.controls['Name'].errors['minlength'] || addEditForm.controls['Name'].errors['maxlength']">
                 {{validationMessage.NameMinMax}}
               </div>
             </div>

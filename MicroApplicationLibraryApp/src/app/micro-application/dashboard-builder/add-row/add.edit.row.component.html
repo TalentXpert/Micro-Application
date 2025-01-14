@@ -57,7 +57,7 @@
           <div class="ErrorMsgBox">
             <div class="text-danger"
               *ngIf="(addEditRowForm.controls['Position'].invalid) && ( addEditRowForm.controls['Position'].dirty || addEditRowForm.controls['Position'].touched)">
-              <div *ngIf="addEditRowForm.controls['Position'].errors.required"> {{validationMessage.PositionRequired}}
+              <div *ngIf="addEditRowForm.controls['Position'].errors['required']"> {{validationMessage.PositionRequired}}
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
           <div class="ErrorMsgBox">
             <div class="text-danger"
               *ngIf="(addEditRowForm.controls['Height'].invalid) && ( addEditRowForm.controls['Height'].dirty || addEditRowForm.controls['Height'].touched)">
-              <div *ngIf="addEditRowForm.controls['Height'].errors.required"> {{validationMessage.HeightRequired}}
+              <div *ngIf="addEditRowForm.controls['Height'].errors['required']"> {{validationMessage.HeightRequired}}
               </div>
             </div>
           </div>
