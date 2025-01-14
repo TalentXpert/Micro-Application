@@ -13,7 +13,7 @@
                             <div class="ErrorMsgBox">
                                 <div class="text-danger"
                                     *ngIf="chartBuilderForm.controls['Name'].invalid && (chartBuilderForm.controls['Name'].dirty || chartBuilderForm.controls['Name'].touched)">
-                                    <div *ngIf="chartBuilderForm.controls['Name'].errors.required">
+                                    <div *ngIf="chartBuilderForm.get('Name')?.hasError('required')">
                                         {{validationMessage.TitleRequired}}
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                 <div class="text-danger"
                                     *ngIf="chartBuilderForm.controls['Description'].invalid && (chartBuilderForm.controls['Description'].dirty || chartBuilderForm.controls['Description'].touched)">
                                     <div
-                                        *ngIf="chartBuilderForm.controls['Description'].errors.minlength || chartBuilderForm.controls['Description'].errors.maxlength">
+                                        *ngIf="chartBuilderForm.get('Description')?.hasError('minlength') ||chartBuilderForm.get('Description')?.hasError('maxlength')">
                                         {{validationMessage.DescriptionRange}}
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                                                                         (click)="nodeClick(field)">
                                                                         <h6 class="mb-0">{{field.Title}}
                                                                             <button type="button"
-                                                                                *ngIf="field.ColumnId == '2'"
+                                                                                *ngIf="field.ColumnId == 2"
                                                                                 class="close" (click)="remove(field)">
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
