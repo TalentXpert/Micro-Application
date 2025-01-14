@@ -34,6 +34,10 @@ export class FormConfigurationContainerComponent implements OnInit {
     appFormList: AppFormList[] = [];
     get addOptionsList() { return this.appFormConfigForm.controls; }
     get OptionsFormArray() { return this.addOptionsList['Options'] as FormArray; }
+     get OptionsFormControlsArray() {
+        return (this.appFormConfigForm.controls["Options"] as FormArray).controls as FormGroup[];
+    }
+    
 
     constructor(private formBuilder: FormBuilder, private applicationPageEvent: MicroApplicationEvent,
         private appFormControlService: AppFormControlService, private alertModalService: AlertModalService, private applicationPageService:

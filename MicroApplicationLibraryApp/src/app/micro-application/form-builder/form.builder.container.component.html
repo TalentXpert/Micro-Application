@@ -72,7 +72,7 @@
                                                             <div [ngClass]="getClassForInterviewCard(field)"
                                                                 (click)="nodeClick(field)">
                                                                 <h6 class="mb-0">{{field.DisplayLabel}}
-                                                                    <button type="button" *ngIf="field.ColumnId == '2'"
+                                                                    <button type="button" *ngIf="field.ColumnId == 2"
                                                                         class="close" (click)="remove(field)">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
@@ -262,7 +262,7 @@
                                                         Option</button>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <div class="customFieldScrollbar" id="style-5">
+                       f                             <div class="customFieldScrollbar" id="style-5">
                                                         <table class="table table-bordered mb-0">
                                                             <thead>
                                                                 <tr>
@@ -271,7 +271,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody formArrayName="Options" id="ng-invalidDiv">
-                                                                <tr *ngFor="let opt of OptionsFormArray.controls; let i = index"
+                                                                <tr *ngFor="let opt of OptionsFormControlsArray; let i = index"
                                                                     [formGroup]="opt" id="ng-invalidDiv">
                                                                     <td class="pb-0">
                                                                         <input class="form-control" type="text"

@@ -32,6 +32,10 @@ export class FormBuilderContainerComponent implements OnInit {
     //layoutControlValue: string;
     get addOptionsList() { return this.applicationFormBuilderForm.controls; }
     get OptionsFormArray() { return this.addOptionsList['Options'] as FormArray; }
+    get OptionsFormControlsArray() {
+        return (this.applicationFormBuilderForm.controls["Options"] as FormArray).controls as FormGroup[];
+    }
+    
 
     constructor(private formBuilder: FormBuilder, private applicationPageEvent: MicroApplicationEvent,
         private appFormControlService: AppFormControlService, private alertModalService: AlertModalService, private applicationPageService:
