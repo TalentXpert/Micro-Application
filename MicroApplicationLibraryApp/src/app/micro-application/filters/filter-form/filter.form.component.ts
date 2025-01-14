@@ -25,9 +25,14 @@ export class FilterComponent implements OnInit, OnDestroy {
     stringOperators: string[] = ['=', '*', '%', '$'];
     @Output() sendResponse: EventEmitter<UserGridFilter> = new EventEmitter();
     @Output() applyResponse: EventEmitter<UserGridFilter> = new EventEmitter();
+    
 
     get formControls() { return this.filterForm.controls; }
     get FilterFormArray() { return this.formControls['filters'] as FormArray; }
+    get FilterFormControlsArray() {
+        return (this.filterForm.controls["filters"] as FormArray).controls as FormGroup[];
+    }
+    
 
 
     constructor(public ngbActiveModal: NgbActiveModal, private formBuilder: FormBuilder, private applicationPageService: ApplicationPageService,

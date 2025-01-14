@@ -15,7 +15,7 @@
         <div class="col-md-8">
             <form [formGroup]="filterForm">
                 <div formArrayName="filters">
-                    <div *ngFor="let opt of FilterFormArray.controls; let i = index" [formGroup]="opt">
+                    <div *ngFor="let opt of FilterFormControlsArray; let i = index" [formGroup]="opt">
                         <div class="row">
                             <div class="col-md-4" *ngIf="checkControlTypeString(i)">
                                 <select class="form-control" formControlName="Operator">
