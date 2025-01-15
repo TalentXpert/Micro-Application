@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { AlertModalService } from '../alert/alert.modal.service';
-import { GridHeader, SmartGridConfigurationVM, SmartPage, UserGridHeadersVM } from '../application-page-container/application.page.model';
+import { UserGridHeaderVM, SmartGridConfigurationVM, SmartPage, UserGridHeadersVM } from '../application-page-container/application.page.model';
 import { ApplicationPageService } from '../services/application.page.service';
 
 
@@ -42,7 +42,7 @@ export class GridColumnSettingComponent implements OnInit {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
-  onclickedCheckbox(column: GridHeader) {
+  onclickedCheckbox(column: UserGridHeaderVM) {
     column.IsVisible = !column.IsVisible;
     let index = this.userGridHeadersVM.Headers.findIndex(a => a.Position == column.Position);
     if (index > -1) this.userGridHeadersVM.Headers[index].IsVisible = column.IsVisible;
