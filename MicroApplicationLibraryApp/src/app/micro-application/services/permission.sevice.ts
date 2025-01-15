@@ -15,7 +15,9 @@ export class PermissionVM {
     }
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class PermissionService {
     private baseUrl="";
     constructor(private httpClient: HttpClient, private configService: ConfigService) {

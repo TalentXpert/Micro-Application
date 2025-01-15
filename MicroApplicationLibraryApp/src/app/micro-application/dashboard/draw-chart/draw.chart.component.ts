@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DashboardChart } from '../dashboard.container/dashboard.model';
+import { ChartType } from 'angular-google-charts';
+
 
 
 
@@ -19,7 +21,7 @@ export class DrawChartComponent {
   options: any;
   columnsNames: any;
   data: any[] = [];
-  type: string = "";
+  type: ChartType;
 
   constructor() {
     /** line charts*/
@@ -38,7 +40,7 @@ export class DrawChartComponent {
     this.title = this.dashboardChart.Title;
     this.columnsNames = [] = [];
     this.data = [] = [];
-    this.type = this.dashboardChart.ChartType;
+    this.type = ChartType[this.dashboardChart.ChartType];
     this.options = {
       tooltip: { isHtml: true },
       legend: { position: 'right'},
