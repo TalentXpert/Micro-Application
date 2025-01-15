@@ -10,12 +10,12 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="(smartFb.get(control.DisplayLabel)?.invalid) && ( smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                             <div
-                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                *ngIf="smartFb.get(control.DisplayLabel)?.hasError('minlength') || smartFb.get(control.DisplayLabel)?.hasError('maxlength')">
                                 <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
                                     {{control.Maximum}}</strong>
                             </div>
@@ -32,12 +32,12 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="smartFb.get(control.DisplayLabel).invalid && (smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="smartFb.get(control.DisplayLabel)?.invalid && (smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                             <div
-                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                *ngIf="smartFb.get(control.DisplayLabel)?.hasError('minlength') || smartFb.get(control.DisplayLabel)?.hasError('maxlength')">
                                 <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
                                     {{control.Maximum}}</strong>
                             </div>
@@ -53,12 +53,12 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="smartFb.get(control.DisplayLabel).invalid && (smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="smartFb.get(control.DisplayLabel)?.invalid && (smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                             <div
-                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                *ngIf="smartFb.get(control.DisplayLabel)?.hasError('minlength') || smartFb.get(control.DisplayLabel)?.hasError('maxlength')">
                                 <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
                                     {{control.Maximum}}</strong>
                             </div>
@@ -74,12 +74,12 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="(smartFb.get(control.DisplayLabel)?.invalid) && ( smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                             <div
-                                *ngIf="smartFb.get(control.DisplayLabel).errors['minlength'] || smartFb.get(control.DisplayLabel).errors['maxlength']">
+                                *ngIf="smartFb.get(control.DisplayLabel)?.hasError('minlength') || smartFb.get(control.DisplayLabel)?.hasError('maxlength')">
                                 <strong>{{control.DisplayLabel}} must be min {{control.Minimum}} and max
                                     {{control.Maximum}}</strong>
                             </div>
@@ -104,8 +104,8 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="(smartFb.get(control.DisplayLabel)?.invalid) && ( smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                         </div>
@@ -123,8 +123,8 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="(smartFb.get(control.DisplayLabel)?.invalid) && ( smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                         </div>
@@ -172,8 +172,8 @@
                     </label>
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
-                            *ngIf="(smartFb.get(control.DisplayLabel).invalid) && ( smartFb.get(control.DisplayLabel).dirty || smartFb.get(control.DisplayLabel).touched)">
-                            <div *ngIf="smartFb.get(control.DisplayLabel).errors['required']">
+                            *ngIf="(smartFb.get(control.DisplayLabel)?.invalid) && ( smartFb.get(control.DisplayLabel)?.dirty || smartFb.get(control.DisplayLabel)?.touched)">
+                            <div *ngIf="smartFb.get(control.DisplayLabel)?.hasError('required')">
                                 <strong>{{control.DisplayLabel}} is required</strong>
                             </div>
                         </div>
