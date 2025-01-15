@@ -68,7 +68,7 @@
                   </label>
                 <div class="ErrorMsgBox">
                   <div class="text-danger " *ngIf="importExcelFB.controls['Rows'].invalid && (importExcelFB.controls['Rows'].dirty || importExcelFB.controls['Rows'].touched)">
-                    <div *ngIf="importExcelFB.controls['Rows'].errors['required']"> {{validationMessage.RowsCountRequired}}</div>
+                    <div *ngIf="importExcelFB.get('Rows')?.hasError('required')"> {{validationMessage.RowsCountRequired}}</div>
                   </div>
                 </div>
               </div>

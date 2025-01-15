@@ -17,9 +17,9 @@
           <div class="ErrorMsgBox">
             <div class="text-danger"
               *ngIf="(addEditDashboardBuilderForm.controls['Name'].invalid) && ( addEditDashboardBuilderForm.controls['Name'].dirty || addEditDashboardBuilderForm.controls['Name'].touched)">
-              <div *ngIf="addEditDashboardBuilderForm.controls['Name'].errors['required']"> {{validationMessage.NameRequired}} </div>
+              <div *ngIf="addEditDashboardBuilderForm.get('Name')?.hasError('required')"> {{validationMessage.NameRequired}} </div>
               <div
-                *ngIf="addEditDashboardBuilderForm.controls['Name'].errors['minlength'] || addEditDashboardBuilderForm.controls['Name'].errors['maxlength']">
+                *ngIf="addEditDashboardBuilderForm.get('Name')?.hasError('minlength') || addEditDashboardBuilderForm.get('Name')?.hasError('maxlength')">
                 {{validationMessage.NameMinMax}}
               </div>
             </div>
@@ -36,7 +36,7 @@
               *ngIf="(addEditDashboardBuilderForm.controls['Description'].invalid) && ( addEditDashboardBuilderForm.controls['Description'].dirty || addEditDashboardBuilderForm.controls['Description'].touched)">
               
               <div
-                *ngIf="addEditDashboardBuilderForm.controls['Description'].errors['minlength'] || addEditDashboardBuilderForm.controls['Description'].errors['maxlength']">
+                *ngIf="addEditDashboardBuilderForm.get('Description')?.hasError('minlength') || addEditDashboardBuilderForm.get('Description')?.hasError('maxlength')">
                 {{validationMessage.DescriptionRange}}
               </div>
             </div>
@@ -65,7 +65,7 @@
           <div class="ErrorMsgBox">
             <div class="text-danger"
               *ngIf="addEditDashboardBuilderForm.controls['MenuId'].invalid && (addEditDashboardBuilderForm.controls['MenuId'].dirty || addEditDashboardBuilderForm.controls['MenuId'].touched)">
-              <div *ngIf="addEditDashboardBuilderForm.controls['MenuId'].errors['required']">{{validationMessage.MenuRequired}}</div>
+              <div *ngIf="addEditDashboardBuilderForm.get('MenuId')?.hasError('required')">{{validationMessage.MenuRequired}}</div>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@
           <div class="ErrorMsgBox">
             <div class="text-danger "
               *ngIf="addEditDashboardBuilderForm.controls['Position'].invalid && (addEditDashboardBuilderForm.controls['Position'].dirty || addEditDashboardBuilderForm.controls['Position'].touched)">
-              <div *ngIf="addEditDashboardBuilderForm.controls['Position'].errors['required']"> {{validationMessage.PositionRequired}}
+              <div *ngIf="addEditDashboardBuilderForm.get('MenuId')?.hasError('required')"> {{validationMessage.PositionRequired}}
               </div>
             </div>
           </div>

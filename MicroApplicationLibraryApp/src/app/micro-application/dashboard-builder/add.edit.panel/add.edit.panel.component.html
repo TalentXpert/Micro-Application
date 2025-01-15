@@ -19,7 +19,7 @@
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
                             *ngIf="addEditPanelForm.controls['Row'].invalid && (addEditPanelForm.controls['Row'].dirty || addEditPanelForm.controls['Row'].touched)">
-                            <div *ngIf="addEditPanelForm.controls['Row'].errors['required']">
+                            <div *ngIf="addEditPanelForm.get('Row')?.hasError('required')">
                                 {{validationMessage.RowRequired}} </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
                             *ngIf="addEditPanelForm.controls['Title'].invalid && (addEditPanelForm.controls['Title'].dirty || addEditPanelForm.controls['Title'].touched)">
-                            <div *ngIf="addEditPanelForm.controls['Title'].errors['required']">
+                            <div *ngIf="addEditPanelForm.get('Title')?.hasError('required')">
                                 {{validationMessage.TitleRequired}} </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
                             *ngIf="(addEditPanelForm.controls['ContentType'].invalid) && ( addEditPanelForm.controls['ContentType'].dirty || addEditPanelForm.controls['ContentType'].touched)">
-                            <div *ngIf="addEditPanelForm.controls['ContentType'].errors['required']">
+                            <div *ngIf="addEditPanelForm.get('ContentType')?.hasError('required')">
                                 {{validationMessage.ContentTypeRequired}} </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="ErrorMsgBox">
                         <div class="text-danger"
                             *ngIf="(addEditPanelForm.controls['Position'].invalid) && ( addEditPanelForm.controls['Position'].dirty || addEditPanelForm.controls['Position'].touched)">
-                            <div *ngIf="addEditPanelForm.controls['Position'].errors['required']">
+                            <div *ngIf="addEditPanelForm.get('Position')?.hasError('required')">
                                 {{validationMessage.PositionRequired}} </div>
                         </div>
                     </div>
