@@ -15,14 +15,14 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 
 export class AddEditRowComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    addEditRowForm: FormGroup;
+    addEditRowForm: FormGroup = new FormGroup({});
     validationMessage: ValidationMessage;
-    @Input() mode: string;
+    @Input() mode: string="";
     @Output() sendResponse: EventEmitter<any> = new EventEmitter();
     contentTypes: string[] = [];
-    selectDashboardSchema: DashboardSchema;
+    selectDashboardSchema: DashboardSchema = new DashboardSchema();
     IseditRow: boolean = false;
-    previousRowPosition: number;
+    previousRowPosition: number = 0;
 
 
     constructor(public ngbActiveModal: NgbActiveModal, private fb: FormBuilder, private alertModalService: AlertModalService) {

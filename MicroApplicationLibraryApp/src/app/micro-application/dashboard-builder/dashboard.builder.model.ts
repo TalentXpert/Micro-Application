@@ -1,10 +1,10 @@
 export class DashboardSchema {
     public Id?: string;
-    public Name: string;
-    public Description: string;
-    public MinimumRowHeight: number;
-    public MenuId: string;
-    public Position: number;
+    public Name: string="";
+    public Description: string="";
+    public MinimumRowHeight: number=0;
+    public MenuId: string="";
+    public Position: number=0;
     public Rows: DashboardRow[] = [];
 }
 
@@ -34,6 +34,6 @@ export class DashboardPanel {
 }
 
 export class Content{
-    public Id: string;
-    public Name: string;
+    public Id: string="";
+    public Name: string="";
 }

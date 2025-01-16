@@ -16,12 +16,12 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditDashboardComponent implements OnInit, OnDestroy {
-      observableSubscription: Subscription | null = null;;
-    addEditDashboardBuilderForm: FormGroup;
+    observableSubscription: Subscription | null = null;;
+    addEditDashboardBuilderForm: FormGroup = new FormGroup({});
     validationMessage: ValidationMessage;
     topMenus: MenuModel[]=[];
-    @Input() mode: string;
-    @Input() dashboardSchema: DashboardSchema;
+    @Input() mode: string="";
+    @Input() dashboardSchema: DashboardSchema = new DashboardSchema();
     @Output() sendResponse: EventEmitter<any> = new EventEmitter();
 
 

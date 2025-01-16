@@ -17,18 +17,18 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 
 export class AddEditPanelComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    addEditPanelForm: FormGroup;
+    addEditPanelForm: FormGroup = new FormGroup({});
     validationMessage: ValidationMessage;
     @Input() rowList: number[] = [];
-    @Input() mode: string;
+    @Input() mode: string="";
     @Output() sendResponse: EventEmitter<any> = new EventEmitter();
     contentTypes: string[] = [];
     content: Content[] = [];
-    selectDashboardSchema: DashboardSchema;
+    selectDashboardSchema: DashboardSchema = new DashboardSchema();
     IseditPanel: boolean = false;
     panelList: DashboardPanel[] = [];
-    rowIndex: number;
-    previousPanelPosition: number;
+    rowIndex: number=0;
+    previousPanelPosition: number=0;
 
 
     constructor(public ngbActiveModal: NgbActiveModal, private fb: FormBuilder, private alertModalService: AlertModalService,
