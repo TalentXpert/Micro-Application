@@ -24,11 +24,11 @@ import { UIControl } from '../application-page-container/application.page.model'
 
 export class FormConfigurationContainerComponent implements OnInit {
       observableSubscription: Subscription | null = null;;
-    appFormConfigForm: FormGroup;
+    appFormConfigForm: FormGroup= new FormGroup({});
     fCViewModel: FormConfiguartionViewModel;
     selectedFormId: string = "";
-    selectedFormControl: AppFormControlListForDataTable;
-    IsClickedOnCard: boolean;
+    selectedFormControl: AppFormControlListForDataTable= new AppFormControlListForDataTable(null, 0);
+    IsClickedOnCard: boolean= false;
     smartControls: UIControl[] = [];
     layoutControlValue?: string;
     appFormList: AppFormList[] = [];

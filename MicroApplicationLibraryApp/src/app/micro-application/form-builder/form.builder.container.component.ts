@@ -23,11 +23,11 @@ import { AppFormControlService } from '../services/app.form.control.service';
 
 export class FormBuilderContainerComponent implements OnInit {
       observableSubscription: Subscription | null = null;;
-    applicationFormBuilderForm: FormGroup;
+    applicationFormBuilderForm: FormGroup= new FormGroup({});
     formBuilderViewModel: FormBuilderViewModel;
     selectedFormId: string = "";
-    selectedFormControl: AppFormControlListForDataTable;
-    IsClickedOnCard: boolean;
+    selectedFormControl: AppFormControlListForDataTable= new AppFormControlListForDataTable(null,0);
+    IsClickedOnCard: boolean= false;
     //smartControls: UIControl[] = [];
     //layoutControlValue: string;
     get addOptionsList() { return this.applicationFormBuilderForm.controls; }
