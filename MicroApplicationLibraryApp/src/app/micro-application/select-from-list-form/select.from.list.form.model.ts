@@ -2,31 +2,31 @@ import { Subscription } from "rxjs";
 import { MicroApplicationEvent, MicroApplicationOperation } from "../micro-application.event";
 
 export class InputSelectFromListForm{
-    public FormId: string;
-    public EntityId: string;
-    public Text: string;
+    public FormId: string = "";
+    public EntityId: string = "";
+    public Text: string = "";
 }
 
 export class SelectFromListFormInput {
-    public FormTitle: string;
-    public FormId: string;
-    public EntityId: string;
-    public FormDataLabel: string;
-    public FormDataValue: string;
-    public ItemLabel: string;
+    public FormTitle: string = "";
+    public FormId: string = "";
+    public EntityId: string = "";
+    public FormDataLabel: string = "";
+    public FormDataValue: string = "";
+    public ItemLabel: string = "";
     public Items: SelectFromListFormInputItem[] = [];
 }
 
 
 export class SelectFromListFormInputItem {
-    public ItemId: string;
-    public Title: string;
+    public ItemId: string = "";
+    public Title: string = "";
     public DetailLines: string[] = [];
 }
 
 export class SelectFromListFormData {
-    public FormId: string;
-    public EntityId: string;
+    public FormId: string = "";
+    public EntityId: string = "";
     public SelectedItems: string[] = [];
 }
 
@@ -46,7 +46,7 @@ export class SelectFromListFormInputItemVM {
 
 
 export class SelectFromListFormModel {
-    subscription: Subscription;
+    subscription!: Subscription;
     selectedAll: boolean = false;
     selectFromListFormInputItemVM: SelectFromListFormInputItemVM[] = [];
    

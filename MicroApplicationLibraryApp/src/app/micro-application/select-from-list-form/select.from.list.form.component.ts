@@ -14,10 +14,10 @@ import { MicroApplicationEvent, MicroApplicationEventData, MicroApplicationOpera
 
 export class SelectFromListFormComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    selectFromListFormInputForm: FormGroup;
-    @Input() InputSelectFromListForm: InputSelectFromListForm;
+    selectFromListFormInputForm!: FormGroup;
+    @Input() InputSelectFromListForm: InputSelectFromListForm = new InputSelectFromListForm();
     @Output() IsFormResponseSaved: EventEmitter<boolean> = new EventEmitter();
-    selectFromListFormInput: SelectFromListFormInput;
+    selectFromListFormInput!: SelectFromListFormInput;
     selectFromListFormModel: SelectFromListFormModel;
 
     constructor(private formDataCollectionService: FormDataCollectionService,
