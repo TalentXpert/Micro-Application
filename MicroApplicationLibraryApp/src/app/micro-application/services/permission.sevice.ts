@@ -6,7 +6,7 @@ import { ConfigService } from '../../services/config.service';
 
 
 export class PermissionVM {
-    public Id: string;
+    public Id: string="";
     public Name: string;
     public Code: string;
     constructor(formValues) {

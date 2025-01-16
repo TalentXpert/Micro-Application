@@ -9,7 +9,7 @@ import { UIFormClientVM } from '../UI-form/UI.form.model';
 })
 
 export class SmartFormComponent  {
-    uIFormClientVM: UIFormClientVM;
+    uIFormClientVM: UIFormClientVM = new UIFormClientVM();
     @Output() sendResponse: EventEmitter<boolean> = new EventEmitter();
 
     constructor(public ngbActiveModal: NgbActiveModal) {

@@ -9,7 +9,7 @@ import { InputSelectFromListForm } from '../select-from-list-form/select.from.li
 })
 
 export class SpecialFormComponent  {
-    inputSelectFromListForm: InputSelectFromListForm;
+    inputSelectFromListForm: InputSelectFromListForm = new InputSelectFromListForm();
     @Output() sendResponse: EventEmitter<boolean> = new EventEmitter();
 
     constructor(public ngbActiveModal: NgbActiveModal) {
