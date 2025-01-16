@@ -22,7 +22,7 @@ import { AppFormControlService } from '../services/app.form.control.service';
 })
 
 export class FormBuilderContainerComponent implements OnInit {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     applicationFormBuilderForm: FormGroup;
     formBuilderViewModel: FormBuilderViewModel;
     selectedFormId: string = "";

@@ -23,7 +23,7 @@ import { UIControl } from '../application-page-container/application.page.model'
 })
 
 export class FormConfigurationContainerComponent implements OnInit {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     appFormConfigForm: FormGroup;
     fCViewModel: FormConfiguartionViewModel;
     selectedFormId: string = "";

@@ -16,7 +16,7 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditPanelComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     addEditPanelForm: FormGroup;
     validationMessage: ValidationMessage;
     @Input() rowList: number[] = [];

@@ -19,7 +19,7 @@ import { ValidationMessage } from '../utilities/validaton.messages';
 })
 
 export class ChartBuilderContainerComponent implements OnInit {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     chartBuilderForm: FormGroup;
     validationMessage: ValidationMessage;
     chartBuilderViewModel: ChartBuilderViewModel;

@@ -14,7 +14,7 @@ import { MicroApplicationGlobalService } from '../services/micro.application.glo
 })
 export class MenuComponent implements OnInit, OnDestroy {
   menuViewModel: MenuViewModel;
-  observableSubscription: Subscription;
+    observableSubscription: Subscription | null = null;;
 
   constructor(private microApplicationGlobalService: MicroApplicationGlobalService, private router: Router) {
     this.menuViewModel = this.microApplicationGlobalService.menuViewModel;

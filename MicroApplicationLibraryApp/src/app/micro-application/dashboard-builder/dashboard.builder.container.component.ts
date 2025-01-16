@@ -20,7 +20,7 @@ import { AddEditPanelComponent } from './add.edit.panel/add.edit.panel.component
 })
 
 export class DashboardBuilderContainerComponent implements OnInit {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     dashboardBuilderForm: FormGroup;
     dashboardBuilderViewModel: DashboardBuilderViewModel;
     newDashboardSchema: DashboardSchema;

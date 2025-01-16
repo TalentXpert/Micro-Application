@@ -17,7 +17,7 @@ import { DashboardSchema } from '../../dashboard-builder/dashboard.builder.model
   standalone: false
 })
 export class DashboardContainerComponent implements OnInit {
-  observableSubscription: Subscription;
+    observableSubscription: Subscription | null = null;;
   dashboard: DashboardSchema;
   @Input() dashboardSchema: DashboardSchema;
   @ViewChild(DashboardPanelComponent) child: DashboardPanelComponent;

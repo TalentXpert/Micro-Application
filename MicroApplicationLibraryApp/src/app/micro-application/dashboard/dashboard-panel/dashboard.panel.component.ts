@@ -15,7 +15,7 @@ import { DashboardPanel } from '../../dashboard-builder/dashboard.builder.model'
   standalone: false,
 })
 export class DashboardPanelComponent implements OnInit {
-  observableSubscription: Subscription;
+    observableSubscription: Subscription | null = null;;
   @Input() dashboardPanel: DashboardPanel;
   @Input() panelId: string;
   dashboardChartData: DashboardChart;

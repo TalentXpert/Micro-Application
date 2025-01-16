@@ -15,7 +15,7 @@ import { ValidationMessage } from '../utilities/validaton.messages';
 })
 
 export class ImportExcelComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     formId: string;
     pageTitle: string;
     importExcelFB: FormGroup;

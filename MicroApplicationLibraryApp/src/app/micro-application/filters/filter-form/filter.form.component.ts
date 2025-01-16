@@ -13,7 +13,7 @@ import { ApplicationPageService } from '../../services/application.page.service'
 })
 
 export class FilterComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     SmartGrid: SmartGrid;
     SelectedFilterId: string;
     filterForm: FormGroup;

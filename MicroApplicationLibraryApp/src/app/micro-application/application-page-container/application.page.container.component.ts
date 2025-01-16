@@ -33,21 +33,21 @@ import { SpecialFormComponent } from '../special-form/special.form.component';
 
 export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
   subscription: any = {};
-  observableSubscription: Subscription;
+  observableSubscription: Subscription | null = null;;
   applicationPageViewModel: ApplicationPageViewModel;
   PageIdentifier: string = "";
   searchText: string = '';
   smartFilters: UIControl[] = [];
   pageSizeList: number[] = [100, 200, 500, 1000];
   filters: ControlFilter[] = [];
-  globalControlFB: FormGroup;
+  globalControlFB: FormGroup = new FormGroup({});
   globalControls: UIControl[] = [];
   showFilters: boolean = false;
-  smartPage: SmartPage;
+  smartPage: SmartPage = new SmartPage();
   viewMode: string = "Grid View";
   searchDataModel: SearchDataModel;
-  pageContentView: PageContentView;
-  @Input() dashboardPageId: string;
+  pageContentView: PageContentView = new PageContentView();
+  @Input() dashboardPageId: string ="";
 
   constructor(private utilsService: UtilityService, private applicationPageService: ApplicationPageService, private applicationPageEvent: MicroApplicationEvent,
     private modalService: NgbModal, private _Activatedroute: ActivatedRoute, private router: Router, private alertModalService: AlertModalService) {

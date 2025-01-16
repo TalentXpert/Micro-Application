@@ -16,7 +16,7 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditDashboardComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     addEditDashboardBuilderForm: FormGroup;
     validationMessage: ValidationMessage;
     topMenus: MenuModel[]=[];

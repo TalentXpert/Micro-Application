@@ -18,7 +18,7 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditFormComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     addEditForm: FormGroup;
     validationMessage: ValidationMessage;
     @Input() topMenus: MenuModel[] = [];

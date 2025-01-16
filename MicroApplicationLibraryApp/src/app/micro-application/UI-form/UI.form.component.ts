@@ -14,7 +14,7 @@ import { UIFormClientVM } from './UI.form.model';
 })
 
 export class UIFormComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     smartFb: FormGroup;
     @Input() UIFormClientVM: UIFormClientVM;
     uIForm: UIForm;

@@ -14,7 +14,7 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditRowComponent implements OnInit, OnDestroy {
-    observableSubscription: Subscription;
+      observableSubscription: Subscription | null = null;;
     addEditRowForm: FormGroup;
     validationMessage: ValidationMessage;
     @Input() mode: string;
