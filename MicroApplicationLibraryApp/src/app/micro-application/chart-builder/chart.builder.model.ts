@@ -1,10 +1,10 @@
 export class DataSources {
-    public Id: string;
-    public Name: string;
+    public Id: string = "";
+    public Name: string = "";
 }
 
 export class ChartType {
-    public Name: string;
+    public Name: string = "";
 }
 
 export class ChartColumnSchema {
@@ -26,12 +26,12 @@ export class ChartColumnSchema {
 }
 
 export class ChartSchema {
-    public Id: string;
-    public Name: string;
-    public Description: string;
-    public DataSourceId: string;
-    public ChartType: string;
-    public MinWidth: number;
-    public MinHeight: number;
+    public Id: string = "";
+    public Name: string = "";
+    public Description: string = "";
+    public DataSourceId: string = "";
+    public ChartType: string = "";
+    public MinWidth: number = 0;
+    public MinHeight: number = 0;
     public Columns: ChartColumnSchema[] = [];
 }

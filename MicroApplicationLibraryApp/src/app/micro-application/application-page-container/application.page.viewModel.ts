@@ -7,12 +7,12 @@ import { MicroApplicationEvent, MicroApplicationOperation } from "../micro-appli
 export class ApplicationPageViewModel {
     subscription: any = {};
     smartPage: SmartPage;
-    smartGrid: SmartGrid;
-    gridModel: GridModel;
+    smartGrid: SmartGrid = new SmartGrid;
+    gridModel: GridModel = new GridModel;
     rows: GridCell[] = []
     filterId?: string ;
-    pageSize: number;
-    paginationStartIndex: number;
+    pageSize: number = 0;
+    paginationStartIndex: number = 0;
     paginationEndIndex: number = 0;
     disableNextBtn: boolean = false;
     disablePreviousBtn: boolean = true;
@@ -55,7 +55,7 @@ export class ApplicationPageViewModel {
         }
     }
 
-    loadSmartGrid(smartGrid) {
+    loadSmartGrid(smartGrid: SmartGrid) {
         this.smartGrid = smartGrid;
     }
 

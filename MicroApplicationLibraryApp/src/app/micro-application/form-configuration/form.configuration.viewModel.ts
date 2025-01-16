@@ -12,15 +12,15 @@ const ColumnHeader = [
 export class DragTable {
     rows: DragTableRows[] = [];
     columns = ColumnHeader;
-    constructor(children: AppFormControlListForDataTable[], cardHeight: number) {
-        this.rows.push(new DragTableRows(children, cardHeight));
-    }
+    constructor( cardHeight: number, children: AppFormControlListForDataTable[]=[]) {
+            if(children.length == 0) return;
+            this.rows.push(new DragTableRows(children, cardHeight));
+        }
 }
 
 export class DragTableCell {
     children: AppFormControlListForDataTable[] = [];
     originalChildren: AppFormControlListForDataTable[] = [];
-    columnId: string;
     cardHeight: number;
     constructor(children, cardHeight: number) {
         this.children.length = 0;
@@ -38,8 +38,8 @@ export class DragTableRows {
     columns: DragTableCell[] = [];
     children: AppFormControlListForDataTable[] = [];
     cardHeight: number;
-    rowHeight: number;
-    rowName: string;
+    rowHeight: number=0;
+    rowName: string="";
 
     constructor(children, cardHeight) {
         this.children = children;
@@ -74,7 +74,7 @@ export class FormConfiguartionViewModel {
     copyAppControlVM: AppControlVM[] = [];
     appFormControlListVM: AppFormControlListVM[] = [];
     appFormControlListForDataTable: AppFormControlListForDataTable[] = [];
-    dr: DragTable;
+    dr: DragTable= new DragTable(0);
 
     constructor(private applicationPageEvent: MicroApplicationEvent, private utilityService: UtilityService) {
         this.subscribe();
@@ -138,7 +138,7 @@ export class FormConfiguartionViewModel {
 
     createDataTable() {
         this.appFormControlListForDataTable = this.utilityService.sortDataForOptions(this.appFormControlListForDataTable, 'Position');
-        this.dr = new DragTable(this.appFormControlListForDataTable, 34);
+        this.dr = new DragTable(34, this.appFormControlListForDataTable);
     }
 
     removeItemFromList() {

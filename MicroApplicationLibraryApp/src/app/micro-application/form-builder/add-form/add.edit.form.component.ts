@@ -18,12 +18,12 @@ import { ValidationMessage } from '../../utilities/validaton.messages';
 })
 
 export class AddEditFormComponent implements OnInit, OnDestroy {
-      observableSubscription: Subscription | null = null;;
-    addEditForm: FormGroup;
+    observableSubscription: Subscription | null = null;;
+    addEditForm: FormGroup = new FormGroup({});
     validationMessage: ValidationMessage;
     @Input() topMenus: MenuModel[] = [];
-    @Input() mode: string;
-    @Input() appFormList: AppFormList;
+    @Input() mode: string="";
+    @Input() appFormList: AppFormList= new AppFormList();
     @Output() sendResponse: EventEmitter<any> = new EventEmitter();
     permissionVM: PermissionVM[]=[];
 

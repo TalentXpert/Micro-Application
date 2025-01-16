@@ -1,70 +1,70 @@
 
 export class AppFormList {
-    public Id: string;
-    public Name: string;
-    public MenuId: string;
-    public Position: number;
+    public Id: string="";
+    public Name: string="";
+    public MenuId: string="";
+    public Position: number=0;;
 }
 
 export class AppFormControlRequestVM {
-    public FormId: string;
-    public GlobalFormValue?: string;
+    public FormId: string="";
+    public GlobalFormValue?: string="";
 }
 
 export class AppControlVM {
-    public Id: string;
-    public ControlIdentifier: string;
-    public DataType: string;
-    public ControlType: string;
-    public DisplayLabel: string;
-    public IsParent: boolean;
-    public ParentControlIdentifier?: string;
-    public IsGlobalParent: boolean;
-    public Options?: string;
+    public Id: string="";
+    public ControlIdentifier: string="";
+    public DataType: string="";
+    public ControlType: string="";
+    public DisplayLabel: string="";
+    public IsParent: boolean= false;
+    public ParentControlIdentifier?: string="";
+    public IsGlobalParent: boolean= false;
+    public Options?: string="";
 }
 
 
 export class AppFormControlListVM {
-    public Id: string;
-    public AppControlId: string;
-    public ControlIdentifier: string;
-    public DisplayLabel: string;
-    public DataType: string;
-    public ControlType: string;
-    public Position: number;
-    public IsEditable: boolean;
-    public IsMandatory: boolean;
-    public IsUnique: boolean;
-    public Maximum: string;
-    public Minimum: string;
-    public OrganizationId?: string;
-    public IsFixed: boolean;
-    public IsSingleLine: boolean;
-    public IsGlobalControl?: boolean;
-    public Options?: string;
+    public Id: string="";
+    public AppControlId: string="";
+    public ControlIdentifier: string="";
+    public DisplayLabel: string="";
+    public DataType: string="";
+    public ControlType: string="";
+    public Position: number =0;
+    public IsEditable: boolean= false;
+    public IsMandatory: boolean= false;
+    public IsUnique: boolean= false;
+    public Maximum: string="";
+    public Minimum: string="";
+    public OrganizationId?: string="";
+    public IsFixed: boolean= false;
+    public IsSingleLine: boolean= false;
+    public IsGlobalControl?: boolean= false;
+    public Options?: string="";
 }
 
 export class AppFormControlListForDataTable {
-    public Id: string;
-    public ControlIdentifier: string;
-    public DataType: string;
-    public ControlType: string;
-    public DisplayLabel: string;
-    public IsParent: boolean;
-    public ParentControlIdentifier?: string;
-    public IsGlobalParent: boolean;
-    public Options?: string;
-    public AppControlId: string;
-    public Position: number;
-    public IsEditable: boolean;
-    public IsMandatory: boolean;
-    public IsUnique: boolean;
-    public Maximum: string;
-    public Minimum: string;
-    public IsFixed: boolean;
-    public ColumnId: number;
-    public IsSingleLine: boolean;
-    public IsGlobalControl?: boolean;
+    public Id: string="";
+    public ControlIdentifier: string="";
+    public DataType: string="";
+    public ControlType: string="";
+    public DisplayLabel: string="";
+    public IsParent: boolean= false;
+    public ParentControlIdentifier?: string="";
+    public IsGlobalParent: boolean= false;
+    public Options?: string="";
+    public AppControlId: string="";
+    public Position: number =0;
+    public IsEditable: boolean= false;
+    public IsMandatory: boolean= false;
+    public IsUnique: boolean= false;
+    public Maximum: string="";
+    public Minimum: string="";
+    public IsFixed: boolean= false;
+    public ColumnId: number=0;
+    public IsSingleLine: boolean= false;
+    public IsGlobalControl?: boolean= false;
 
 
     constructor(data, columnId) {
@@ -95,18 +95,18 @@ export class AppFormControlListForDataTable {
 
 
 export class AppFormControlVM {
-    public Id?: string;
-    public AppControlId: string;
+    public Id?: string="";
+    public AppControlId: string="";
     public Position: number;
-    public IsEditable: boolean;
-    public IsMandatory: boolean;
-    public IsUnique: boolean;
-    public Minimum: string;
-    public Maximum: string;
-    public IsSingleLine: boolean;
-    public DisplayLabel?: string;
-    public IsGlobalControl?: boolean;
-    public Options?: string;
+    public IsEditable: boolean= false;
+    public IsMandatory: boolean= false;
+    public IsUnique: boolean= false;
+    public Minimum: string="";
+    public Maximum: string="";
+    public IsSingleLine: boolean= false;
+    public DisplayLabel?: string="";
+    public IsGlobalControl?: boolean= false;
+    public Options?: string="";
     constructor(data) {
         this.AppControlId = data.AppControlId;
         this.Position = data.Position;
@@ -124,15 +124,15 @@ export class AppFormControlVM {
 }
 
 export class AppFormResetRequestVM {
-    public FormId: string;
-    public LayoutControlValue?: string;
+    public FormId: string="";
+    public LayoutControlValue?: string="";
 }
 
 
 
 export class AppFormControlAddUpdateVM {
-    public FormId: string;
-    public GlobalControlValue?: string;
+    public FormId: string="";
+    public GlobalControlValue?: string="";
     public AppFormControls: AppFormControlVM[] = [];
     constructor(formControlsToAdd: AppFormControlListForDataTable[]) {
         formControlsToAdd.forEach(element => {
