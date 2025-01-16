@@ -14,13 +14,13 @@ import { ApplicationPageService } from '../../services/application.page.service'
 
 export class FilterComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    SmartGrid: SmartGrid;
-    SelectedFilterId: string;
-    filterForm: FormGroup;
-    filterTitle: string;
+    SmartGrid: SmartGrid= new SmartGrid();
+    SelectedFilterId: string ="";
+    filterForm: FormGroup=new FormGroup({});;
+    filterTitle: string="";
     showValidationMsg: boolean = false;
     Filters: UIControl[] = [];
-    selectedFilter: UserGridFilter;
+    selectedFilter: UserGridFilter =new UserGridFilter("", "");
     globalControls:ControlFilter[]=[];
     stringOperators: string[] = ['=', '*', '%', '$'];
     @Output() sendResponse: EventEmitter<UserGridFilter> = new EventEmitter();
