@@ -7,7 +7,7 @@ import { AlertModalVM,  } from './alert.modal.service';
     standalone:false
 })
 export class AlertModalComponent implements OnInit, OnDestroy {
-    alertModal:AlertModalVM;
+    alertModal:AlertModalVM = new AlertModalVM();
     @Input() public alertModalVM: AlertModalVM = new AlertModalVM();
     @Output () sendResponse: EventEmitter<any> = new EventEmitter();
 

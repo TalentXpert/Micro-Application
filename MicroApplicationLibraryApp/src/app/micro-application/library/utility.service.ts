@@ -10,7 +10,7 @@ export class UtilityService {
   public setLoaderVisibilityChange = new BehaviorSubject<any>({});
   getLoaderVisibilityChange = this.setLoaderVisibilityChange.asObservable();
   datePlaceholder: string = 'Select Date';
-  calenderCultureFormat: string;
+  calenderCultureFormat: string = "";
   
   // datePickerConfig: IMyDpOptions = {
   //   disableUntil: { year: 0, month: 0, day: 0 },

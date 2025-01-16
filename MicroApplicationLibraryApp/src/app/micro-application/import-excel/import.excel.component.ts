@@ -16,9 +16,9 @@ import { ValidationMessage } from '../utilities/validaton.messages';
 
 export class ImportExcelComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    formId: string;
-    pageTitle: string;
-    importExcelFB: FormGroup;
+    formId: string="";
+    pageTitle: string="";
+    importExcelFB: FormGroup = new FormGroup({});
     globalControls: UIControl[] = [];
     formData: FormData;
     uplaodedFile: any;

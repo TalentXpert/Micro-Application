@@ -2,17 +2,17 @@ import { Subscription } from 'rxjs';
 import { MicroApplicationEvent, MicroApplicationOperation } from '../micro-application.event';
 
 export class MenuModel {
-  public Id: string;
-  public Name: string;
-  public Link: string;
-  public IsFixed: boolean;
-  public IsLanding: boolean;
+  public Id: string="";
+  public Name: string="";
+  public Link: string="";
+  public IsFixed: boolean=false;
+  public IsLanding: boolean=false;
   public Children: MenuModel[] = [];
 
 }
 
 export class MenuViewModel {
-  subscription: Subscription;
+  subscription: Subscription = new Subscription();
   PermissionList: string[] = [];
   IsUserLoggedIn: boolean = false;
   menuList: MenuModel[] = [];

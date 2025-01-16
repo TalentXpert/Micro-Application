@@ -3,10 +3,10 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AlertModalComponent } from './alert.modal.component';
 
 export class AlertModalVM {
-    public Type: string
-    public ModalTitle: string;
-    public ModalBody: string;
-    public Note:string;
+    public Type: string="";
+    public ModalTitle: string="";
+    public ModalBody: string="";
+    public Note:string="";
     public UnorderedList:string[]=[];
 }
 
