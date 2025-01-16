@@ -15,11 +15,11 @@ import { UIFormClientVM } from './UI.form.model';
 
 export class UIFormComponent implements OnInit, OnDestroy {
       observableSubscription: Subscription | null = null;;
-    smartFb: FormGroup;
-    @Input() UIFormClientVM: UIFormClientVM;
-    uIForm: UIForm;
+    smartFb: FormGroup = new FormGroup({});
+    @Input() UIFormClientVM: UIFormClientVM = new UIFormClientVM();
+    uIForm: UIForm= new UIForm();
     @Output() IsFormResponseSaved: EventEmitter<boolean> = new EventEmitter();
-    selectedDate: string;
+    selectedDate: string = "";
     date = new Date();
     uIControl: UIControl[] = [];
 
