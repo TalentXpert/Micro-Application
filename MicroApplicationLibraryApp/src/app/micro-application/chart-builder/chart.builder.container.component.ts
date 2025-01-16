@@ -20,11 +20,11 @@ import { ValidationMessage } from '../utilities/validaton.messages';
 
 export class ChartBuilderContainerComponent implements OnInit {
       observableSubscription: Subscription | null = null;;
-    chartBuilderForm: FormGroup;
+    chartBuilderForm!: FormGroup;
     validationMessage: ValidationMessage;
     chartBuilderViewModel: ChartBuilderViewModel;
     chartTypes: ChartType[] = [];
-    selectedChartColumn: ChartColumnSchema;
+    selectedChartColumn!: ChartColumnSchema;
     IsClickedOnCard: boolean = false;
     dataSourceId: string = "";
     selectedChartId: string = "";

@@ -18,7 +18,7 @@ export class DragTable {
 export class DragTableCell {
     children: ChartColumnSchema[] = [];
     originalChildren: ChartColumnSchema[] = [];
-    columnId: string;
+    columnId: string = "";
     cardHeight: number;
     constructor(children, cardHeight: number) {
         this.children.length = 0;
@@ -36,8 +36,8 @@ export class DragTableRows {
     columns: DragTableCell[] = [];
     children: ChartColumnSchema[] = [];
     cardHeight: number;
-    rowHeight: number;
-    rowName: string;
+    rowHeight: number = 0;
+    rowName: string = "";
 
     constructor(children, cardHeight) {
         this.children = children;
@@ -71,7 +71,7 @@ export class ChartBuilderViewModel {
     dataSource: DataSources[] = [];
     selectDashboardSchema: string = "";
     chartColumnSchema: ChartColumnSchema[] = [];
-    dr: DragTable;
+    dr!: DragTable;
     chartSchema: ChartSchema[] = [];
     selectedDataSourceColumns :ChartColumnSchema[] = [];
 

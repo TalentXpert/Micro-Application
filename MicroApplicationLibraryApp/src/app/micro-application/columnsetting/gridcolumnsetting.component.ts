@@ -15,8 +15,8 @@ import { ApplicationPageService } from '../services/application.page.service';
 })
 export class GridColumnSettingComponent implements OnInit {
     observableSubscription: Subscription | null = null;;
-  userGridHeadersVM: UserGridHeadersVM;
-  smartPage: SmartPage;
+  userGridHeadersVM!: UserGridHeadersVM;
+  smartPage!: SmartPage;
   @Output() sendResponse: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private ngbmodal: NgbActiveModal, private alertModalService: AlertModalService, private modalService: NgbModal,

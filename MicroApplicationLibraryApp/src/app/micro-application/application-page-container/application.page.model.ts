@@ -1,49 +1,49 @@
 
 
 export class DateVM {
-    Year: number;
-    Month: number;
-    Day: number;
+    Year: number = 0;
+    Month: number = 0;
+    Day: number = 0;
 }
 
 export class SmartPage {
-    public PageId: string;
-    public PageTitle: string;
+    public PageId: string = "";
+    public PageTitle: string = "";
     public CurrentGridFilterId?: string;
-    public PageSize: number;
+    public PageSize: number = 0;
     public PageActions: SmartAction[] = [];
     public GlobalControls: UIControl[] = [];
 }
 
 
 export class SmartAction {
-    public FormId: string;
-    public FormType: string;
-    public Text: string;
-    public Param: string;
-    public ActionIdentifier: string;
-    public FormMode: string;
+    public FormId: string = "";
+    public FormType: string = "";
+    public Text: string = "";
+    public Param: string = "";
+    public ActionIdentifier: string = "";
+    public FormMode: string = "";
 }
 
 export class UIControl {
-    public ControlId: string;
-    public Position: number;
-    public ControlIdentifier: string;
-    public DataType: string;
-    public ControlType: string;
-    public DisplayLabel: string;
+    public ControlId: string = "";
+    public Position: number = 0;
+    public ControlIdentifier: string = "";
+    public DataType: string = "";
+    public ControlType: string = "";
+    public DisplayLabel: string = "";
     public Value?: string;
-    public IsEditable: boolean;
-    public IsMandatory: boolean;
-    public IsUnique: boolean;
+    public IsEditable: boolean = false;
+    public IsMandatory: boolean = false;
+    public IsUnique: boolean = false;
     public Minimum?: number;
-    public Maximum: number;
-    public IsParent: boolean;
-    public ParentControlIdentifier: string;
-    public IsGlobalControl: boolean;
+    public Maximum: number = 0;
+    public IsParent: boolean = false;
+    public ParentControlIdentifier: string = "";
+    public IsGlobalControl: boolean = false;
     public Options: SmartControlOption[] = [];
-    public IsFormLayoutOwner: boolean; //this enable this control to change form layout
-    public IsPageRefreshNeeded: boolean;
+    public IsFormLayoutOwner: boolean = false; //this enable this control to change form layout
+    public IsPageRefreshNeeded: boolean = false;
     public Validators: any[] = []; // Added for client side use
     public ListOfSelectedValue: string[]; // Added for client side use
     constructor(data){
@@ -55,8 +55,8 @@ export class UIControl {
 }
 
 export class SmartControlOption {
-    public Value: string;
-    public Label: string;
+    public Value: string = "";
+    public Label: string = "";
 }
 
 
@@ -82,17 +82,17 @@ export class ControlValue {
 }
 
 export class SmartGrid {
-    public PageId: string;
+    public PageId: string = "";
     public UserGridFilters: UserGridFilter[] = [];
     public Filters: UIControl[] = [];
 }
 
 export class UserGridFilter {
-    public Id: string;
+    public Id: string = "";
     public PageId: string;
     public FilterName: string;
     public Filters: ControlFilter[] = [];
-    constructor(pageId, filterName, formValues) {
+    constructor(pageId: string, filterName: string, formValues: any[]=[]) {
         this.PageId = pageId;
         this.FilterName = filterName;
         formValues.forEach(f => {
@@ -117,11 +117,11 @@ export class ControlFilter {
 
 export class GridRequestVM {
 
-    public PageId: string;
-    public SortDirection: string;
-    public PageNumber: number;
-    public PageSize: number;
-    public SortHeaderText: string;
+    public PageId: string = "";
+    public SortDirection: string = "";
+    public PageNumber: number = 0;
+    public PageSize: number = 0;
+    public SortHeaderText: string = "";
     public Filters: ControlFilter[] = [];
     public GlobalFilters: ControlFilter[] = [];
     public FilterId?: string;
@@ -130,18 +130,18 @@ export class GridRequestVM {
 export class GridModel {
     public Headers: GridHeader[] = [];
     public Rows: GridCell[] = []
-    public PagingInfo: GridPagingInfo;
+    public PagingInfo: GridPagingInfo[] = [];
 }
 
 export class GridCell {
     /// <summary>
     /// Text value visible to user
     /// </summary>
-    public T: string;
+    public T: string = "";
     /// <summary>
     /// Style to be applied to grid cell
     /// </summary>
-    public S: string;
+    public S: string = "";
     /// <summary>
     /// Value to be used for sorting for non string columns
     /// </summary>
@@ -284,9 +284,9 @@ export class GridHeader {
 
 
 export class GridPagingInfo {
-    public PageNumber: number;
-    public TotalPages: number;
-    public PageSize: number;
+    public PageNumber: number = 0;
+    public TotalPages: number = 0;
+    public PageSize: number = 0;
 }
 
 export class SmartFormGenerateRequest {
@@ -315,8 +315,8 @@ export class SmartFormGenerateRequestInput {
 }
 
 export class UIForm {
-    public Id: string;
-    public Title: string;
+    public Id: string = "";
+    public Title: string = "";
     public UIControls: UIControl[] = [];
     public DataKey?: string;
 }
@@ -388,15 +388,15 @@ export class UserGridHeaderVM {
 
 export class ExcelImportTmplateRequest
 {
-    public FormId : string;
+    public FormId : string = "";
     public GlobalControls : ControlValue[]=[];
-    public Rows : number;
+    public Rows : number = 0;
 }
 
 export class ExcelImportRequest
 {
-    public FormId : string;
-    public File: File;
+    public FormId : string = "";
+    public File: File | null = null;
 }
 
 export class HeaderValue {
