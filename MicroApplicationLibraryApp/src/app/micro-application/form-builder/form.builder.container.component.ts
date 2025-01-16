@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 import { FormBuilderViewModel } from './form.builder.viewModel';
@@ -309,23 +309,30 @@ export class FormBuilderContainerComponent implements OnInit {
         let options = optionList.split(',');
         let listOfOption:string[]=[];
         for (var i = 0; i < options.length; i++) {
-          this.addOption();
+          //this.addOption();
           listOfOption.push(options[i]);
         }
-        let OptionsFormArray = this.setOptions(listOfOption)
-        this.applicationFormBuilderForm.setControl('Options', OptionsFormArray);
+
+        this.OptionsFormArray.clear();
+        for (var i = 0; i < listOfOption.length; i++) {
+            this.OptionsFormArray.push(this.formBuilder.group({
+                Option: [listOfOption[i], Validators.required],
+            }))
+        }
+        // let OptionsFormArray = this.setOptions(listOfOption)
+        // this.applicationFormBuilderForm.setControl('Options', OptionsFormArray);
 
     }
 
-    setOptions(data: any[]): FormArray {
-        let fa ;
-        data.forEach(d => {
-            fa.push(this.formBuilder.group({
-                Option: [d],
-            }));
-        });
-        return fa;
-    }
+    // setOptions(data: any[]): any {
+    //     let fa = new FormArray([]);
+    //     data.forEach(d => {
+    //         fa.push(this.formBuilder.group({
+    //             Option: new FormControl(d)
+    //         }));
+    //     });
+    //     return fa;
+    // }
 
 
     addOptions() {

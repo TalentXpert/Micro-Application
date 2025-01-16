@@ -288,22 +288,29 @@ export class FormConfigurationContainerComponent implements OnInit {
         let options = optionList.split(',');
         let listOfOption : string[]=[];
         for (var i = 0; i < options.length; i++) {
-            this.addOption();
+            //this.addOption();
             listOfOption.push(options[i]);
         }
-        let OptionsFormArray = this.setOptions(listOfOption)
-        this.appFormConfigForm.setControl('Options', OptionsFormArray);
+        this.OptionsFormArray.clear();
+        for (var i = 0; i < listOfOption.length; i++) {
+            this.OptionsFormArray.push(this.formBuilder.group({
+                Option: [listOfOption[i], Validators.required],
+            }))
+        }
+        // let OptionsFormArray = this.setOptions(listOfOption)
+        // this.appFormConfigForm.setControl('Options', OptionsFormArray);
+       
     }
 
-    setOptions(data: any[]): FormArray {
-        let fa;
-        data.forEach(d => {
-            fa.push(this.formBuilder.group({
-                Option: [d],
-            }));
-        });
-        return fa;
-    }
+    // setOptions(data: any[]): FormArray {
+    //     let fa;
+    //     data.forEach(d => {
+    //         fa.push(this.formBuilder.group({
+    //             Option: [d],
+    //         }));
+    //     });
+    //     return fa;
+    // }
 
 
     addOptions() {
