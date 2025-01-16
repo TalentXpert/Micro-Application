@@ -7,8 +7,8 @@ import { ChartType } from 'angular-google-charts';
 
 
 @Component({
-  selector: 'draw-chart',
-  templateUrl: './draw.chart.component.html',
+  selector: 'draw-chart', 
+  templateUrl: './draw.chart.component.html',   
   styles: [],
   standalone:false
 })
@@ -21,7 +21,7 @@ export class DrawChartComponent {
   options: any;
   columnsNames: any;
   data: any[] = [];
-  type: ChartType;
+  type: ChartType = ChartType[this.dashboardChart.ChartType];
 
   constructor() {
     /** line charts*/

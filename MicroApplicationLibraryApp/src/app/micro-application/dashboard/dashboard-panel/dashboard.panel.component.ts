@@ -16,13 +16,13 @@ import { DashboardPanel } from '../../dashboard-builder/dashboard.builder.model'
 })
 export class DashboardPanelComponent implements OnInit {
     observableSubscription: Subscription | null = null;;
-  @Input() dashboardPanel: DashboardPanel;
-  @Input() panelId: string;
+  @Input() dashboardPanel: DashboardPanel = new DashboardPanel({}) ;
+  @Input() panelId: string="";
   dashboardChartData: DashboardChart;
 
   pageId="41C55263-D9E0-CD72-96AC-08D90656C39A";
    
-  @ViewChildren('cmp') components:QueryList<GoogleChartComponent>;
+  @ViewChildren('cmp') components:QueryList<GoogleChartComponent> | undefined;
   dashboardViewModel:DashboardViewModel;
 
   

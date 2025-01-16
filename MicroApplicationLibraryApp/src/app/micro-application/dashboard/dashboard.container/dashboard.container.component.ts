@@ -19,11 +19,11 @@ import { DashboardSchema } from '../../dashboard-builder/dashboard.builder.model
 export class DashboardContainerComponent implements OnInit {
     observableSubscription: Subscription | null = null;;
   dashboard: DashboardSchema;
-  @Input() dashboardSchema: DashboardSchema;
-  @ViewChild(DashboardPanelComponent) child: DashboardPanelComponent;
-  @ViewChild('SummaryData') templateRef: TemplateRef<any>;
+  @Input() dashboardSchema: DashboardSchema = new DashboardSchema();
+  @ViewChild(DashboardPanelComponent) child: DashboardPanelComponent | undefined;
+  @ViewChild('SummaryData') templateRef: TemplateRef<any> | undefined;
   dashboardViewModel: DashboardViewModel;
-  summaryData: DashboardChart;
+  summaryData: DashboardChart = new DashboardChart();
 
 
   constructor(private utilsService: UtilityService, private dashboardService: DashboardService,
