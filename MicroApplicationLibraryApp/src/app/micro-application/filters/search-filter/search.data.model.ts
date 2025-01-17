@@ -1,7 +1,7 @@
 
 export class SearchDataModel {
   
-  fliterData(json: any[], args, property) {
+  fliterData(json: any[], args: string, property: string) {
     if (!json || !args) return json;
     let result: any[] = [];
     for (var i in json) {

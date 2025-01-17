@@ -12,19 +12,19 @@ const ColumnHeader = [
 export class DragTable {
     rows: DragTableRows[] = [];
     columns = ColumnHeader;
-    constructor( cardHeight: number, children: AppFormControlListForDataTable[]=[]) {
-            if(children.length == 0) return;
-            this.rows.push(new DragTableRows(children, cardHeight));
-        }
+    constructor(cardHeight: number, children: AppFormControlListForDataTable[] = []) {
+        if (children.length == 0) return;
+        this.rows.push(new DragTableRows(children, cardHeight));
+    }
 }
 
 export class DragTableCell {
     children: AppFormControlListForDataTable[] = [];
     originalChildren: AppFormControlListForDataTable[] = [];
     cardHeight: number;
-    constructor(children, cardHeight: number) {
+    constructor(children: AppFormControlListForDataTable[], cardHeight: number) {
         this.children.length = 0;
-        if (children !== undefined || children.length > 0)
+        if (children !== undefined || children != null)
             this.children = children;
         this.originalChildren = children;
         this.cardHeight = cardHeight;
@@ -38,10 +38,10 @@ export class DragTableRows {
     columns: DragTableCell[] = [];
     children: AppFormControlListForDataTable[] = [];
     cardHeight: number;
-    rowHeight: number=0;
-    rowName: string="";
+    rowHeight: number = 0;
+    rowName: string = "";
 
-    constructor(children, cardHeight) {
+    constructor(children: AppFormControlListForDataTable[], cardHeight: number) {
         this.children = children;
         this.cardHeight = cardHeight;
 
@@ -61,7 +61,7 @@ export class DragTableRows {
         });
         this.rowHeight = height + this.cardHeight;
     }
-    addCell(column, cardHeight: number) {
+    addCell(column: any, cardHeight: number) {
         let children = this.children.filter(c => c.ColumnId === column.ColumnId);
         this.columns.push(new DragTableCell(children, cardHeight));
     }
@@ -74,7 +74,7 @@ export class FormConfiguartionViewModel {
     copyAppControlVM: AppControlVM[] = [];
     appFormControlListVM: AppFormControlListVM[] = [];
     appFormControlListForDataTable: AppFormControlListForDataTable[] = [];
-    dr: DragTable= new DragTable(0);
+    dr: DragTable = new DragTable(0);
 
     constructor(private applicationPageEvent: MicroApplicationEvent, private utilityService: UtilityService) {
         this.subscribe();
@@ -100,16 +100,16 @@ export class FormConfiguartionViewModel {
 
     }
 
-    loadAppFormControlListVM(data) {
+    loadAppFormControlListVM(data: AppFormControlListVM[]) {
         if (this.appControlVM.length > 0) {
-        this.appFormControlListVM.length = 0;
-        this.appFormControlListVM = data;
-        this.removeAppControls();
-        this.appFormControlListVM.forEach(element => {
-            this.appFormControlListForDataTable.push(new AppFormControlListForDataTable(element, 2));
-        });
-        this.createDataTable();
-    }
+            this.appFormControlListVM.length = 0;
+            this.appFormControlListVM = data;
+            this.removeAppControls();
+            this.appFormControlListVM.forEach(element => {
+                this.appFormControlListForDataTable.push(new AppFormControlListForDataTable(element, 2));
+            });
+            this.createDataTable();
+        }
     }
 
 

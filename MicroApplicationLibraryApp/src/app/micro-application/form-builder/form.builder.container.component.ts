@@ -208,7 +208,7 @@ export class FormBuilderContainerComponent implements OnInit {
     //     return false;
     // }
 
-    dropCard(previousIndexData, currentIndexData, previousIndex, currentIndex) {
+    dropCard(previousIndexData:any[], currentIndexData:any[], previousIndex: number, currentIndex: number) {
         transferArrayItem(previousIndexData, currentIndexData, previousIndex, currentIndex);
     }
 
@@ -248,7 +248,7 @@ export class FormBuilderContainerComponent implements OnInit {
                     this.formBuilderViewModel.appFormControlListForDataTable[index].IsSingleLine = this.selectedFormControl.IsSingleLine;
                     let formValues = this.applicationFormBuilderForm.value;
                     if (formValues.Options.length > 0) {
-                         let options = formValues.Options.map(x => x.Option).join(", ");
+                         let options = formValues.Options.map((x:any) => x.Option).join(", ");
                          this.formBuilderViewModel.appFormControlListForDataTable[index].Options = options;
                     }
                     this.formBuilderViewModel.appFormControlListForDataTable[index].IsGlobalControl = this.selectedFormControl.IsGlobalControl == true ? true : false;
@@ -292,7 +292,7 @@ export class FormBuilderContainerComponent implements OnInit {
     }
 
 
-    addEditForm(mode) {
+    addEditForm(mode: string) {
         const dialogRef = this.modalService.open(AddEditFormComponent, { backdrop: 'static' });
         dialogRef.componentInstance.topMenus = this.formBuilderViewModel.pageBuilderInfoVM.TopMenus;
         dialogRef.componentInstance.mode = mode;
@@ -300,12 +300,12 @@ export class FormBuilderContainerComponent implements OnInit {
             let index = this.formBuilderViewModel.appFormList.findIndex(form => form.Id == this.selectedFormId);
             if (index > -1) dialogRef.componentInstance.appFormList = this.formBuilderViewModel.appFormList[index];
         }
-        dialogRef.componentInstance.sendResponse.subscribe((appFormList) => {
+        dialogRef.componentInstance.sendResponse.subscribe((appFormList: AppFormList) => {
             if (appFormList) this.formBuilderViewModel.appFormList.push(appFormList);
         });
     }
 
-    getDropdownList(optionList){
+    getDropdownList(optionList: string){
         let options = optionList.split(',');
         let listOfOption:string[]=[];
         for (var i = 0; i < options.length; i++) {
@@ -348,7 +348,7 @@ export class FormBuilderContainerComponent implements OnInit {
         }))
     }
 
-    deleteOptions(index) {
+    deleteOptions(index:number) {
         if (this.OptionsFormArray.length == 1) {
             this.alertModalService.setErrorAlertModalTemplate("Minimum 1 option required.");
             return;
@@ -362,7 +362,7 @@ export class FormBuilderContainerComponent implements OnInit {
 
     }
 
-    getClassForInterviewCard(field) {
+    getClassForInterviewCard(field:AppFormControlListForDataTable) {
         if (this.selectedFormControl && this.selectedFormControl.Id == field.Id) return 'tasktype tasktype-mb-2 scheduleinterviewyellow';
         return 'tasktype tasktype-mb-2';
     }

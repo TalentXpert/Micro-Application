@@ -11,7 +11,7 @@ import { UtilityService } from '../library/utility.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppFormControlAddUpdateVM, AppFormControlListForDataTable, AppFormControlRequestVM, AppFormResetRequestVM } from './form.configuration.model';
 import { AppFormList } from '../form-builder/form.builder.model';
-import { UIControl } from '../application-page-container/application.page.model';
+import { SmartControlOption, UIControl } from '../application-page-container/application.page.model';
 
 
 
@@ -151,7 +151,7 @@ export class FormConfigurationContainerComponent implements OnInit {
         }
     }
 
-    addSmartSelectionOption(Options, childControl) {
+    addSmartSelectionOption(Options:SmartControlOption[], childControl:UIControl) {
         let index = this.smartControls.findIndex(control => control.ControlId == childControl.ControlId);
         this.smartControls[index].Value = "";
         if (index > -1) {
@@ -178,7 +178,7 @@ export class FormConfigurationContainerComponent implements OnInit {
         }
     }
 
-    checkCardPosition(field, currentIndex): boolean {
+    checkCardPosition(field:any, currentIndex:number): boolean {
         var fixedFormControl = this.fCViewModel.appFormControlListForDataTable.filter(c => c.ColumnId == 2 && c.IsFixed == true);
         if (currentIndex > fixedFormControl.length - 1) {
             var index = this.fCViewModel.appFormControlListForDataTable.findIndex(c => c.Id == field.Id)
@@ -188,7 +188,7 @@ export class FormConfigurationContainerComponent implements OnInit {
         return false;
     }
 
-    dropCard(previousIndexData, currentIndexData, previousIndex, currentIndex) {
+    dropCard(previousIndexData:any[], currentIndexData:any[], previousIndex:number, currentIndex:number) {
         transferArrayItem(previousIndexData, currentIndexData, previousIndex, currentIndex);
     }
 
@@ -223,7 +223,7 @@ export class FormConfigurationContainerComponent implements OnInit {
                     this.fCViewModel.appFormControlListForDataTable[index].IsSingleLine = this.selectedFormControl.IsSingleLine;
                     let formValues = this.appFormConfigForm.value;
                     if (formValues.Options.length > 0) {
-                        let options = formValues.Options.map(x => x.Option).join(", ");
+                        let options = formValues.Options.map((x:any) => x.Option).join(", ");
                         this.fCViewModel.appFormControlListForDataTable[index].Options = options;
                     }
                     this.fCViewModel.appFormControlListForDataTable[index].IsGlobalControl = this.selectedFormControl.IsGlobalControl;
@@ -284,11 +284,10 @@ export class FormConfigurationContainerComponent implements OnInit {
         this.IsClickedOnCard = false;
     }
 
-    getDropdownList(optionList) {
+    getDropdownList(optionList: string) {
         let options = optionList.split(',');
         let listOfOption : string[]=[];
         for (var i = 0; i < options.length; i++) {
-            //this.addOption();
             listOfOption.push(options[i]);
         }
         this.OptionsFormArray.clear();
@@ -297,8 +296,6 @@ export class FormConfigurationContainerComponent implements OnInit {
                 Option: [listOfOption[i], Validators.required],
             }))
         }
-        // let OptionsFormArray = this.setOptions(listOfOption)
-        // this.appFormConfigForm.setControl('Options', OptionsFormArray);
        
     }
 
@@ -326,7 +323,7 @@ export class FormConfigurationContainerComponent implements OnInit {
         }))
     }
 
-    deleteOptions(index) {
+    deleteOptions(index:number) {
         if (this.OptionsFormArray.length == 1) {
             this.alertModalService.setErrorAlertModalTemplate("Minimum 1 option required.");
             return;
@@ -334,7 +331,7 @@ export class FormConfigurationContainerComponent implements OnInit {
         else this.OptionsFormArray.removeAt(index);
     }
 
-    getClassForInterviewCard(field) {
+    getClassForInterviewCard(field:AppFormControlListForDataTable) {
         if (this.selectedFormControl && this.selectedFormControl.Id == field.Id) return 'tasktype tasktype-mb-2 scheduleinterviewyellow';
         return 'tasktype tasktype-mb-2';
     }
