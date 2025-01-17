@@ -86,7 +86,7 @@ export class AddEditPanelComponent implements OnInit, OnDestroy {
 
     }
 
-    onSelectRow(rowId:any) {
+    onSelectRow(rowId:number) {
         this.panelList.length = 0;
         this.rowIndex = this.selectDashboardSchema.Rows.findIndex(row => row.Position == rowId);
         if (this.rowIndex > -1) {

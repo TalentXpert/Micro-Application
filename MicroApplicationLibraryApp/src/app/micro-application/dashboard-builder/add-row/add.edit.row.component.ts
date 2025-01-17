@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertModalService } from '../../alert/alert.modal.service';
 import { DashboardRow, DashboardSchema } from '../dashboard.builder.model';
 import { ValidationMessage } from '../../utilities/validaton.messages';
+import { Row } from 'angular-google-charts';
 
 
 @Component({
