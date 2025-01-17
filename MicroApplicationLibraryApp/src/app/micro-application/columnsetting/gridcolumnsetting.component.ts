@@ -60,12 +60,12 @@ export class GridColumnSettingComponent implements OnInit {
     else this.alertModalService.setInformaitonModalTemplate("Please select atleast 2 columns.")
   }
 
-  checkMinimunColumnSelcted(setting) {
+  checkMinimunColumnSelcted(setting: any[]) {
     let selectedColumn = setting.filter(cl => cl.IsVisible == true);
     return selectedColumn.length >= 2;
   }
 
-  saveColumnSetting(userGridHeadersVM) {
+  saveColumnSetting(userGridHeadersVM: UserGridHeadersVM) {
     this.observableSubscription = this.applicationPageService.saveUserHeaders(userGridHeadersVM)
       .subscribe((columSettingSaved) => {
         if (columSettingSaved) {
