@@ -22,7 +22,7 @@ export class AlertModalComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
 
-    onClickOk(response) {
+    onClickOk(response:string) {
         if(response==="You haven't logged into system yet."){
             var data={flag:true}
         }else{
@@ -31,7 +31,7 @@ export class AlertModalComponent implements OnInit, OnDestroy {
         }       
     }
 
-    hasData(array) {
+    hasData(array:any[]):boolean {
         if (!array) return false;
         if (array.length > 0) return true;
         return false;

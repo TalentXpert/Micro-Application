@@ -26,7 +26,7 @@ export class AlertModalService {
     constructor(private modalService: NgbModal) { }
 
     //alert model
-    setAlertModalTemplate(alertMessage) {
+    setAlertModalTemplate(alertMessage:string) {
         this.alertModalVM.Type = 'alert';
         this.alertModalVM.ModalBody = alertMessage;
         this.alertModalVM.Note = '';
@@ -35,7 +35,7 @@ export class AlertModalService {
     }
 
     //error model
-    setErrorAlertModalTemplate(errorMessage) {
+    setErrorAlertModalTemplate(errorMessage:string) {
         this.alertModalVM.Type = 'error';
         this.alertModalVM.ModalBody = errorMessage;
         this.alertModalVM.Note = '';
@@ -44,7 +44,7 @@ export class AlertModalService {
             const alertModalRef = this.modalService.open(AlertModalComponent, this.ngbModalOptions);
             alertModalRef.componentInstance.alertModalVM = this.alertModalVM;
             alertModalRef.componentInstance.sendResponse.subscribe(
-                (modalResponse) => {
+                (modalResponse:boolean) => {
                     if (modalResponse) {
                         alertModalRef.close();
                         this.modalShow = false;
@@ -55,7 +55,7 @@ export class AlertModalService {
     }
 
     //success model
-    setSuccessAlertModalTemplate(successMessage) {
+    setSuccessAlertModalTemplate(successMessage:string) {
         this.alertModalVM.Type = 'success';
         this.alertModalVM.ModalBody = successMessage;
         this.alertModalVM.Note = '';
@@ -64,7 +64,7 @@ export class AlertModalService {
     }
 
     //warning model
-    setWarningModalTemplate(successMessage) {
+    setWarningModalTemplate(successMessage:string) {
         this.alertModalVM.Type = 'warning';
         this.alertModalVM.ModalBody = successMessage;
         this.alertModalVM.Note = '';
@@ -73,7 +73,7 @@ export class AlertModalService {
     }
 
     //information model
-    setInformaitonModalTemplate(successMessage) {
+    setInformaitonModalTemplate(successMessage:string) {
         this.alertModalVM.Type = 'information';
         this.alertModalVM.ModalBody = successMessage;
         this.alertModalVM.Note = '';
@@ -82,7 +82,7 @@ export class AlertModalService {
     }
 
     //success alert model with note
-    setSuccessAlertModalTemplateWithNote(successMessage, note) {
+    setSuccessAlertModalTemplateWithNote(successMessage:string, note:any) {
         this.alertModalVM.Type = 'success';
         this.alertModalVM.ModalBody = successMessage;
         this.alertModalVM.Note=note;
@@ -90,7 +90,7 @@ export class AlertModalService {
         alertModalRef.componentInstance.alertModalVM = this.alertModalVM;
     }
     //success alert model 
-    setFormErrorListTemplate(formDataMessage,modalTitle) {
+    setFormErrorListTemplate(formDataMessage:string[],modalTitle:string) {
         this.alertModalVM.Type = 'alert';
         this.alertModalVM.ModalTitle = modalTitle;
         this.alertModalVM.UnorderedList = [...formDataMessage];
