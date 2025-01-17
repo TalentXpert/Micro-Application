@@ -67,7 +67,7 @@ export class AppFormControlListForDataTable {
     public IsGlobalControl?: boolean= false;
 
 
-    constructor(data, columnId) {
+    constructor(data:any, columnId:number) {
         if(data ==null ) return ;
         this.Id = data.Id;
         this.AppControlId = data.AppControlId ? data.AppControlId : data.Id;
@@ -107,7 +107,7 @@ export class AppFormControlVM {
     public DisplayLabel?: string="";
     public IsGlobalControl?: boolean= false;
     public Options?: string="";
-    constructor(data) {
+    constructor(data:AppFormControlVM) {
         this.AppControlId = data.AppControlId;
         this.Position = data.Position;
         this.IsEditable = data.IsEditable;
@@ -117,7 +117,7 @@ export class AppFormControlVM {
         this.Maximum = data.Maximum;
         this.IsSingleLine = data.IsSingleLine;
         this.DisplayLabel = data.DisplayLabel;
-        this.IsGlobalControl = data.IsGlobalControl? data.IsGlobalControl: null;
+        this.IsGlobalControl = data.IsGlobalControl? data.IsGlobalControl: undefined;
         this.Options = data.Options;
     }
 
