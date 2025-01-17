@@ -35,7 +35,7 @@ export class DashboardBuilderService {
     getContents(contentType: string): Observable<Content[]> {
         let contents = this.content.get(contentType);
         if ( contents && contents.length > 0) {
-            var observable = Observable.create(function subscribe(observer) {
+            var observable = Observable.create((observer: any)=>{
                 observer.next(contents);
                 observer.complete();
             });

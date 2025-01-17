@@ -35,7 +35,7 @@ export class SelectFromListFormInputItemVM {
     public Title: string;
     public DetailLines: string[] = [];
     public IsSelected: boolean = false;
-    constructor(itemId, title, detailLines, isSelected) {
+    constructor(itemId:string, title:string, detailLines:string[], isSelected:boolean) {
         this.ItemId = itemId;
         this.Title = title;
         this.DetailLines = detailLines;

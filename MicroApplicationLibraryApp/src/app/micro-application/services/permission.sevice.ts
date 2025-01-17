@@ -9,7 +9,7 @@ export class PermissionVM {
     public Id: string="";
     public Name: string;
     public Code: string;
-    constructor(formValues) {
+    constructor(formValues:any) {
         this.Code = formValues.Code;
         this.Name = formValues.Name;
     }

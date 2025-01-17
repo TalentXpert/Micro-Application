@@ -29,13 +29,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  hasPermission(permission){
-    var index = this.menuViewModel.PermissionList.findIndex(p=> p ==permission);
-    if(index > -1) return true;
-    return false;
-  }
 
-  getChildren(index){
+  getChildren(index:number){
     let childList:MenuModel[]=[];
       this.menuViewModel.menuList[index].Children.forEach(child=>{
         childList.push(child); 
@@ -43,7 +38,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     return childList;
   }
  
-  handleEvent(menu){
+  handleEvent(menu:MenuModel){
     this.router.navigate([menu.Link],{ queryParams: { pageId: menu.Id }, queryParamsHandling: 'merge' });
   }
 

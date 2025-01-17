@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApplicationPageService } from '../services/application.page.service';
-import { DateVM, UIControl, UIForm, SmartFormGenerateRequest, SmartFormTemplateRequest } from '../application-page-container/application.page.model';
+import { DateVM, UIControl, UIForm, SmartFormGenerateRequest, SmartFormTemplateRequest, SmartControlOption } from '../application-page-container/application.page.model';
 import { UtilityService } from '../library/utility.service';
 import { UIFormClientVM } from './UI.form.model';
 
@@ -125,7 +125,7 @@ export class UIFormComponent implements OnInit, OnDestroy {
     }
 
 
-    getSearchItems(event, control: UIControl) {
+    getSearchItems(event:any , control: UIControl) {
         if (control && event.term) {
             let parentControl = this.uIControl.find(c => c.ControlIdentifier == control.ParentControlIdentifier);
             let parentControlId=  parentControl ? parentControl.ControlId: "";
@@ -140,9 +140,9 @@ export class UIFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    loadChildOptions(options) {
-        let value = this.smartFb.controls[options.DisplayLabel].value;
-        if (value) this.loadChildrenValue(options);
+    loadChildOptions(control:UIControl) {
+        let value = this.smartFb.controls[control.DisplayLabel].value;
+        if (value) this.loadChildrenValue(control);
 
     }
 
@@ -168,7 +168,7 @@ export class UIFormComponent implements OnInit, OnDestroy {
     //     event ? this.selectedDate = this.utilsService.convertDateToReadableFormat(event.date) : this.selectedDate = "";
     // }
 
-    addSmartSelectionOption(Options, childControl) {
+    addSmartSelectionOption(Options:SmartControlOption[], childControl:UIControl) {
         let index = this.uIControl.findIndex(control => control.ControlId == childControl.ControlId);
         if(this.UIFormClientVM.globalControls.length > 0) this.UIFormClientVM.globalControls[index].Values[0] = "";
         if (index > -1) {
@@ -178,7 +178,7 @@ export class UIFormComponent implements OnInit, OnDestroy {
     }
 
 
-    setControlReadOnly(control) {
+    setControlReadOnly(control:UIControl) {
         if (control.IsGlobalControl) return true;
         if (!control.IsEditable) return true;
         return false

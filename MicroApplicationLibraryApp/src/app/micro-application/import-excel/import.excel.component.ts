@@ -80,7 +80,7 @@ export class ImportExcelComponent implements OnInit, OnDestroy {
         );
     }
 
-    checkUplaodedFile(file) {
+    checkUplaodedFile(file: FileList) {
         if (file && file instanceof FileList) {
             if (file.length > 0) return true;
         }

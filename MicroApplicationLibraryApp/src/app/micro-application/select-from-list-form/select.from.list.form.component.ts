@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription, elementAt } from 'rxjs';
-import { InputSelectFromListForm, SelectFromListFormData, SelectFromListFormInput, SelectFromListFormModel } from './select.from.list.form.model';
+import { InputSelectFromListForm, SelectFromListFormData, SelectFromListFormInput, SelectFromListFormInputItemVM, SelectFromListFormModel } from './select.from.list.form.model';
 import { FormDataCollectionService } from '../services/form.data.collection.service';
 import { AlertModalService } from '../alert/alert.modal.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -56,7 +56,7 @@ export class SelectFromListFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    onclickedCheckbox(permissions) {
+    onclickedCheckbox(permissions:SelectFromListFormInputItemVM) {
         permissions.IsSelected = !permissions.IsSelected;
         this.selectFromListFormModel.onclickedCheckbox();
     }
