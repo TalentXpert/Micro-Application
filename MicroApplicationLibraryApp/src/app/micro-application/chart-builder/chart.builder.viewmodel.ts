@@ -20,11 +20,9 @@ export class DragTableCell {
     originalChildren: ChartColumnSchema[] = [];
     columnId: string = "";
     cardHeight: number;
-    constructor(children, cardHeight: number) {
-        this.children.length = 0;
-        if (children !== undefined || children.length > 0)
-            this.children = children;
-        this.originalChildren = children;
+    constructor(children: ChartColumnSchema[], cardHeight: number) {
+        this.children = children || [];
+        this.originalChildren = children || [];
         this.cardHeight = cardHeight;
     }
     getCellHeight() {
@@ -39,7 +37,7 @@ export class DragTableRows {
     rowHeight: number = 0;
     rowName: string = "";
 
-    constructor(children, cardHeight) {
+    constructor(children: ChartColumnSchema[], cardHeight: number) {
         this.children = children;
         this.cardHeight = cardHeight;
 
@@ -59,7 +57,7 @@ export class DragTableRows {
         });
         this.rowHeight = height + this.cardHeight;
     }
-    addCell(column, cardHeight: number) {
+    addCell(column: { ColumnId: any; columnName?: string; }, cardHeight: number) {
         let children = this.children.filter(c => c.ColumnId === column.ColumnId);
         this.columns.push(new DragTableCell(children, cardHeight));
     }
@@ -95,13 +93,13 @@ export class ChartBuilderViewModel {
         });
     }
 
-    loadDataSources(dataSources) {
+    loadDataSources(dataSources: DataSources[]) {
         this.dataSource.length = 0;
         this.dataSource = dataSources;
 
     }
 
-    loadDataSoureceColumns(data) {
+    loadDataSoureceColumns(data: any[]) {
         this.chartColumnSchema.length = 0;
         this.selectedDataSourceColumns = [...data];
         data.forEach(element => {
@@ -115,7 +113,7 @@ export class ChartBuilderViewModel {
         this.chartSchema = chartSchema;
     }
 
-    loadColumnsOfSelectedChart(chartId) {
+    loadColumnsOfSelectedChart(chartId: string) {
         let index = this.chartSchema.findIndex(chart => chart.Id == chartId);
         if (index > -1) {
             this.chartSchema[index].Columns.forEach(element => {

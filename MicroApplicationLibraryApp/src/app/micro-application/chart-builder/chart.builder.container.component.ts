@@ -73,7 +73,7 @@ export class ChartBuilderContainerComponent implements OnInit {
             })
     }
 
-    onSelectDataSource(dataSrcId) {
+    onSelectDataSource(dataSrcId: string) {
         if (dataSrcId) {
             this.observableSubscription = this.chartBuilderService.getDataSourceColumns(dataSrcId).subscribe((data) => {
                 this.applicationPageEvent.publish(new MicroApplicationEventData(MicroApplicationOperation.LoadDataSoureceColumns, data));
@@ -114,7 +114,7 @@ export class ChartBuilderContainerComponent implements OnInit {
         this.chartBuilderForm.controls["MinHeight"].patchValue(chart.MinHeight);
     }
 
-    deleteChart(chart) {
+    deleteChart(chart: any) {
 
     }
 
@@ -138,7 +138,7 @@ export class ChartBuilderContainerComponent implements OnInit {
         }
     }
 
-    dropCard(previousIndexData, currentIndexData, previousIndex, currentIndex) {
+    dropCard(previousIndexData: any[], currentIndexData: any[], previousIndex: number, currentIndex: number) {
         transferArrayItem(previousIndexData, currentIndexData, previousIndex, currentIndex);
     }
 
@@ -177,7 +177,7 @@ export class ChartBuilderContainerComponent implements OnInit {
         this.chartBuilderForm.controls["MinHeight"].patchValue("");
     }
 
-    getClassForInterviewCard(field) {
+    getClassForInterviewCard(field: { Title: string; }) {
         if (this.selectedChartColumn && this.selectedChartColumn.Title == field.Title) return 'tasktype tasktype-mb-2 scheduleinterviewyellow';
         return 'tasktype tasktype-mb-2';
     }

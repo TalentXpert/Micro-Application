@@ -14,7 +14,7 @@ export class ChartColumnSchema {
     public IsMandatory: boolean;
     public Color: string;
     public ColumnId: number;
-    constructor(data, colunmId) {
+    constructor(data: ChartColumnSchema, colunmId: number) {
         this.DatabaseColumnName = data.DatabaseColumnName;
         this.Title = data.Title;
         this.DataType = data.DataType;
