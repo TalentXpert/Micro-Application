@@ -65,7 +65,7 @@ export class DashboardBuilderContainerComponent implements OnInit {
         }
     }
 
-    addEditDashboard(mode) {
+    addEditDashboard(mode:any) {
         const dialogRef = this.modalService.open(AddEditDashboardComponent, { backdrop: 'static' });
         dialogRef.componentInstance.mode = mode;
         if (this.dashboardBuilderViewModel.selectDashboardSchema) {
@@ -75,7 +75,7 @@ export class DashboardBuilderContainerComponent implements OnInit {
 
             }
         }
-        dialogRef.componentInstance.sendResponse.subscribe((response) => {
+        dialogRef.componentInstance.sendResponse.subscribe((response:any) => {
             this.newDashboardSchema.Id = this.dashboardBuilderViewModel.selectDashboardSchema ? this.dashboardBuilderViewModel.selectDashboardSchema : undefined;
             this.newDashboardSchema.Description = response.Description;
             this.newDashboardSchema.MenuId = response.MenuId;
@@ -100,7 +100,7 @@ export class DashboardBuilderContainerComponent implements OnInit {
         const dialogRef = this.modalService.open(AddEditRowComponent, { backdrop: 'static' });
         dialogRef.componentInstance.mode = "Add";
         dialogRef.componentInstance.selectDashboardSchema = this.dashboardBuilderViewModel.dashboardSchemaList[index];
-        dialogRef.componentInstance.sendResponse.subscribe((response) => {
+        dialogRef.componentInstance.sendResponse.subscribe((response:any) => {
             if (response) {
                 this.dashboardBuilderViewModel.dashboardSchemaList[index].Rows = response.Rows;
                 this.newDashboardSchema.Rows = response.Rows;
@@ -116,7 +116,7 @@ export class DashboardBuilderContainerComponent implements OnInit {
             const dialogRef = this.modalService.open(AddEditPanelComponent, { backdrop: 'static', windowClass:' JobDetailsModal' });
             dialogRef.componentInstance.mode = "Add";
             dialogRef.componentInstance.selectDashboardSchema = this.dashboardBuilderViewModel.dashboardSchemaList[index];
-            dialogRef.componentInstance.sendResponse.subscribe((response) => {
+            dialogRef.componentInstance.sendResponse.subscribe((response:any) => {
                 if (response) {
                     this.newDashboardSchema = response;
                     this.save();

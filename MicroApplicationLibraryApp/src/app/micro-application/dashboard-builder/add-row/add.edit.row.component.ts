@@ -40,14 +40,14 @@ export class AddEditRowComponent implements OnInit, OnDestroy {
         });
     }
 
-    editRow(row) {
+    editRow(row:any) {
         this.IseditRow = true;
         this.previousRowPosition = row.Position;
         this.addEditRowForm.controls["Position"].patchValue(row.Position);
         this.addEditRowForm.controls["Height"].patchValue(row.Height);
     }
 
-    deleteRow(selectedRow) {
+    deleteRow(selectedRow:any) {
         let rowIndex = this.selectDashboardSchema.Rows.findIndex(row => row.Position == selectedRow.Position);
         if (rowIndex > -1) {
             this.selectDashboardSchema.Rows.splice(rowIndex, 1);

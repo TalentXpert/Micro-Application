@@ -75,7 +75,7 @@ export class AddEditPanelComponent implements OnInit, OnDestroy {
 
     }
 
-    getContent(panel) {
+    getContent(panel:any) {
         let contentList =this.dashboardBuilderService.content.get(panel.ContentType)
         if (contentList) {
             let index = contentList.findIndex(content => content.Id == panel.ContentId);
@@ -86,7 +86,7 @@ export class AddEditPanelComponent implements OnInit, OnDestroy {
 
     }
 
-    onSelectRow(rowId) {
+    onSelectRow(rowId:any) {
         this.panelList.length = 0;
         this.rowIndex = this.selectDashboardSchema.Rows.findIndex(row => row.Position == rowId);
         if (this.rowIndex > -1) {
@@ -97,7 +97,7 @@ export class AddEditPanelComponent implements OnInit, OnDestroy {
         }
     }
 
-    editPanel(panel) {
+    editPanel(panel:any) {
         this.IseditPanel = true;
         this.previousPanelPosition= panel.Position;
         this.addEditPanelForm.controls["Title"].patchValue(panel.Title);
@@ -107,7 +107,7 @@ export class AddEditPanelComponent implements OnInit, OnDestroy {
         this.addEditPanelForm.controls["ContentId"].patchValue(panel.ContentId);
     }
 
-    deletePanel(panel) {
+    deletePanel(panel:any) {
         let panelIndex = this.selectDashboardSchema.Rows[this.rowIndex].Panels.findIndex(pnl => pnl.Position == panel.Position);
         if (panelIndex > -1) {
             this.selectDashboardSchema.Rows[this.rowIndex].Panels.splice(panelIndex, 1);
