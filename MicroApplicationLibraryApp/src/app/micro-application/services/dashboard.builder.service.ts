@@ -24,8 +24,8 @@ export class DashboardBuilderService {
         return this.httpClient.get<MenuModel[]>(this.baseUrl + '/GetTopMenu');
     }
 
-    getDashboardSchema(): Observable<AppControlVM[]> {
-        return this.httpClient.get<AppControlVM[]>(this.baseUrl + '/Gets');
+    getDashboardSchema(): Observable<DashboardSchema[]> {
+        return this.httpClient.get<DashboardSchema[]>(this.baseUrl + '/Gets');
     }
 
     getContentTypes(): Observable<string[]> {

@@ -17,7 +17,7 @@ export class DashboardBuilderViewModel {
         });
     }
 
-    loadAllDashboard(dataSources){
+    loadAllDashboard(dataSources:DashboardSchema[]){
         this.dashboardSchemaList.length =0;
         this.dashboardSchemaList = dataSources;
 
