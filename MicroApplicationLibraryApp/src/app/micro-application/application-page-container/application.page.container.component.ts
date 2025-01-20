@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationPageViewModel } from './application.page.viewModel';
-import { ControlFilter, ControlValue, GridRequestVM, SmartAction, UIControl, SmartGrid, SmartGridConfigurationVM, SmartPage } from './application.page.model';
+import { ControlFilter, ControlValue, GridRequestVM, SmartAction, UIControl, SmartGrid, SmartGridConfigurationVM, SmartPage, UserGridFilter, SmartControlOption, GridHeader } from './application.page.model';
 import { FilterComponent } from '../filters/filter-form/filter.form.component';
 import { SmartFormComponent } from '../smart-form/smart.form.component';
 import { GridColumnSettingComponent } from '../columnsetting/gridcolumnsetting.component';
@@ -211,13 +211,13 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
         dialogRef.componentInstance.globalControls = this.getGlobalControlValues();
       }
 
-      dialogRef.componentInstance.sendResponse.subscribe((userGridFilter) => {
+      dialogRef.componentInstance.sendResponse.subscribe((userGridFilter: UserGridFilter) => {
         if (userGridFilter) {
           this.applicationPageEvent.publish(new MicroApplicationEventData(MicroApplicationOperation.AddUpdateUserFilter, userGridFilter));
           this.getFilteredData(userGridFilter.Id);
         }
       });
-      dialogRef.componentInstance.applyResponse.subscribe((userGridFilter) => {
+      dialogRef.componentInstance.applyResponse.subscribe((userGridFilter: UserGridFilter) => {
         if (userGridFilter) {
           this.filters = userGridFilter.Filters;
           this.applicationPageViewModel.filterId = "";
@@ -228,7 +228,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  getFilteredData(currentGridFilterId) {
+  getFilteredData(currentGridFilterId: string) {
     if (currentGridFilterId)
       this.applicationPageViewModel.filterId = currentGridFilterId;
     else this.applicationPageViewModel.filterId = "";
@@ -252,7 +252,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
   opengridColumnSetting() {
     const dialogRef = this.modalService.open(GridColumnSettingComponent, { backdrop: 'static', windowClass: 'AddOrgnization' });
     dialogRef.componentInstance.smartPage = this.applicationPageViewModel.smartPage;
-    dialogRef.componentInstance.sendResponse.subscribe((dataSaved) => {
+    dialogRef.componentInstance.sendResponse.subscribe((dataSaved: any) => {
       if (dataSaved) {
         if (this.applicationPageViewModel.filterId) this.getFilteredData(this.applicationPageViewModel.filterId);
         else this.processGrid();
@@ -270,12 +270,12 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     return globalControlsList;
   }
 
-  getOptionList(control) {
+  getOptionList(control: { ControlId: string; Options: SmartControlOption[]; }) {
     let index = this.globalControls.findIndex(c => c.ControlId == control.ControlId);
     return control.Options = [... this.globalControls[index].Options];
   }
 
-  getSearchItems(event, control: UIControl) {
+  getSearchItems(event: { term: string; }, control: UIControl) {
     if (control && event.term) {
       let parentControl = this.globalControls.find(c => c.ControlIdentifier == control.ParentControlIdentifier);
       if (parentControl) {
@@ -289,7 +289,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  getClassforAction(menu) {
+  getClassforAction(menu: string | any[] | null) {
     if (menu == null) menu = this.getMenuList();
     if (menu && menu.length > 0) return "text-right";
     return "d-none";
@@ -333,12 +333,12 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
       return 'CustomPointer';
   }
 
-  sortBy(headerCell) {
+  sortBy(headerCell: GridHeader) {
     this.applicationPageViewModel.sortData(headerCell);
   }
 
 
-  executeRespectiveEvent(action: SmartAction, row) {
+  executeRespectiveEvent(action: SmartAction, row: { T: string; }[]) {
     if (action.FormType == FormTypes.DynamicForm) {
       if (action.FormMode == 'Delete') this.deleteRow(action, row);
       else if (action.FormMode == 'View') this.openViewPageContent(action, row);
@@ -357,7 +357,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
         }
         uIFormClientVM.globalControls = globalControlsList;
         dialogRef.componentInstance.uIFormClientVM = uIFormClientVM;
-        dialogRef.componentInstance.sendResponse.subscribe((dataSaved) => {
+        dialogRef.componentInstance.sendResponse.subscribe((dataSaved: any) => {
           if (dataSaved) {
             this.processGrid();
           }
@@ -371,7 +371,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
       inputSelectFromListForm.Text = action.Text;
       const dialogRef = this.modalService.open(SpecialFormComponent, { backdrop: 'static' });
       dialogRef.componentInstance.inputSelectFromListForm = inputSelectFromListForm;
-      dialogRef.componentInstance.sendResponse.subscribe((dataSaved) => {
+      dialogRef.componentInstance.sendResponse.subscribe((dataSaved: any) => {
         if (dataSaved) {
           this.processGrid();
         }
@@ -380,7 +380,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteRow(action, row) {
+  deleteRow(action: SmartAction, row: { T: string; }[]) {
     if (action.FormId) {
       this.observableSubscription = this.applicationPageService.deleteRecord(action.FormId, row[0].T).subscribe(response => {
         if (response) {
@@ -394,7 +394,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  openViewPageContent(action, row) {
+  openViewPageContent(action: SmartAction, row: { T: any; }[]) {
     const dialogRef = this.modalService.open(ViewPageContentComponent, { backdrop: 'static' });
     dialogRef.componentInstance.SmartAction = action;
     if (row) dialogRef.componentInstance.DataKey = row[0].T;
@@ -432,7 +432,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
       });
     }
     dialogRef.componentInstance.globalControls = this.globalControls;
-    dialogRef.componentInstance.sendResponse.subscribe((dataSaved) => {
+    dialogRef.componentInstance.sendResponse.subscribe((dataSaved: any) => {
       if (dataSaved) {
         this.processGrid();
       }
@@ -460,7 +460,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
     this.clearGridData();
   }
 
-  getViewPageContents(row) {
+  getViewPageContents(row: { T: string; }[]) {
     let headerActionsList = this.applicationPageViewModel.gridHeaders.find(h => h.Actions.length > 0);
     if (headerActionsList && headerActionsList.Actions.length > 0) {
       this.observableSubscription = this.applicationPageService.getViewPageContents(headerActionsList.Actions[0].FormId, row[0].T).subscribe(response => {
