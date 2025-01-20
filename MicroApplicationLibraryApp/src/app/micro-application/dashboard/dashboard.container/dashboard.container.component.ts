@@ -60,7 +60,8 @@ export class DashboardContainerComponent implements OnInit {
       });
   }
 
-  openSummaryDialogue(panel: { Id: string; }) {
+  /*
+  openSummaryDialogue(panel: any) {
     let data = this.dashboardViewModel.summaryDataList.get(panel.Id);
     if(data){
       this.summaryData = data;
@@ -68,11 +69,8 @@ export class DashboardContainerComponent implements OnInit {
       this.modalService.open(this.templateRef, { backdrop: "static" }).result.then((result) => {
       }, (reason) => {
       });
-    }
-   
-    
-
-  }
+    }   
+  }*/
 
   
 
