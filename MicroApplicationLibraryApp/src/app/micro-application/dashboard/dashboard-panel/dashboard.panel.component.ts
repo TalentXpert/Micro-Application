@@ -45,7 +45,7 @@ export class DashboardPanelComponent implements OnInit {
   
 
 
-  getChartData(panelId) {
+  getChartData(panelId: string) {
     this.observableSubscription = this.dashboardService.getDashboardChart(panelId).subscribe(response => {
       this.dashboardChartData = response;
       this.dashboardViewModel.saveDashboardPanelData(panelId, response);
@@ -55,7 +55,7 @@ export class DashboardPanelComponent implements OnInit {
       });
   }
 
-  hasData(array) {
+  hasData(array:any[]) {
     if (!array) return false;
     if (array.length > 0) return true;
     return false;

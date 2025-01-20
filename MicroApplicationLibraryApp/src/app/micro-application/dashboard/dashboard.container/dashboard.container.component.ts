@@ -51,7 +51,7 @@ export class DashboardContainerComponent implements OnInit {
   }
 
 
-  getDashboard(pageId) {
+  getDashboard(pageId:string) {
     this.observableSubscription = this.dashboardService.getDashboard(pageId).subscribe(response => {
       this.dashboard = response;
     },
@@ -60,7 +60,7 @@ export class DashboardContainerComponent implements OnInit {
       });
   }
 
-  openSummaryDialogue(panel) {
+  openSummaryDialogue(panel: { Id: string; }) {
     let data = this.dashboardViewModel.summaryDataList.get(panel.Id);
     if(data){
       this.summaryData = data;
