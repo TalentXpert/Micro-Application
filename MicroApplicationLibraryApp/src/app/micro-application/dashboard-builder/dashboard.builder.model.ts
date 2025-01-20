@@ -23,7 +23,7 @@ export class DashboardPanel {
     public Width: number;
     public ContentType: string;
     public Position: number;
-    public ContentId?: string;
+    public ContentId: string;
     constructor(formValue:any){
         this.Title = formValue.Title;
         this.Width = formValue.Width;

@@ -21,7 +21,7 @@ export class DrawChartComponent {
   options: any;
   columnsNames: any;
   data: any[] = [];
-  type: ChartType = ChartType[this.dashboardChart.ChartType];
+  type: ChartType = ChartType.PieChart;
 
   constructor() {
     /** line charts*/
@@ -40,7 +40,7 @@ export class DrawChartComponent {
     this.title = this.dashboardChart.Title;
     this.columnsNames = [] = [];
     this.data = [] = [];
-    this.type = ChartType[this.dashboardChart.ChartType];
+    this.type = ChartType[this.dashboardChart.ChartType as keyof typeof ChartType];
     this.options = {
       tooltip: { isHtml: true },
       legend: { position: 'right'},
