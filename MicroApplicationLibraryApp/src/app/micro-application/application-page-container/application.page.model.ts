@@ -46,11 +46,29 @@ export class UIControl {
     public IsPageRefreshNeeded: boolean = false;
     public Validators: any[] = []; // Added for client side use
     public ListOfSelectedValue: string[]; // Added for client side use
-    constructor(data){
+    constructor(data: UIControl){
         this.ListOfSelectedValue=[];
-        for (var prop in data) {
-            this[prop] = data[prop];
-          }
+        this.ControlId = data.ControlId;
+        this.Position = data.Position;
+        this.ControlIdentifier = data.ControlIdentifier;
+        this.DataType = data.DataType;
+        this.ControlType = data.ControlType;
+        this.DisplayLabel = data.DisplayLabel;
+        this.Value = data.Value;
+        this.IsEditable = data.IsEditable;
+        this.IsMandatory = data.IsMandatory;
+        this.IsUnique = data.IsUnique;
+        this.Minimum = data.Minimum;
+        this.Maximum = data.Maximum;
+        this.IsParent = data.IsParent;
+        this.ParentControlIdentifier = data.ParentControlIdentifier;
+        this.IsGlobalControl = data.IsGlobalControl;
+        this.Options = data.Options;
+        this.IsFormLayoutOwner = data.IsFormLayoutOwner;
+        this.IsPageRefreshNeeded = data.IsPageRefreshNeeded;
+        this.Validators = data.Validators;
+        this.ListOfSelectedValue = data.ListOfSelectedValue;
+        
     }
 }
 
@@ -63,7 +81,7 @@ export class SmartControlOption {
 export class SmartGridConfigurationVM {
     public PageId: string;
     public GlobalControlValues: ControlValue[] = [];
-    constructor(pageId) {
+    constructor(pageId: string) {
         this.PageId = pageId;
     }
 
@@ -73,7 +91,7 @@ export class ControlValue {
     public ControlId: string;
     public ControlIdentifier: string;
     public Values: string[]=[];
-    constructor(controlId, controlIdentifier, value, values) {
+    constructor(controlId: string, controlIdentifier: string, value: string, values: any[] | null) {
         this.ControlId = controlId;
         this.ControlIdentifier = controlIdentifier;
         if(value) this.Values.push(value);
@@ -106,7 +124,7 @@ export class ControlFilter {
     public ControlIdentifier: string;
     public Value: string;
     public Operator: string;
-    constructor(controlId, controlIdentifier, value, operator) {
+    constructor(controlId: string, controlIdentifier: string, value: string, operator: string) {
         this.ControlId = controlId;
         this.ControlIdentifier = controlIdentifier;
         this.Value = value;
@@ -162,7 +180,7 @@ export class GridHeader {
     public IsFixed: boolean;
     public IsSingleLine :boolean;
 
-    constructor(header) {
+    constructor(header: GridHeader) {
         this.HeaderIdentifier = header.HeaderIdentifier;
         this.Position = header.Position;
         this.HeaderText = header.HeaderText;
@@ -177,7 +195,7 @@ export class GridHeader {
         this.IsSingleLine = header.IsSingleLine;
     }
 
-    sortRows(rows, position) {
+    sortRows(rows: GridCell[], position: number) {
         let that = this;
 
         if (this.SortingType === "")  this.SortingType = 'asc';
@@ -195,7 +213,7 @@ export class GridHeader {
         return rows;
     }
 
-    sortAsAscending(rows, that, position) {
+    sortAsAscending(rows: any[], that: this, position: number) {
         let nullData = [];
         let dataToFilter = [];
         let data = [];
@@ -237,7 +255,7 @@ export class GridHeader {
         return dataToFilter;
 
     }
-    sortAsDescending(rows, that, position) {
+    sortAsDescending(rows: any[], that: this, position: number) {
         let nullData = [];
         let dataToFilter = [];
         let data = [];
@@ -294,7 +312,7 @@ export class SmartFormGenerateRequest {
     public FormMode: string; //1-Add , 2 - Edit, 3 Copy
     public DataKey?: string;
     public GlobalControls: ControlValue[] = [];
-    constructor(smartAction, dataKey) {
+    constructor(smartAction: SmartAction, dataKey: string) {
         this.FormId = smartAction.FormId;
         this.FormMode = smartAction.FormMode;
         this.DataKey = dataKey;
@@ -307,7 +325,7 @@ export class SmartFormGenerateRequestInput {
     public ControlId?: string;
     public ControlIdentifer: string;
     public Value: string;
-    constructor(controlId, controlIdentifer, value) {
+    constructor(controlId: string , controlIdentifer: string, value: string) {
         this.ControlId = controlId;
         this.ControlIdentifer = controlIdentifer;
         this.Value = value;
@@ -326,7 +344,7 @@ export class SmartFormTemplateRequest {
     public DataKey?: string; //row primary key
     public FormMode: string; //1-Add , 2 - Edit, 3 Copy
     public ControlValues: ControlValue[] = [];
-    constructor(smartAction: SmartAction, smartControls: UIControl[], formValues) {
+    constructor(smartAction: SmartAction, smartControls: UIControl[], formValues: any) {
         this.FormId = smartAction.FormId;
         this.FormMode = smartAction.FormMode;
         smartControls.forEach(element => {
@@ -336,7 +354,7 @@ export class SmartFormTemplateRequest {
                 value = this.getDateFormat(formValues[element.DisplayLabel].date).toString();
             }
             if (element.ControlType == 'MultipleSelection' && formValues[element.DisplayLabel].length > 0) {
-                let options = formValues[element.DisplayLabel].map(x => x).join(", ");
+                let options = formValues[element.DisplayLabel].map((x: any) => x).join(", ");
                 value = options;
             }
             if(element.ControlType == 'MultipleSelection' && formValues[element.DisplayLabel].length == 0) value ="";
@@ -360,7 +378,7 @@ export class SmartFormTemplateRequest {
 export class UserGridHeadersVM {
     public PageId: string;
     public Headers: UserGridHeaderVM[] = [];
-    constructor(pageId, headers: UserGridHeaderVM[]) {
+    constructor(pageId: string, headers: UserGridHeaderVM[]) {
         this.PageId = pageId;
         headers.forEach(element => {
             this.Headers.push(new UserGridHeaderVM(element.HeaderIdentifier, element.Position, element.HeaderText, element.IsVisible, element.IsFixed))
@@ -375,7 +393,7 @@ export class UserGridHeaderVM {
     public Position: number;
     public IsVisible: boolean;
     public IsFixed: boolean;
-    constructor(headerIdentifier, position, headerText, isVisible, isFixed) {
+    constructor(headerIdentifier: string, position: number, headerText: string, isVisible: boolean, isFixed: boolean) {
         this.HeaderIdentifier = headerIdentifier;
         this.HeaderText = headerText;
         this.Position = position;
@@ -402,7 +420,7 @@ export class ExcelImportRequest
 export class HeaderValue {
     public Value: string;
     public Header: string;
-    constructor(header, value){
+    constructor(header: string, value: string){
         this.Header = header;
         this.Value = value;
     }
@@ -414,7 +432,7 @@ export class ApplicationPageListViewModel
     public HeaderValuestring: HeaderValue[]=[];
     public Actions: SmartAction[]=[];
     public Row: GridCell[]=[];
-    constructor(singleLineList, headerValuestring, row, actions){
+    constructor(singleLineList: string[], headerValuestring: HeaderValue[], row: GridCell[], actions: SmartAction[]){
         this.SingleLineList = singleLineList;
         this.HeaderValuestring = headerValuestring;
         this.Row = row;

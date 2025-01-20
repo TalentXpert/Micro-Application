@@ -96,14 +96,14 @@ export class ApplicationPageViewModel {
 
     }
 
-    deleteUserFilter(currentGridFilterId) {
+    deleteUserFilter(currentGridFilterId: string) {
         let index = this.smartGrid.UserGridFilters.findIndex(ugf => ugf.Id == currentGridFilterId);
         if (index > -1) this.smartGrid.UserGridFilters.splice(index, 1);
     }
 
     //#region Pagination methods start here 
 
-    onChangePageSize(viewMode) {
+    onChangePageSize(viewMode: string) {
         this.paginationStartIndex = 1;
         this.paginationEndIndex = this.pageSize;
         if (this.paginationEndIndex > this.gridModel.Rows.length) this.paginationEndIndex = this.gridModel.Rows.length;
@@ -122,7 +122,7 @@ export class ApplicationPageViewModel {
         }
     }
 
-    loadPreviousData(viewMode) {
+    loadPreviousData(viewMode: string) {
         this.paginationStartIndex = (this.paginationStartIndex - this.pageSize);
         if (this.paginationStartIndex <= 0) this.paginationStartIndex = 1;
         this.paginationEndIndex = ((this.paginationStartIndex - 1) + this.pageSize);
@@ -133,7 +133,7 @@ export class ApplicationPageViewModel {
 
     }
 
-    loadNextData(viewMode) {
+    loadNextData(viewMode: string) {
         this.paginationStartIndex = (this.paginationEndIndex + 1);
         this.paginationEndIndex = (this.paginationEndIndex + this.pageSize);
         if (this.paginationEndIndex > this.gridModel.Rows.length) this.paginationEndIndex = this.gridModel.Rows.length;
