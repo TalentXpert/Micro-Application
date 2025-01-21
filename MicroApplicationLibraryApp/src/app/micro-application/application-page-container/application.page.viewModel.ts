@@ -75,7 +75,7 @@ export class ApplicationPageViewModel {
         this.rows.forEach(row => {
             let i = 0;
             let singleLineList: string[] = [];
-            let HeaderValueList: HeaderValue[] = [];;
+            let HeaderValueList: HeaderValue[] = [];
             let actions: SmartAction[]=[];
             this.gridModel.Headers.forEach(header => {
                 if(header.Actions.length > 0) actions = header.Actions;
@@ -85,7 +85,7 @@ export class ApplicationPageViewModel {
                 }
                 i++;
             })
-            this.listView.push(new ApplicationPageListViewModel(singleLineList, HeaderValueList, row, actions))
+          this.listView.push(new ApplicationPageListViewModel(singleLineList, HeaderValueList, (<GridCell[]><unknown>row), actions))
         })
     }
 

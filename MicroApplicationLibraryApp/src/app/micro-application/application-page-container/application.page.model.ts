@@ -214,9 +214,9 @@ export class GridHeader {
     }
 
     sortAsAscending(rows: any[], that: this, position: number) {
-        let nullData = [];
-        let dataToFilter = [];
-        let data = [];
+        let nullData;
+        let dataToFilter;
+        let data;
         if (that.DataType === 'date') {
             nullData = rows.filter(a => a[position]['T'] == "" || a[position]['T'] == null);
             data = rows.filter(a => a[position]['T'] != null || a[position]['T'] != undefined);
@@ -256,9 +256,7 @@ export class GridHeader {
 
     }
     sortAsDescending(rows: any[], that: this, position: number) {
-        let nullData = [];
-        let dataToFilter = [];
-        let data = [];
+        let nullData, dataToFilter, data;
         if (that.DataType === 'date') {
             nullData = rows.filter(a => a[position]['T'] == "" || a[position]['T'] == null);
             data = rows.filter(a => a[position]['T'] != null || a[position]['T'] != undefined);

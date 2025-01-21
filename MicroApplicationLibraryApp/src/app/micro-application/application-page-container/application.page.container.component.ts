@@ -280,7 +280,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
       let parentControl = this.globalControls.find(c => c.ControlIdentifier == control.ParentControlIdentifier);
       if (parentControl) {
         this.observableSubscription = this.applicationPageService.getSearchOptions(control.ControlId, parentControl.ControlId, event.term).subscribe(options => {
-          this.addSmartSelectionOption(options, parentControl.ControlId);
+          this.addSmartSelectionOption(options, parentControl?.ControlId);
         },
           error => {
             throw error;
@@ -338,7 +338,7 @@ export class ApplicationPageContainerComponent implements OnInit, OnDestroy {
   }
 
 
-  executeRespectiveEvent(action: SmartAction, row: { T: string; }[]) {
+  executeRespectiveEvent(action: SmartAction, row) {
     if (action.FormType == FormTypes.DynamicForm) {
       if (action.FormMode == 'Delete') this.deleteRow(action, row);
       else if (action.FormMode == 'View') this.openViewPageContent(action, row);
