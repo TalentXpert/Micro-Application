@@ -32,7 +32,8 @@ namespace BaseLibrary.Configurations
                ManageLookUp,
                BuildForm,
                ManageOrganizationAdmin,
-               ManageSystem
+               ManageSystem,
+               ManageFormControls
             };
         }
 
