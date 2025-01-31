@@ -1,6 +1,7 @@
 ﻿using BaseLibrary.Configurations.PageHandlers;
 using BaseLibrary.Utilities.Excels;
 using System.Data;
+using System.Net.Http.Headers;
 
 namespace BaseLibrary.Controllers
 {
@@ -424,6 +425,27 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
+                return HandleException(exception, CodeHelper.CallingMethodInfo());
+            }
+        }
+
+        /// <summary>
+        /// This API save page data into PageDataStore or derived storage. 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("UploadFile")]
+        [DisableRequestSizeLimit]
+        public IActionResult UploadFile()
+        {
+            try
+            {
+                //to do
+                return Ok(true);
+            }
+            catch (Exception exception)
+            {
+                RollbackTransaction();
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
         }

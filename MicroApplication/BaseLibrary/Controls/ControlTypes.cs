@@ -20,6 +20,7 @@ namespace BaseLibrary.Controls
         public static ControlTypes Password = new ControlTypes("Password");
         public static ControlTypes InputGrid = new ControlTypes("InputGrid");
         public static ControlTypes RadioButton = new ControlTypes("RadioButton");
+        public static ControlTypes UploadFile = new ControlTypes("UploadFile");
         public static ControlTypes GetControlType(string controlType)
         {
             var controlTypes = GetControlTypes();
@@ -27,7 +28,7 @@ namespace BaseLibrary.Controls
         }
         public static List<ControlTypes> GetControlTypes()
         {
-            var controlTypes = new List<ControlTypes> { TextArea, TextBox, DatePicker, Dropdown, Typeahead, Label, MultipleSelection, MultipleSelectGrid , Password, InputGrid, RadioButton };
+            var controlTypes = new List<ControlTypes> { TextArea, TextBox, DatePicker, Dropdown, Typeahead, Label, MultipleSelection, MultipleSelectGrid , Password, InputGrid, RadioButton, UploadFile };
             return controlTypes;
         }
         public static bool IsDropdownControl(string controlType)

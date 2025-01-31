@@ -14,5 +14,10 @@ namespace BaseLibrary.Controls.Forms
             FormMode = "Add";
         }
     }
+
+    public class UploadFileModel
+    {
+        public IFormFile? FormFile { get; set; }
+    }
     
 }
