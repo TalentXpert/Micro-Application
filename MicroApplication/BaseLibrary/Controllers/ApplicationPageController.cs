@@ -429,14 +429,9 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        /// <summary>
-        /// This API save page data into PageDataStore or derived storage. 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+
         [HttpPost("UploadFile")]
-        [DisableRequestSizeLimit]
-        public IActionResult UploadFile()
+        public ActionResult<bool> UploadFile(UploadProfileResumeVM uploadProfileResumeVM)
         {
             try
             {
@@ -448,17 +443,18 @@ namespace BaseLibrary.Controllers
                 RollbackTransaction();
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
+
         }
 
-        #endregion
+            #endregion
 
-        #region Page View 
-        /// <summary>
-        /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
-        /// </summary>
-        /// <param name="pageId"></param>
-        /// <returns></returns>
-        [HttpGet("GetViewPageContents/{formId}/{id}")]
+            #region Page View 
+            /// <summary>
+            /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
+            /// </summary>
+            /// <param name="pageId"></param>
+            /// <returns></returns>
+            [HttpGet("GetViewPageContents/{formId}/{id}")]
         public IActionResult GetViewPageContents(Guid formId, Guid id)
         {
             try
@@ -534,4 +530,9 @@ namespace BaseLibrary.Controllers
         #endregion
 
     }
+}
+
+public class UploadProfileResumeVM
+{
+    public IFormFile Resume { get; set; }
 }
