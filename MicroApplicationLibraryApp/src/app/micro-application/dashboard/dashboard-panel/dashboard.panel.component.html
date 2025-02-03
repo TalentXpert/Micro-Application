@@ -1,0 +1,6 @@
+<div  *ngIf="dashboardPanel.ContentType =='Graph' && dashboardChartData">
+    <draw-chart  #cmp [dashboardChart]="dashboardChartData" id="chart"></draw-chart>
+</div>
+<!-- <div>
+    <application-page [dashboardPageId]="pageId"></application-page>
+</div> -->

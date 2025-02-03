@@ -1,0 +1,250 @@
+<div class="col-md-12 mt-1 ps-3 pe-3 mb-2">
+    <div class="row">
+        <div class="InternalCard pt-3 pb-2 ChartBuilderHeight">
+            <div class="col-md-12 mt-1">
+                <form [formGroup]="chartBuilderForm">
+                    <div class="row ps-2">
+                        <div class="col-md-3 pe-1">
+                            <label class="form-group has-float-label">
+                                <input type="text" class="form-control" formControlName="Name" placeholder="Enter Name"
+                                    required />
+                                <span>Name</span>
+                            </label>
+                            <div class="ErrorMsgBox">
+                                <div class="text-danger"
+                                    *ngIf="chartBuilderForm.controls['Name'].invalid && (chartBuilderForm.controls['Name'].dirty || chartBuilderForm.controls['Name'].touched)">
+                                    <div *ngIf="chartBuilderForm.get('Name')?.hasError('required')">
+                                        {{validationMessage.TitleRequired}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 pe-1">
+                            <label class="form-group has-float-label">
+                                <select class="form-control" id="jobDropdown" formControlName="DataSource"
+                                    (ngModelChange)="onSelectDataSource($event)" [(ngModel)]="dataSourceId" required>
+                                    <option selected [disabled]="true" value="">Data Source </option>
+                                    <option *ngFor="let option of chartBuilderViewModel.dataSource" [value]="option.Id">
+                                        {{option.Name}}
+                                    </option>
+                                </select>
+                                <span>Data Source</span>
+                            </label>
+                        </div>
+                        <div class="col-md-2 pe-1">
+                            <label class="form-group has-float-label">
+                                <select class="form-control" id="jobDropdown" formControlName="ChartType" required>
+                                    <option selected [disabled]="true" value="">Chart Type </option>
+                                    <option *ngFor="let option of chartTypes" [value]="option.Name">
+                                        {{option.Name}}
+                                    </option>
+                                </select>
+                                <span>Chart Type</span>
+                            </label>
+                        </div>
+                        <div class="col-md-2 pe-1">
+                            <label class="form-group has-float-label">
+                                <input type="text" class="form-control" formControlName="MinWidth"
+                                    placeholder="Enter Minimum Width" autocomplete="off" id="minWidth"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                <span>Min Width</span>
+                            </label>
+                            <div class="ErrorMsgBox">
+                            </div>
+                        </div>
+                        <div class="col-md-2 pe-1">
+                            <label class="form-group has-float-label">
+                                <input type="text" class="form-control" formControlName="MinHeight"
+                                    placeholder="Enter Minimum Height" autocomplete="off" id="minHeight"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+                                <span>Min Height</span>
+                            </label>
+                            <div class="ErrorMsgBox">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ps-2">
+                        <div class="col-md-7 pe-1">
+                            <label class="form-group has-float-label">
+                                <input type="text" class="form-control" formControlName="Description"
+                                    placeholder="Enter Description" />
+                                <span>Description</span>
+                            </label>
+                            <div class="ErrorMsgBox">
+                                <div class="text-danger"
+                                    *ngIf="chartBuilderForm.controls['Description'].invalid && (chartBuilderForm.controls['Description'].dirty || chartBuilderForm.controls['Description'].touched)">
+                                    <div
+                                        *ngIf="chartBuilderForm.get('Description')?.hasError('minlength') ||chartBuilderForm.get('Description')?.hasError('maxlength')">
+                                        {{validationMessage.DescriptionRange}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row ps-2">
+                        <div class="col-md-2 pe-0" *ngIf="chartBuilderViewModel.chartSchema.length > 0">
+                            <div class="SupportTicketTable" id="style-5">
+                                <table class="table  table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-100 TableHeader sticky-top">Chart</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let chart of chartBuilderViewModel.chartSchema; let i = index">
+                                            <td class="text-left">
+                                                <div class="d-flex">
+                                                    <div class="flex-fill me-1">
+                                                        <div class="text-nowrap mt-1">{{chart.Name}}</div>
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <div class="text-right">
+                                                            <div class="btn-group" role="group">
+                                                                <button id="btnGroupDrop1" type="button"
+                                                                    class="optiondropdow" data-toggle="dropdown"
+                                                                    aria-haspopup="true">
+                                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu btndropdown"
+                                                                    id="AllCandidatedropdown"
+                                                                    aria-labelledby="btnGroupDrop1">
+                                                                    <div class="btn-group w-100">
+                                                                        <button class="dropdown-item" title="Edit chart"
+                                                                            (click)="onSelectChart(chart)">Edit</button>
+                                                                    </div>
+                                                                    <div class="btn-group w-100">
+                                                                        <button class="dropdown-item"
+                                                                            title="Delete chart"
+                                                                            (click)="deleteChart(chart)">Delete</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ps-0">
+
+                            <div class="col-md-12" *ngIf="dataSourceId">
+                                <div class="ChartBuilderTableHeight" id="style-5">
+                                    <table class="table table-striped table-bordered mb-0"
+                                        *ngIf="chartBuilderViewModel.dr && chartBuilderViewModel.dr.rows.length > 0">
+                                        <thead>
+                                            <tr>
+                                                <th class="TableHeader sticky-top w-30">Columns</th>
+                                                <th class="TableHeader sticky-top w-30">Seleted Columns</th>
+                                                <th class="TableHeader sticky-top w-40">Properties </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody cdkDropListGroup
+                                            *ngIf="chartBuilderViewModel.dr && chartBuilderViewModel.dr.rows">
+                                            <tr *ngFor="let row of chartBuilderViewModel.dr.rows;  let i = index">
+                                                <td *ngFor="let field of row.columns; let j = index"
+                                                    id="jobStatusColumn">
+                                                    <div class="drag-container">
+                                                        <div cdkDropList [cdkDropListData]="field.children"
+                                                            class="item-list" (cdkDropListDropped)="drop($event, i, j)"
+                                                            [style.min-height.px]="row.rowHeight">
+                                                            <div n class="item-box d-block"
+                                                                *ngFor="let field of field.children" cdkDrag>
+                                                                <div *cdkDragPlaceholder
+                                                                    [style.min-height.px]="row.rowHeight">
+                                                                </div>
+                                                                <div class="DragCardBody">
+                                                                    <div [ngClass]="getClassForInterviewCard(field)"
+                                                                        (click)="nodeClick(field)">
+                                                                        <h6 class="mb-0">{{field.Title}}
+                                                                            <button type="button"
+                                                                                *ngIf="field.ColumnId == 2"
+                                                                                class="close" (click)="remove(field)">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td *ngIf="selectedChartColumn && IsClickedOnCard">
+                                                    <div class="col-md-12 invoiceDesc ps-0 pe-0">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p class="text-truncate"><strong>Title :
+                                                                    </strong> </p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control"
+                                                                    [ngModelOptions]=" {standalone: true}"
+                                                                    [(ngModel)]="selectedChartColumn.Title"
+                                                                    (focusout)="setSelectedFormControlProperties()" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ErrorMsgBox">
+                                                    </div>
+                                                    <div class="col-md-12 invoiceDesc ps-0 pe-0">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p class="text-truncate"><strong>Data Type :
+                                                                    </strong> </p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p class="text-truncate">
+                                                                    {{selectedChartColumn.DataType}}</p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ErrorMsgBox">
+                                                    </div>
+                                                    <div class="col-md-12 invoiceDesc ps-0 pe-0">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p class="text-truncate"><strong>Color :
+                                                                    </strong> </p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control"
+                                                                    [ngModelOptions]=" {standalone: true}"
+                                                                    [(ngModel)]="selectedChartColumn.Color"
+                                                                    (focusout)="setSelectedFormControlProperties()" />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ErrorMsgBox">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row ps-2 mt-2">
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn Cbtn-primary btnMain"
+                                                (click)="resetForm()">Reset</button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn Cbtn-primary btnMain"
+                                                [disabled]="chartBuilderForm.invalid" (click)="save()">Save</button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn Cbtn-primary btnMain">Preview</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

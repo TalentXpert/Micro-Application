@@ -1,0 +1,62 @@
+<div class="dashboard-container pt-0">
+    <div class="row">
+        <div class="dashboard-card">
+            <div class="text-left" *ngIf="dashboard">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title">{{dashboard.Name}}</h2>
+                </div>
+                <div class="dashboard-body scrollable-row">
+                    <div *ngFor="let row of dashboard.Rows; let rowIndex=index" class="dashboard-row">
+                        <table *ngIf="row.Panels.length > 0" class="dashtab">
+                            <tr [style.height.px]="row.Height">
+                                <td [style.width.px]="panel.Width" class="card-body"
+                                    *ngFor="let panel of row.Panels; let rowIndex=index">
+                              <div class="panel rounded-3">
+                                <div >
+                                     <h6 class="panel-title">{{panel.Title}}</h6>
+                                 </div>
+                                 <div class="chart">
+                                     <dashboard-panel [dashboardPanel]="panel" id="chart"></dashboard-panel>
+                                 </div>
+                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #SummaryData let-c="close" let-d="dismiss">
+    <div class="modal-header text-left ps-4">
+        <h5 class="modal-title w-100">Summary Data</h5>
+        <button type="button" class="close" (click)="c('Cross click');closeModalDialog()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ps-4 pe-4 pb-1 text-left">
+        <div class="row">
+            <div class="table-responsive mt-2 RecruitmentTableHeight" id="style-5">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="w-20 TableHeader sticky-top" *ngFor="let columns of summaryData.Columns;">
+                                {{columns.Title}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of summaryData.SeriesData; let i = index">
+                            <td class="text-left" *ngFor="let element of data">
+                                {{element}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer pt-2 pb-2 pe-4">
+        <button type="button" class="btn Cbtn-primary candidatebtn" (click)="c('Cross click');closeModalDialog()">Close</button>
+    </div>
+</ng-template>

@@ -1,0 +1,82 @@
+
+<div class="top-header hidden-xs " >
+  <div class="wrapperSection">
+    <div class="row">
+      <div class="col-md-3">
+        <span class="mb-0 ms-1 logoHeading ps-2">
+          <b>User Management </b></span>
+      </div>
+      <div class="col-md-9 ps-2">
+        <div class="social-links pull-right pe-1">
+          <li>
+            <a href="https://www.facebook.com/TxSaaS/" target="_blank">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/_TXSAS/" target="_blank">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/company/txsas/" target="_blank">
+              <i class="fa fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a href=" https://www.youtube.com/channel/UCbZSriqyAWvCkDMmps7TX1g" target="_blank">
+              <i class="fa fa-youtube-play"></i>
+            </a>
+          </li>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark internalMenu" *ngIf="menuViewModel.IsUserLoggedIn">
+  <!--Homepage Menu-->
+
+  <!--Homepage Menu-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+    aria-expanded="false"><span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="MainMenu collapse navbar-collapse tx-menu" id="navbarText" *ngIf="menuViewModel.menuList.length > 0" >
+    <ul class="navbar-nav" #menuItemTemplate  *ngFor="let parent of menuViewModel.menuList ; let i = index">
+        <li class="nav-item" [title]="parent.Name" routerLinkActive="activenav" [routerLinkActiveOptions]="{ exact: true }"
+           data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" >{{parent.Name}} <i class="fa fa-angle-down"></i> </a>
+          <ul class='children' id="feedback"    >
+              <li class="nav-item CustomPointer" *ngFor="let child of getChildren(i)" [title]="child.Name"  data-toggle="collapse" data-target=".navbar-collapse.show">
+                <a class="nav-link" (click)="handleEvent(child)">{{child.Name}} </a>
+              </li>
+          </ul>
+        </li>
+    </ul>
+  </div>
+  <select class="btn" onchange="toggle()" id="theme" style="background-color: white;">
+    <option value="dark">Dark</option>
+    <option value="light">Teal</option>
+    <option value="neutral">Light</option>
+    <option value="nude">Nude</option>
+                     
+  </select>
+
+  <div class="float-right">
+    <div class="tx-profile d-inline-block">
+      <div class="btn-group me-1 ms-1" role="group">
+        <div class="btn-group" role="group">
+          <button id="MyAcoount" type="button" class="btn btn-primary btnMain dropdown-toggle ProfileDropDown" data-toggle="dropdown"
+            aria-haspopup="true">MyAccount</button>
+          <div class="dropdown-menu btndropdown" aria-labelledby="btnGroupDrop1" id="ProfileDropDown">
+
+            <div class="btn-group w-100">
+              <button class="dropdown-item" id="Logout" (click)="logout()"><i class="fa fa-sign-out"></i> Log Out  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

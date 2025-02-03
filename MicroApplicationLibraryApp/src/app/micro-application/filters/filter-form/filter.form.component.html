@@ -1,0 +1,87 @@
+<div class="modal-header ps-4">
+    <h5 class="modal-title" id="headerTitle">Filter</h5>
+    <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body ps-4 pe-4 pb-2 text-left">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mt-1 mb-2" *ngFor="let opt of Filters;">
+                <p class="text-nowrap">
+                    {{opt.DisplayLabel}}</p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <form [formGroup]="filterForm">
+                <div formArrayName="filters">
+                    <div *ngFor="let opt of FilterFormControlsArray; let i = index" [formGroup]="opt">
+                        <div class="row">
+                            <div class="col-md-4" *ngIf="checkControlTypeString(i)">
+                                <select class="form-control" formControlName="Operator">
+                                    <option *ngFor="let operator of stringOperators" [ngValue]="operator">
+                                        {{operator}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 mb-2" *ngIf="checkControlTypeString(i)">
+                                <input type="text" class="form-control" formControlName="Value" />
+                            </div>
+                            <div class="col-md-4" *ngIf="checkControlTypeDropdown(i)">
+                                <select class="form-control" formControlName="Operator">
+                                    <option *ngFor="let operator of stringOperators" [ngValue]="operator">
+                                        {{operator}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 mb-2" *ngIf="checkControlTypeDropdown(i)">
+                                <select class="form-control" formControlName="Value">
+                                    <option *ngFor="let option of checkOptionsForDropdown(i)" [ngValue]="option.Value">
+                                        {{option.Label}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer pe-4 pt-2 pb-2">
+    <button type="button" class="btn Cbtn-primary me-2" (click)="close()">Close</button>
+    <button type="button" class="btn Cbtn-primary me-2" (click)="reset()">Reset</button>
+    <button type="button" class="btn Cbtn-primary btnMain" (click)="openSaveFilterModel(saveFilterModel)">Save
+        Apply</button>
+    <button type="button" class="btn Cbtn-primary btnMain" (click)="apply()">Apply</button>
+</div> 
+
+ <ng-template #saveFilterModel let-c="close" let-d="dismiss">
+    <div class="modal-header text-left ps-4">
+        <h5 class="modal-title w-100">Save Filter</h5>
+        <button type="button" class="close">
+            <span aria-hidden="true" (click)="c('Cross click')">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ps-4 pe-4 pb-1 text-left">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-group has-float-label">
+                    <input type="text" class="form-control" id="FilterTitle" [(ngModel)]="filterTitle" maxlength="128"
+                        (keyup)="checkFilterTitle()" (keydown)="checkFilterTitle()" required>
+                    <span>Filter Title</span>
+                </label>
+                <div class="ErrorMsgBox">
+                    <div class="text-danger" *ngIf="showValidationMsg">
+                        Filter title is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer pt-2 pb-2 pe-4">
+        <button type="button" class="btn Cbtn-primary candidatebtn" (click)="c('Cross click')">Close</button>
+        <button class="btn Cbtn-primary btnMain candidatebtn" [disabled]="!filterTitle" (click)="saveAndApply()"
+            type="button">Save & Apply</button>
+    </div>
+</ng-template>
