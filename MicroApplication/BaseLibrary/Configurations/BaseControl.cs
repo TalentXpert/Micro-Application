@@ -77,7 +77,7 @@
         public static AppControl Username => AppControl.CreateSystemControl("581377CE-2C8D-4A8F-B564-E181A6BF9819", BaseControls.Username, "Username", ControlDataType.String, ControlTypes.TextBox);
         public static AppControl Website => AppControl.CreateSystemControl("89CE6948-D7ED-482E-8310-37744F6DE480", BaseControls.Website, "Website", ControlDataType.String, ControlTypes.TextBox);
         public static AppControl Organization => AppControl.CreateSystemControl("FC080040-A163-433B-B55E-6EF2E10D2138", BaseControls.Organization, "Organization", ControlDataType.String, ControlTypes.Typeahead);
-        public static AppControl UploadFile => AppControl.CreateSystemControl("F3C4B63C-3824-4454-9684-FC2C50217CEC", BaseControls.UploadFile, "UploadFile", ControlDataType.String, ControlTypes.UploadFile);
+        public static AppControl UploadFile => AppControl.CreateSystemControl("F3C4B63C-3824-4454-9684-FC2C50217CEC", BaseControls.UploadFile, "Upload File", ControlDataType.String, ControlTypes.File);
     }
 }
 
