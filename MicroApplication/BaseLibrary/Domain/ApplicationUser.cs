@@ -18,6 +18,7 @@ namespace BaseLibrary.Domain
         public string? PasswordResetCode { get; set; }
         public DateTime? PasswordResetCodeTimeStamp { get; set; }
         public string? Role { get; set; }
+        public Guid? DefaultStudyId { get;set;}
         public bool IsPasswordHashMatching(string password)
         {
             return Password == X.Security.PasswordHasher.ComputeSaltedHash(password, Salt.Value);

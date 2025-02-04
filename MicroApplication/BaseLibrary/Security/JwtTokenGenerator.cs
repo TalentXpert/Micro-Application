@@ -43,6 +43,7 @@ namespace BaseLibrary.Security
         public string Token { get; set; }
         public string Role { get; set; }
         public string Name { get; set; }
+        public Guid? DefaultStudyId { get; set; }
         public DateTime Expire { get; set; }
         public List<string> Permissions { get; set; }
         public JwtToken(string token, DateTime expire, List<string> permissions)

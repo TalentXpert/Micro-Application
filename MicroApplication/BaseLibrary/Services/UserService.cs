@@ -16,6 +16,7 @@ namespace BaseLibrary.Services
         List<ApplicationUser> GetUsers(UserFilterVM model, ApplicationUser loggedInUser);
         List<ApplicationUser> GetUsers(Guid organizationId, GridRequestVM model);
         ApplicationUser SaveUpdateOrganizationAdmin(SmartFormTemplateRequest model, ApplicationUser loggedInUser);
+        void UpdateUserDefaultStudy(Guid userId, Guid studyId);
     }
     public class UserService : ServiceLibraryBase, IUserService
     {
@@ -170,6 +171,16 @@ namespace BaseLibrary.Services
                 RF.RoleRepository.Add(organizationAdminRole);
             }
             return organizationAdminRole;
+        }
+
+        public void UpdateUserDefaultStudy(Guid userId, Guid studyId)
+        {
+            ApplicationUser applicationUser = RF.UserRepository.Get(userId);
+            if (applicationUser != null)
+            {
+                applicationUser.DefaultStudyId= studyId;
+                applicationUser.SetUpdatedOn();
+            }
         }
     }
 }

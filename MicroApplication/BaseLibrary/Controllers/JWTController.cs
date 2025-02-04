@@ -101,6 +101,7 @@ namespace BaseLibrary.Controllers
                     jwt.Permissions = BSF.UserRoleService.GetUserAllPermissions(user);
                     jwt.Role =user.Role;
                     jwt.Name = user.Name;
+                    jwt.DefaultStudyId = user.DefaultStudyId;
                     CommitTransaction();
                     return Ok(jwt);
                 }
