@@ -9,6 +9,7 @@
         public const string Double = "double";
         public const string String = "string";
         public const string Guid = "Guid";
+        public const string File = "file";
     }
 
     public class ControlDataType
@@ -25,6 +26,8 @@
         public static ControlDataType Double = new ControlDataType(ControlDataTypes.Double);
         public static ControlDataType String = new ControlDataType(ControlDataTypes.String);
         public static ControlDataType Guid = new ControlDataType(ControlDataTypes.Guid);
+        public static ControlDataType File = new ControlDataType(ControlDataTypes.File);
+
         public static SmartControlAlignment GetAlignment(string dataType)
         {
             if (dataType == String.Name || dataType == Bool.Name)
@@ -32,15 +35,14 @@
             return SmartControlAlignment.Right;
         }
 
-        private static List<ControlDataType> _types = new List<ControlDataType> { Bool, Datetime, Date, Integer, Double, String, Guid };
+        private static List<ControlDataType> _types = new List<ControlDataType> { Bool, Datetime, Date, Integer, Double, String, Guid, File };
         public static List<ControlDataType> GetControlDataTypes()
         {
             return _types;
         }
         public static ControlDataType GetDataType(string dataType)
         {
-            var controlTypes = _types;
-            return controlTypes.First(ct => ct.Name == dataType);
+            return _types.First(ct => ct.Name == dataType);
         }
         public static ControlDataType GetDataTypeFromPrefix(string prefix)
         {

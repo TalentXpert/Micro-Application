@@ -1,0 +1,43 @@
+<div class="col-md-12 mt-1 ps-3 pe-3 mb-2 scrolldown">
+    <div class="row">
+        <div class="InternalCard pt-3 pb-2 ApplicationPageCardHeight">
+            <div class="col-md-12 mt-1">
+                <form [formGroup]="dashboardBuilderForm" class="ps-2">
+                    <div class="row">
+                        <div class="col-md-2 pe-1">
+                            <label class="form-group has-float-label">
+                                <select class="form-control" id="jobDropdown" formControlName="dashboard" required
+                                    (change)="onSelectDashboard()"
+                                    [(ngModel)]="dashboardBuilderViewModel.selectDashboardSchema">
+                                    <option selected [disabled]="true" value="">Select Dashboard</option>
+                                    <option *ngFor="let option of dashboardBuilderViewModel.dashboardSchemaList"
+                                        [value]="option.Id">
+                                        {{option.Name}}
+                                    </option>
+                                </select>
+                                <span>Dashboard</span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 pe-4 mt-1">
+                            <button type="button" class="btn Cbtn-primary float-left optbtn AssignTo me-2"
+                                title="Add Dashboard" (click)="addEditDashboard('Add')"><i
+                                    class="fa fa-plus me-1"></i>Add
+                                Dashboard</button>
+                            <button type="button" class="btn Cbtn-primary float-left optbtn AssignTo me-2"
+                                title="Edit Dashboard" (click)="addEditDashboard('Edit')"
+                                *ngIf="dashboardBuilderViewModel.selectDashboardSchema"><i
+                                    class="fa fa-pencil me-1"></i>Edit Dashboard</button>
+                            <button type="button" class="btn Cbtn-primary float-left optbtn AssignTo me-2"
+                                title="Add Row" (click)="addRow()"><i class="fa fa-plus me-1"></i>Rows</button>
+                            <button type="button" class="btn Cbtn-primary float-left optbtn AssignTo me-2"
+                                title="Add Panel" (click)="addPanel()"><i class="fa fa-plus me-1"></i>Panel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row mt-2 ms-4 scrollable-row" *ngIf="newDashboardSchema && newDashboardSchema.Rows.length > 0">
+                <app-dashboard [dashboardSchema]="newDashboardSchema"></app-dashboard>
+            </div>
+        </div>
+    </div>
+</div>

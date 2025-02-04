@@ -1,0 +1,335 @@
+<div class="col-md-12 mt-1 ps-3 pe-3 mb-2">
+    <div class="row">
+        <div class="InternalCard pt-3 pb-2 ApplicationPageCardHeight">
+
+            <div class="col-md-12 ">
+                <form [formGroup]="appFormConfigForm">
+                    <div class="row ps-2" *ngIf="appFormList.length > 0">
+                        <div class="col-md-2 pe-1  ps-0">
+                            <label class="form-group has-float-label">
+                                <select class="form-control" id="jobDropdown" [(ngModel)]="selectedFormId"
+                                    formControlName="form" required (change)="onSelectForm()">
+                                    <option selected [disabled]="true" value="">Select Form</option>
+                                    <option *ngFor="let option of appFormList" [value]="option.Id">
+                                        {{option.Name}}
+                                    </option>
+                                </select>
+                                <span>Forms</span>
+                            </label>
+                        </div>
+                        <div class="col-md-2 pe-1 ps-0" *ngFor="let control of smartControls">
+                            <div *ngIf="control.ControlType =='Dropdown'">
+                                <label class="form-group has-float-label">
+                                    <select class="form-control" [formControlName]="control.DisplayLabel"
+                                        [required]="control.IsMandatory" (ngModelChange)="loadChildOptions(control)">
+                                        <option [disabled]="true" [selected]="true" value="">Select
+                                            {{control.DisplayLabel}}</option>
+                                        <option *ngFor="let option of control.Options" [ngValue]="option.Value">
+                                            {{option.Label}}
+                                        </option>
+                                    </select>
+                                    <span>{{control.DisplayLabel}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pb-0 float-right" *ngIf="selectedFormId">
+                            <p class="mt-1"><strong>Note : The fixed form control properties and position
+                                    will not change.
+                                </strong></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <div class="ExportTrackerTableHeight" id="style-5">
+                            <table class="table table-bordered mb-0"
+                                *ngIf="fCViewModel.dr && fCViewModel.dr.rows.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th class="TableHeader sticky-top w-40">Application Controls </th>
+                                        <th class="TableHeader sticky-top w-40">Form Controls</th>
+                                        <th class="TableHeader sticky-top w-20"> Properties </th>
+                                    </tr>
+                                </thead>
+                                <tbody cdkDropListGroup *ngIf="fCViewModel.dr && fCViewModel.dr.rows">
+                                    <tr *ngFor="let row of fCViewModel.dr.rows;  let i = index">
+                                        <td *ngFor="let field of row.columns; let j = index" id="jobStatusColumn">
+                                            <div class="drag-container">
+                                                <div cdkDropList [cdkDropListData]="field.children" class="item-list"
+                                                    (cdkDropListDropped)="drop($event, i, j)"
+                                                    [style.min-height.px]="row.rowHeight">
+                                                    <div n class="item-box d-block" *ngFor="let field of field.children"
+                                                        [cdkDragDisabled]="field.IsFixed" cdkDrag>
+                                                        <div *cdkDragPlaceholder [style.min-height.px]="row.rowHeight">
+                                                        </div>
+                                                        <div class="DragCardBody">
+                                                            <div [ngClass]="getClassForInterviewCard(field)"
+                                                                (click)="nodeClick(field)">
+                                                                <h6 class="mb-0 ">{{field.DisplayLabel}}
+                                                                    <button type="button"
+                                                                        *ngIf="!field.IsFixed && field.ColumnId == 2"
+                                                                        class="close" (click)="remove(field)">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="selectedFormControl && IsClickedOnCard">
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="selectedFormControl.IsFixed">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Unique :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <p class="text-truncate"> {{selectedFormControl.IsUnique ?
+                                                            'Yes': 'No'}}
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox" *ngIf="selectedFormControl.IsFixed">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="!selectedFormControl.IsFixed">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Unique :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <select class="form-control" id="jobDropdown"
+                                                            [ngModelOptions]=" {standalone: true}"
+                                                            [(ngModel)]="selectedFormControl.IsUnique" (ngModelChange)="setSelectedFormControlProperties()">
+                                                            <option [ngValue]="true">Yes</option>
+                                                            <option [ngValue]="false">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox" *ngIf="!selectedFormControl.IsFixed">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0 ">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Display Label :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <p class="text-truncate"> {{selectedFormControl.DisplayLabel}}
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Data Type :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <p class="text-truncate"> {{selectedFormControl.DataType}}</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Control Type :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <p class="text-truncate"> {{selectedFormControl.ControlType}}
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="!selectedFormControl.IsFixed">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Editable :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-1">
+                                                        <select class="form-control"
+                                                            [ngModelOptions]=" {standalone: true}" id="jobDropdown"
+                                                            [(ngModel)]="selectedFormControl.IsEditable" (ngModelChange)="setSelectedFormControlProperties()">
+                                                            <option [ngValue]="true">Yes</option>
+                                                            <option [ngValue]="false">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox" *ngIf="!selectedFormControl.IsFixed">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="selectedFormControl.IsFixed">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Mandatory :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-1">
+                                                        <p class="text-truncate">{{selectedFormControl.IsMandatory ?
+                                                            'Yes': 'No'}} </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox" *ngIf="selectedFormControl.IsFixed">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="!selectedFormControl.IsFixed">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Mandatory :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-1">
+                                                        <select class="form-control" id="jobDropdown"
+                                                            [ngModelOptions]=" {standalone: true}"
+                                                            [(ngModel)]="selectedFormControl.IsMandatory" (ngModelChange)="setSelectedFormControlProperties()">
+                                                            <option [ngValue]="true">Yes</option>
+                                                            <option [ngValue]="false">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox" *ngIf="!selectedFormControl.IsFixed">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Minimum :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-1">
+                                                        <p class="text-truncate">{{selectedFormControl.Minimum}} </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox"
+                                                *ngIf="selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="!selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Minimum :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+                                                        <input type="text" class="form-control"
+                                                            [ngModelOptions]=" {standalone: true}"
+                                                            [(ngModel)]="selectedFormControl.Minimum" (focusout)="setSelectedFormControlProperties()" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox"
+                                                *ngIf="!selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0"
+                                                *ngIf="selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Maximum :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-1">
+                                                        <p class="text-truncate">{{selectedFormControl.Maximum}} </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox"
+                                                *ngIf="selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                            </div>
+                                            <div class="col-md-12 invoiceDesc ps-0 pe-0 mt-1"
+                                                *ngIf="!selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="text-truncate"><strong>Maximum :
+                                                            </strong> </p>
+                                                    </div>
+                                                    <div class="col-md-6 mt-1">
+                                                        <input type="text" class="form-control"
+                                                            [ngModelOptions]=" {standalone: true}"
+                                                            [(ngModel)]="selectedFormControl.Maximum" (focusout)="setSelectedFormControlProperties()" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ErrorMsgBox"
+                                                *ngIf="!selectedFormControl.IsFixed && (selectedFormControl.ControlType =='TextBox' || selectedFormControl.DataType =='TextArea')">
+                                            </div>
+                                            <div class="w-100"
+                                                *ngIf="OptionsFormArray.controls.length > 0 || selectedFormControl.DataType == 'Dropdown'">
+                                                <div class="col-md-12 text-left mb-2">
+                                                    <button class="btn Cbtn-primary" (mousedown)="addOption()">Add
+                                                        Option</button>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="customFieldScrollbar" id="style-5">
+                                                        <table class="table table-bordered mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="w-90 TableHeader sticky-top">Options</th>
+                                                                    <th class="w-10 TableHeader sticky-top">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody formArrayName="Options" id="ng-invalidDiv">
+                                                                <tr *ngFor="let opt of OptionsFormControlsArray; let i = index"
+                                                                    [formGroup]="opt" id="ng-invalidDiv">
+                                                                    <td class="pb-0">
+                                                                        <input class="form-control" type="text"
+                                                                            placeholder="Option"
+                                                                            formControlName="Option" />
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <button class="btn btn-outline-danger optbtn"
+                                                                            ngbTooltip="Delete" placement="bottom"
+                                                                            tooltipClass="my-custom-class"
+                                                                            (click)="deleteOptions(i)">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="col-md-12 mt-2" *ngIf="fCViewModel.dr && fCViewModel.dr.rows.length > 0">
+                    <button type="button" class="btn Cbtn-primary btnMain" [disabled]="appFormConfigForm.invalid"
+                        (click)="save()">Save</button>
+                    <button type="button" class="btn Cbtn-primary btnMain ms-2" [disabled]="appFormConfigForm.invalid"
+                        (click)="resetForm()">Reset To Original
+                        Form</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+.InternalCard {
+  background: #fff;
+  display: inline-block;
+  width: 100%;
+}
+.NoDataFound {
+  margin-top: 130px;
+  text-align: center;
+  color: #d1d1d1;
+  width: 100%;
+}
+.NoDataFound i {
+  font-size: 45px;
+}
+.DescArrow {
+  position: absolute !important;
+}
+.CustomPtr {
+  cursor: pointer !important;
+}
+.custom-class .tooltip-inner {
+  font-size: 12px;
+}
+.optiondropdow {
+  border: none;
+  background: transparent;
+  color: #222;
+  font-size: 15px !important;
+  text-align: center;
+  height: 28px;
+  width: 28px;
+  line-height: 1.8em !important;
+  border-radius: 50%;
+}
+.optiondropdow:hover,
+.optiondropdow:focus,
+.optiondropdow:visited,
+.optiondropdow:active {
+  border: none;
+  background: #fff;
+}
+.optdropdow {
+  border: none;
+  background: transparent;
+  color: #222;
+  line-height: 1.8em !important;
+  border-radius: 50%;
+}
+.optdropdow:hover,
+.optdropdow:focus,
+.optdropdow:visited,
+.optdropdow:active {
+  border: none;
+  background: #fff;
+}
+.butndropdown {
+  font-size: 12px !important;
+  padding: 0 !important;
+  transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -webkit-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+}
+.butndropdown .dropdown-item {
+  padding: 5px 10px !important;
+  border-bottom: 1px dotted #222;
+  color: #000;
+  font-size: 11px;
+  font-weight: 300;
+}
+.butndropdown .dropdown-item:hover,
+.butndropdown .dropdown-item:focus {
+  background: #764AF1 !important;
+  color: #fff !important;
+  outline: none !important;
+}
+.butndropdown .dropdown-item i {
+  width: 15px !important;
+}
+.AdvanceFilter i {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 16px !important;
+  line-height: 1.8em !important;
+  text-align: center;
+  color: #764AF1;
+  border-radius: 15%;
+  border: 1px solid #764AF1;
+}
+.ApplicationPageTableHeight {
+  height: calc(100vh - 10.2rem) !important;
+}
+.ApplicationPageCardHeight {
+  height: calc(100vh - 6.7rem) !important;
+}
+.ApplicationPageCardHeight {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.ApplicationPageTableHeight {
+  background: #fff;
+  overflow-y: scroll !important;
+  overflow-x: scroll !important;
+}
+#style-1::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+#style-1::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
+#MainMenudropdown {
+  left: -145px !important;
+  width: 180px !important;
+  transform: translate3d(0px, 28px, 0px) !important;
+}
+.div.col {
+  border-top: solid 1px black;
+}
+.div.col > div.box {
+  border-bottom: solid 1px black;
+  border-right: solid 1px black;
+  border-left: solid 1px black;
+}
+.scrollable-row {
+  max-height: 350px; 
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.dashboard-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}

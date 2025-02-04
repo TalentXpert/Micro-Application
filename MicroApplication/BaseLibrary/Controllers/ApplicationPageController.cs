@@ -1,6 +1,7 @@
 ﻿using BaseLibrary.Configurations.PageHandlers;
 using BaseLibrary.Utilities.Excels;
 using System.Data;
+using System.Net.Http.Headers;
 
 namespace BaseLibrary.Controllers
 {
@@ -428,15 +429,32 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        #endregion
 
-        #region Page View 
-        /// <summary>
-        /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
-        /// </summary>
-        /// <param name="pageId"></param>
-        /// <returns></returns>
-        [HttpGet("GetViewPageContents/{formId}/{id}")]
+        [HttpPost("UploadFile")]
+        public ActionResult<bool> UploadFile(UploadProfileResumeVM uploadProfileResumeVM)
+        {
+            try
+            {
+                //to do
+                return Ok(true);
+            }
+            catch (Exception exception)
+            {
+                RollbackTransaction();
+                return HandleException(exception, CodeHelper.CallingMethodInfo());
+            }
+
+        }
+
+            #endregion
+
+            #region Page View 
+            /// <summary>
+            /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
+            /// </summary>
+            /// <param name="pageId"></param>
+            /// <returns></returns>
+            [HttpGet("GetViewPageContents/{formId}/{id}")]
         public IActionResult GetViewPageContents(Guid formId, Guid id)
         {
             try
@@ -512,4 +530,9 @@ namespace BaseLibrary.Controllers
         #endregion
 
     }
+}
+
+public class UploadProfileResumeVM
+{
+    public IFormFile Resume { get; set; }
 }

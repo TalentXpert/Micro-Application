@@ -1,0 +1,34 @@
+<div class="alert-frame" *ngIf="alertModal">
+    <div class="alert-header">
+        <span class="alert-close" (click)="onClickOk(alertModal.ModalBody); ngbActiveModal.close('Close click')">X</span>
+        <div class="alert-icon alert-icon-bg" *ngIf = "alertModal.Type === 'alert'"><i class="fa fa-exclamation-triangle"></i></div>
+        <div class="alert-icon error-icon-bg" *ngIf = "alertModal.Type === 'error'"><i class="fa fa-times-circle"></i></div>
+        <div class="alert-icon success-icon-bg" *ngIf = "alertModal.Type === 'success'"><i class="fa fa-check-circle"></i></div>
+        <div class="alert-icon warning-icon-bg" *ngIf = "alertModal.Type === 'warning'"><i class="fa fa-exclamation-circle"></i></div>
+        <div class="alert-icon confirm-icon-bg" *ngIf = "alertModal.Type === 'information'"><i class="fa fa-info-circle"></i></div>
+
+        <span class="alert-title" *ngIf = "alertModal.Type === 'alert'">Alert</span>
+        <span class="alert-title" *ngIf = "alertModal.Type === 'error'">Error</span>
+        <span class="alert-title" *ngIf = "alertModal.Type === 'success'">Success</span>
+        <span class="alert-title" *ngIf = "alertModal.Type === 'warning'">Warning</span>
+        <span class="alert-title" *ngIf = "alertModal.Type === 'information'">Information</span>
+    </div>
+    <div class="alert-body">
+        <h6 id="alertlineheight" [ngClass]="getClassforMessage()" [innerHtml]="alertModal.ModalBody" *ngIf="!hasData(alertModal.UnorderedList)"></h6>  
+        <div class="ErrorMsgScroll" id="style-5" *ngIf="hasData(alertModal.UnorderedList)">
+            <div class="ErrorMsgContent text-left">
+                <div class="alert alert-danger mb-3 pt-2 pb-1 ps-3 me-2" role="alert">
+                    <p class="mb-0">{{alertModal.ModalTitle}}</p>        
+                </div>
+                <ul>
+                    <li *ngFor="let data of alertModal.UnorderedList">{{data}}</li>
+                </ul>
+            </div>
+        </div>
+        <p [ngClass]="getClassforNote()" *ngIf="alertModal.Note"><b>Note</b>: {{alertModal.Note}} </p>      
+        <div class="mt-3">
+            <button type="button" class="btn Cbtn-primary w-17 btnMain" id="alertModalCloseBtn" (click)="onClickOk(alertModal.ModalBody); ngbActiveModal.close('Close click')"> OK </button>
+        </div>
+    </div>
+</div>
+    

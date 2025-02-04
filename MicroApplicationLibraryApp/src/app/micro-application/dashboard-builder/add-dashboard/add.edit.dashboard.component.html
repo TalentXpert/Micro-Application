@@ -1,0 +1,94 @@
+<div class="modal-header ps-4">
+  <h5 class="modal-title">{{mode}} Dashboard</h5>
+  <button type="button" class="close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body ps-4 pe-4">
+  <div class="row">
+    <div class="col-md-12 text-left">
+      <form [formGroup]="addEditDashboardBuilderForm" novalidate>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input id="UserName" type="text" class="form-control" formControlName="Name" required
+              placeholder="Enter Name" />
+            <span>Name</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="(addEditDashboardBuilderForm.controls['Name'].invalid) && ( addEditDashboardBuilderForm.controls['Name'].dirty || addEditDashboardBuilderForm.controls['Name'].touched)">
+              <div *ngIf="addEditDashboardBuilderForm.get('Name')?.hasError('required')"> {{validationMessage.NameRequired}} </div>
+              <div
+                *ngIf="addEditDashboardBuilderForm.get('Name')?.hasError('minlength') || addEditDashboardBuilderForm.get('Name')?.hasError('maxlength')">
+                {{validationMessage.NameMinMax}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <textarea class="form-control" rows="3" formControlName="Description"
+              placeholder="Enter Description"></textarea>
+            <span>Description</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="(addEditDashboardBuilderForm.controls['Description'].invalid) && ( addEditDashboardBuilderForm.controls['Description'].dirty || addEditDashboardBuilderForm.controls['Description'].touched)">
+              
+              <div
+                *ngIf="addEditDashboardBuilderForm.get('Description')?.hasError('minlength') || addEditDashboardBuilderForm.get('Description')?.hasError('maxlength')">
+                {{validationMessage.DescriptionRange}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input type="text" class="form-control" id="Amount" required formControlName="MinimumRowHeight"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span>Minimum Row Height</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger "
+              *ngIf="addEditDashboardBuilderForm.controls['Position'].invalid && (addEditDashboardBuilderForm.controls['Position'].dirty || addEditDashboardBuilderForm.controls['Position'].touched)">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <select class="form-control" id="selecteUserType" formControlName="MenuId" required>
+              <option selected value="">Select Menu</option>
+              <option *ngFor="let option of topMenus" [value]="option.Id">{{option.Name}}</option>
+            </select>
+            <span>Menu</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger"
+              *ngIf="addEditDashboardBuilderForm.controls['MenuId'].invalid && (addEditDashboardBuilderForm.controls['MenuId'].dirty || addEditDashboardBuilderForm.controls['MenuId'].touched)">
+              <div *ngIf="addEditDashboardBuilderForm.get('MenuId')?.hasError('required')">{{validationMessage.MenuRequired}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pe-0 ps-0">
+          <label class="form-group has-float-label">
+            <input type="text" class="form-control" id="Amount" required formControlName="Position"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span>Position</span>
+          </label>
+          <div class="ErrorMsgBox">
+            <div class="text-danger "
+              *ngIf="addEditDashboardBuilderForm.controls['Position'].invalid && (addEditDashboardBuilderForm.controls['Position'].dirty || addEditDashboardBuilderForm.controls['Position'].touched)">
+              <div *ngIf="addEditDashboardBuilderForm.get('MenuId')?.hasError('required')"> {{validationMessage.PositionRequired}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-footer pt-2 pb-2 ps-2 pe-4">
+  <button id="RegisterClose" type="button" class="btn Cbtn-primary" (click)="close()">Close</button>
+  <button id="RegisterSubmit" type="submit" class="btn Cbtn-primary btnMain" [disabled]="addEditDashboardBuilderForm.invalid"
+    (click)="saveForm()">Submit</button>
+</div>
