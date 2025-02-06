@@ -431,11 +431,17 @@ namespace BaseLibrary.Controllers
 
 
         [HttpPost("UploadFile")]
-        public ActionResult<bool> UploadFile(UploadProfileResumeVM uploadProfileResumeVM)
+        public ActionResult<bool> UploadFile(FileUploadViewModel fileUploadViewModel)
         {
             try
             {
-                //to do
+                string path = "C:\\Projects\\StudyConfiguration\\StudyDocs";
+                string fileNameWithPath = Path.Combine(path, fileUploadViewModel.UploadedFile.FileName);
+                // Save the file
+                using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
+                {
+                    fileUploadViewModel.UploadedFile.CopyTo(stream);
+                }
                 return Ok(true);
             }
             catch (Exception exception)
@@ -443,7 +449,6 @@ namespace BaseLibrary.Controllers
                 RollbackTransaction();
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
-
         }
 
             #endregion
@@ -532,7 +537,7 @@ namespace BaseLibrary.Controllers
     }
 }
 
-public class UploadProfileResumeVM
+public class FileUploadViewModel
 {
-    public IFormFile Resume { get; set; }
+    public required IFormFile UploadedFile { get; set; }
 }
