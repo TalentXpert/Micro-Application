@@ -1,7 +1,5 @@
-﻿
-namespace BaseLibrary.Controls.Forms
+﻿namespace BaseLibrary.Controls.Forms
 {
-
     public class SmartFormTemplateRequest
     {
         public Guid FormId { get; set; }
@@ -13,11 +11,5 @@ namespace BaseLibrary.Controls.Forms
             ControlValues = new List<ControlValue>();
             FormMode = "Add";
         }
-    }
-
-    public class UploadFileModel
-    {
-        public IFormFile? FormFile { get; set; }
-    }
-    
+    }  
 }
