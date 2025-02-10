@@ -24,10 +24,12 @@ namespace BaseLibrary.Controllers
     public class ApplicationPageController : BaseLibraryController
     {
         public ILoggerFactory LoggerFactory { get; }
+        private string? _studyDocumentsPath { get; set; }
 
         public ApplicationPageController(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ApplicationPageController>())
         {
             LoggerFactory = loggerFactory;
+            _studyDocumentsPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("FileUploadSettings")["StudyDocumentsPath"];
         }
 
         /// <summary>
@@ -436,9 +438,7 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var studyDocumentsPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").
-                    Build().GetSection("FileUploadSettings")["StudyDocumentsPath"];
-                string fileNameWithPath = Path.Combine(studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
+                string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
                 // Save the file
                 using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
                 {
@@ -453,15 +453,33 @@ namespace BaseLibrary.Controllers
             }
         }
 
-            #endregion
+        [HttpDelete("DeleteFile/{formId}/{controlId}")]
+        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId)
+        {
+            try
+            {
+                var filePath = string.Concat(Path.Combine(_studyDocumentsPath, "CL_3_NSTSE-2024-Paper-1O109 Key.pdf"));
+                if (System.IO.File.Exists(filePath))
+                    System.IO.File.Delete(filePath);
 
-            #region Page View 
-            /// <summary>
-            /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
-            /// </summary>
-            /// <param name="pageId"></param>
-            /// <returns></returns>
-            [HttpGet("GetViewPageContents/{formId}/{id}")]
+                return Ok(true);
+            }
+            catch (Exception exception)
+            {
+                RollbackTransaction();
+                return HandleException(exception, CodeHelper.CallingMethodInfo());
+            }
+        }
+
+        #endregion
+
+        #region Page View 
+        /// <summary>
+        /// This API return page saved state so user should see last visited view of this page (CurrentGridFilterId,PageActions and GlobalControls)
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <returns></returns>
+        [HttpGet("GetViewPageContents/{formId}/{id}")]
         public IActionResult GetViewPageContents(Guid formId, Guid id)
         {
             try
