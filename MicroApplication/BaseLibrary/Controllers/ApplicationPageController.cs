@@ -2,6 +2,7 @@
 using BaseLibrary.Utilities.Excels;
 using System.Data;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
 
 namespace BaseLibrary.Controllers
 {
@@ -435,8 +436,9 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                string path = "C:\\Projects\\StudyConfiguration\\StudyDocs";
-                string fileNameWithPath = Path.Combine(path, fileUploadViewModel.UploadedFile.FileName);
+                var studyDocumentsPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").
+                    Build().GetSection("FileUploadSettings")["StudyDocumentsPath"];
+                string fileNameWithPath = Path.Combine(studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
                 // Save the file
                 using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
                 {
