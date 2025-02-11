@@ -438,15 +438,25 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                //if (fileUploadViewModel.UploadedFile != null)
-                //{
-                //    string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
-                //    // Save the file
-                //    using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
-                //    {
-                //        fileUploadViewModel.UploadedFile.CopyTo(stream);
-                //    }
-                //}
+                if (fileUploadViewModel.UploadFiles != null && fileUploadViewModel.UploadFiles.Any())
+                {
+                    if (fileUploadViewModel.ControlId == null ||
+                        fileUploadViewModel.ControlId.Count != fileUploadViewModel.UploadFiles.Count)
+                    {
+                        return BadRequest("Mismatch between the number of uploaded files and control IDs.");
+                    }
+                    for (int i = 0; i < fileUploadViewModel.UploadFiles.Count; i++)
+                    {
+                        var file = fileUploadViewModel.UploadFiles[i];
+                        var controlId = fileUploadViewModel.ControlId[i];
+                        string uniqueFileName = $"{controlId}_{file.FileName}";
+                        string fileNameWithPath = Path.Combine(_studyDocumentsPath, uniqueFileName);
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                    }
+                }
 
                 return Ok(true);
             }
