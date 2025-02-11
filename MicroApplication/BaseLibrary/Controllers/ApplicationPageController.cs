@@ -438,12 +438,16 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
-                // Save the file
-                using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
+                if (fileUploadViewModel.UploadedFile != null)
                 {
-                    fileUploadViewModel.UploadedFile.CopyTo(stream);
+                    string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
+                    // Save the file
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
+                    {
+                        fileUploadViewModel.UploadedFile.CopyTo(stream);
+                    }
                 }
+
                 return Ok(true);
             }
             catch (Exception exception)
@@ -453,12 +457,12 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        [HttpDelete("DeleteFile/{formId}/{controlId}")]
-        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId)
+        [HttpDelete("DeleteFile/{formId}/{controlId}/{fileName}")]
+        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId,string fileName)
         {
             try
             {
-                var filePath = string.Concat(Path.Combine(_studyDocumentsPath, "CL_3_NSTSE-2024-Paper-1O109 Key.pdf"));
+                var filePath = string.Concat(Path.Combine(_studyDocumentsPath, fileName));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
 
