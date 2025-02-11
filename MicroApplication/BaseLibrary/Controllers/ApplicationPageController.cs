@@ -438,16 +438,21 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                //if (fileUploadViewModel.UploadedFile != null)
-                //{
-                //    string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
-                //    // Save the file
-                //    using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
-                //    {
-                //        fileUploadViewModel.UploadedFile.CopyTo(stream);
-                //    }
-                //}
-
+                if (fileUploadViewModel.UploadFiles != null) 
+                {
+                    foreach (var uploadedFile in fileUploadViewModel.UploadFiles)
+                    {
+                        if (uploadedFile != null)
+                        {
+                            string fileNameWithPath = Path.Combine(_studyDocumentsPath, uploadedFile.FileName);
+                            // Save the file
+                            using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
+                            {
+                                uploadedFile.CopyTo(stream);
+                            }
+                        }
+                    }              
+                }
                 return Ok(true);
             }
             catch (Exception exception)
@@ -564,5 +569,4 @@ namespace BaseLibrary.Controllers
 public class FileUploadViewModel
 {
     public List<IFormFile> UploadFiles { get; set; }
-    public List<string> ControlId { get; set; }
 }
