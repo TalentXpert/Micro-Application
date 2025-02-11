@@ -434,19 +434,19 @@ namespace BaseLibrary.Controllers
 
 
         [HttpPost("UploadFile")]
-        public ActionResult<bool> UploadFile(FileUploadViewModel fileUploadViewModel)
+        public ActionResult<bool> UploadFile([FromForm] FileUploadViewModel fileUploadViewModel)
         {
             try
             {
-                if (fileUploadViewModel.UploadedFile != null)
-                {
-                    string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
-                    // Save the file
-                    using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
-                    {
-                        fileUploadViewModel.UploadedFile.CopyTo(stream);
-                    }
-                }
+                //if (fileUploadViewModel.UploadedFile != null)
+                //{
+                //    string fileNameWithPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.UploadedFile.FileName);
+                //    // Save the file
+                //    using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
+                //    {
+                //        fileUploadViewModel.UploadedFile.CopyTo(stream);
+                //    }
+                //}
 
                 return Ok(true);
             }
@@ -563,5 +563,6 @@ namespace BaseLibrary.Controllers
 
 public class FileUploadViewModel
 {
-    public required IFormFile UploadedFile { get; set; }
+    public List<IFormFile> UploadFiles { get; set; }
+    public List<string> ControlId { get; set; }
 }
