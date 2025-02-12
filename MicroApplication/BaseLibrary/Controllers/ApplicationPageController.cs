@@ -438,13 +438,18 @@ namespace BaseLibrary.Controllers
         {
             try
             {
+                var directoryPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.FormId.ToString());
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
                 if (fileUploadViewModel.UploadFiles != null) 
                 {
                     foreach (var uploadedFile in fileUploadViewModel.UploadFiles)
                     {
                         if (uploadedFile != null)
                         {
-                            string fileNameWithPath = Path.Combine(_studyDocumentsPath, uploadedFile.FileName);
+                            string fileNameWithPath = Path.Combine(directoryPath, uploadedFile.FileName);
                             // Save the file
                             using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
                             {
@@ -467,7 +472,8 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var filePath = string.Concat(Path.Combine(_studyDocumentsPath, fileName));
+                var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString());
+                var filePath = string.Concat(Path.Combine(directoryPath,$"{controlId}_{fileName}"));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
 
@@ -569,4 +575,5 @@ namespace BaseLibrary.Controllers
 public class FileUploadViewModel
 {
     public List<IFormFile> UploadFiles { get; set; }
+    public Guid FormId { get; set; }
 }
