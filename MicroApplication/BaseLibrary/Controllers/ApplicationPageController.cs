@@ -1,7 +1,6 @@
 ﻿using BaseLibrary.Configurations.PageHandlers;
 using BaseLibrary.Utilities.Excels;
 using System.Data;
-using System.Net.Http.Headers;
 using Microsoft.Extensions.Configuration;
 
 namespace BaseLibrary.Controllers
@@ -467,16 +466,21 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        [HttpDelete("DeleteFile/{formId}/{controlId}/{fileName}")]
-        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId, string fileName)
+        [HttpPost("DeleteFile")]
+        public ActionResult<bool> DeleteFile([FromBody] SmartFormTemplateRequest formViewModel)
         {
             try
             {
-                var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString());
-                var filePath = string.Concat(Path.Combine(directoryPath, $"{controlId}_{fileName}"));
+                var fileControl = formViewModel.ControlValues.First(y => y.ControlId.ToString() == formViewModel.RemoveControlId.ToString());
+                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString());
+                var filePath = string.Concat(Path.Combine(directoryPath, $"{formViewModel.RemoveControlId.ToString()}_{fileControl.Values.First()}"));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
 
+                formViewModel.ControlValues.Remove(fileControl);
+                var pageHandler = GetFormHandler(formViewModel.FormId);
+                pageHandler.ProcessFormSaveRequest(formViewModel);
+                CommitTransaction();
                 return Ok(true);
             }
             catch (Exception exception)
@@ -495,7 +499,7 @@ namespace BaseLibrary.Controllers
             if (!System.IO.File.Exists(filePath))
                 throw new ValidationException("File not found.");
 
-            return base.Download(filePath, fileName);
+            return Download(filePath, fileName);
         }
 
         #endregion
@@ -582,10 +586,4 @@ namespace BaseLibrary.Controllers
         #endregion
 
     }
-}
-
-public class FileUploadViewModel
-{
-    public List<IFormFile> UploadFiles { get; set; }
-    public Guid FormId { get; set; }
 }
