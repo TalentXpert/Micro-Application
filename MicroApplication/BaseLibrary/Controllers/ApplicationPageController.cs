@@ -468,12 +468,12 @@ namespace BaseLibrary.Controllers
         }
 
         [HttpDelete("DeleteFile/{formId}/{controlId}/{fileName}")]
-        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId,string fileName)
+        public ActionResult<bool> DeleteFile(Guid formId, Guid controlId, string fileName)
         {
             try
             {
                 var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString());
-                var filePath = string.Concat(Path.Combine(directoryPath,$"{controlId}_{fileName}"));
+                var filePath = string.Concat(Path.Combine(directoryPath, $"{controlId}_{fileName}"));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
 
@@ -484,6 +484,18 @@ namespace BaseLibrary.Controllers
                 RollbackTransaction();
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
+        }
+
+        [HttpGet("DownloadFile/{formId}/{controlId}/{fileName}")]
+        public IActionResult DownloadFile(Guid formId, Guid controlId, string fileName)
+        {
+            var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString());
+            var filePath = string.Concat(Path.Combine(directoryPath, $"{controlId}_{fileName}"));
+
+            if (!System.IO.File.Exists(filePath))
+                throw new ValidationException("File not found.");
+
+            return base.Download(filePath, fileName);
         }
 
         #endregion
