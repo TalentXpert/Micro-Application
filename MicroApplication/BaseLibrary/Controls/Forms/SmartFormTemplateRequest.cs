@@ -6,6 +6,7 @@
         public Guid? DataKey { get; set; } //row primary key
         public string FormMode { get; set; } //1-Add , 2 - Edit, 3 Copy, 4 delete
         public List<ControlValue> ControlValues { get; set; }
+        public List<string> RemoveFileNames { get; set; }
         public Guid? RemoveControlId { get; set; }
         public SmartFormTemplateRequest()
         {

@@ -3,6 +3,7 @@ using BaseLibrary.Utilities.Excels;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using BaseLibrary.Controls.Forms;
+using BaseLibrary.UI.Controls;
 
 namespace BaseLibrary.Controllers
 {
@@ -381,6 +382,7 @@ namespace BaseLibrary.Controllers
             {
                 var pageHandler = GetFormHandler(model.FormId);
                 string dataKey = pageHandler.ProcessFormSaveRequestAndReturnDataKey(model);
+                RemoveOlderFilesIfAny(model);
                 CommitTransaction();
                 return Ok(dataKey);
             }
@@ -586,6 +588,20 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
+            }
+        }
+
+        private void RemoveOlderFilesIfAny(SmartFormTemplateRequest formViewModel)
+        {
+            if (formViewModel.RemoveFileNames.Count > 0)
+            {
+                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString(), formViewModel.DataKey.ToString());
+                foreach (var fileName in formViewModel.RemoveFileNames)
+                {
+                    var filePath = string.Concat(Path.Combine(directoryPath, fileName));
+                    if (System.IO.File.Exists(filePath))
+                        System.IO.File.Delete(filePath);
+                }
             }
         }
 
