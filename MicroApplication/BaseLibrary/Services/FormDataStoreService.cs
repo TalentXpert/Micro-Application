@@ -9,7 +9,7 @@ namespace BaseLibrary.Services
         void DeleteData(Guid id, ApplicationUser loggedInUser);
         List<FormDataStore> GetFormData(Guid? userId, Guid? organizationId, Guid formId, Guid? parentId);
         FormDataStore GetFormDatum(Guid id);
-        void SaveFormDatum(SmartFormTemplateRequest model, Guid? parentId, ApplicationUser loggedInUser);
+        string SaveFormDatum(SmartFormTemplateRequest model, Guid? parentId, ApplicationUser loggedInUser);
         List<SmartControlOption> GetSearchResult(Guid? organizationId, Guid formId, Guid? parentId, string searchTerm);
         void SaveDashboardDatum(PageDataStoreVM pageDataVM, ApplicationUser loggedInUser);
     }
@@ -31,9 +31,8 @@ namespace BaseLibrary.Services
             return PageDataStoreRepository.Get(id);
         }
 
-        public void SaveFormDatum(SmartFormTemplateRequest model, Guid? parentId, ApplicationUser loggedInUser)
+        public string SaveFormDatum(SmartFormTemplateRequest model, Guid? parentId, ApplicationUser loggedInUser)
         {
-
             FormDataStore? pageData;
             if (IsNullOrEmpty(model.DataKey))
             {
@@ -44,7 +43,7 @@ namespace BaseLibrary.Services
                 pageData = GetFormDatum(model.DataKey.Value);
 
             pageData.Update(model, parentId);
-
+            return pageData.Id.ToString();
         }
 
         public void SaveDashboardDatum(PageDataStoreVM pageDataVM, ApplicationUser loggedInUser)

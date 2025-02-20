@@ -2,6 +2,7 @@
 using BaseLibrary.Utilities.Excels;
 using System.Data;
 using Microsoft.Extensions.Configuration;
+using BaseLibrary.Controls.Forms;
 
 namespace BaseLibrary.Controllers
 {
@@ -379,9 +380,9 @@ namespace BaseLibrary.Controllers
             try
             {
                 var pageHandler = GetFormHandler(model.FormId);
-                pageHandler.ProcessFormSaveRequest(model);
+                string dataKey = pageHandler.ProcessFormSaveRequestAndReturnDataKey(model);
                 CommitTransaction();
-                return Ok(true);
+                return Ok(dataKey);
             }
             catch (Exception exception)
             {
@@ -437,10 +438,15 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var directoryPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.FormId.ToString());
+                var directoryPath = Path.Combine(_studyDocumentsPath, fileUploadViewModel.FormId);
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
+                }
+                var dataKeyPath = Path.Combine(directoryPath, fileUploadViewModel.DataKey);
+                if (!Directory.Exists(dataKeyPath))
+                {
+                    Directory.CreateDirectory(dataKeyPath);
                 }
                 if (fileUploadViewModel.UploadFiles != null) 
                 {
@@ -448,7 +454,7 @@ namespace BaseLibrary.Controllers
                     {
                         if (uploadedFile != null)
                         {
-                            string fileNameWithPath = Path.Combine(directoryPath, uploadedFile.FileName);
+                            string fileNameWithPath = Path.Combine(dataKeyPath, uploadedFile.FileName);
                             // Save the file
                             using (var stream = new FileStream(fileNameWithPath, FileMode.OpenOrCreate))
                             {
@@ -472,7 +478,7 @@ namespace BaseLibrary.Controllers
             try
             {
                 var fileControl = formViewModel.ControlValues.First(y => y.ControlId.ToString() == formViewModel.RemoveControlId.ToString());
-                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString());
+                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString(),formViewModel.DataKey.ToString());
                 var filePath = string.Concat(Path.Combine(directoryPath, $"{formViewModel.RemoveControlId.ToString()}_{fileControl.Values.First()}"));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
@@ -490,10 +496,10 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        [HttpGet("DownloadFile/{formId}/{controlId}/{fileName}")]
-        public IActionResult DownloadFile(Guid formId, Guid controlId, string fileName)
+        [HttpGet("DownloadFile/{formId}/{dataKey}/{controlId}/{fileName}")]
+        public IActionResult DownloadFile(string formId,string dataKey,string controlId, string fileName)
         {
-            var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString());
+            var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString(), dataKey.ToString());
             var filePath = string.Concat(Path.Combine(directoryPath, $"{controlId}_{fileName}"));
 
             if (!System.IO.File.Exists(filePath))

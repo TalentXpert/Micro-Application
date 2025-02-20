@@ -40,12 +40,21 @@ namespace BaseLibrary.Controls.Forms
         //this method should implement all validation logic here. 
         public virtual void ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
+            BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
+        }
+
+        public virtual string ProcessFormSaveRequestAndReturnDataKey(SmartFormTemplateRequest model)
+        {
+            return BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
+        }
+
+        private Guid? ValidateAndParentId(SmartFormTemplateRequest model)
+        {
             if (HasPrivateDataStore)
             {
                 throw new ValidationException("This method can not be called for form having its private data store. Please imlement ProcessFormSaveRequest method into form handler class for private data store.");
             }
-            var parentId = GetParentId(model.ControlValues);
-            BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, parentId, LoggedInUser);
+            return  GetParentId(model.ControlValues);
         }
 
         public virtual void ProcessFormConsentRequest(SmartFormConsentTemplateRequest model)

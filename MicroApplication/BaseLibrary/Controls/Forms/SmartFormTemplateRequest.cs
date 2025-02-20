@@ -16,6 +16,7 @@
     public class FileUploadViewModel
     {
         public List<IFormFile> UploadFiles { get; set; }
-        public Guid FormId { get; set; }
+        public required string FormId { get; set; }
+        public required string DataKey { get; set; }
     }
 }
