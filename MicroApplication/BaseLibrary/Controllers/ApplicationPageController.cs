@@ -381,10 +381,10 @@ namespace BaseLibrary.Controllers
             try
             {
                 var pageHandler = GetFormHandler(model.FormId);
-                string dataKey = pageHandler.ProcessFormSaveRequestAndReturnDataKey(model);
-                RemoveOlderFilesIfAny(model);
+                pageHandler.ProcessFormSaveRequest(model);
+                //RemoveOlderFilesIfAny(model);
                 CommitTransaction();
-                return Ok(dataKey);
+                return Ok();
             }
             catch (Exception exception)
             {
