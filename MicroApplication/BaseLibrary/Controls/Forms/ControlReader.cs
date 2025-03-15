@@ -46,6 +46,12 @@
         {
             return GetControl(appControl, ControlValues)?.GetFirstValue();
         }
+        public static bool GetControlFirstBoolValue(AppControl appControl, List<ControlValue> ControlValues)
+        {
+            string value = GetControl(appControl, ControlValues)?.GetFirstValue();
+            return value?.Trim().ToLower() == "yes"; 
+        }
+
         public static string? GetControlFirstValue(string controlIdentifier, List<ControlValue> ControlValues)
         {
             return GetControl(controlIdentifier, ControlValues)?.GetFirstValue();
