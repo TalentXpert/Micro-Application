@@ -1,4 +1,6 @@
 ﻿
+using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace BaseLibrary.Services
 {
     public interface IUserService
@@ -17,6 +19,7 @@ namespace BaseLibrary.Services
         List<ApplicationUser> GetUsers(Guid organizationId, GridRequestVM model);
         ApplicationUser SaveUpdateOrganizationAdmin(SmartFormTemplateRequest model, ApplicationUser loggedInUser);
         void UpdateUserDefaultStudy(Guid userId, Guid studyId);
+        List<ApplicationUser> GetUsersByOrganization(Guid organizationId);
     }
     public class UserService : ServiceLibraryBase, IUserService
     {
@@ -181,6 +184,11 @@ namespace BaseLibrary.Services
                 applicationUser.DefaultStudyId= studyId;
                 applicationUser.SetUpdatedOn();
             }
+        }
+
+        public List<ApplicationUser> GetUsersByOrganization(Guid organizationId)
+        {
+            return RF.UserRepository.GetUsersByOrganization(organizationId);
         }
     }
 }
