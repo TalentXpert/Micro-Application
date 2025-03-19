@@ -386,6 +386,11 @@ namespace BaseLibrary.Controllers
                 CommitTransaction();
                 return Ok();
             }
+            catch (InvalidOperationException ex)
+            {
+                RollbackTransaction();
+                return BadRequest(new ExceptionErrorVM(3, "Error Information", ex.Message));
+            }
             catch (Exception exception)
             {
                 RollbackTransaction();
