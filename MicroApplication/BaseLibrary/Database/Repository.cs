@@ -118,7 +118,10 @@ namespace BaseLibrary.Database
         {
             return GetSet().AsEnumerable();
         }
-
+        public virtual TEntity? FirstOrDefault()
+        {
+            return GetSet().FirstOrDefault();
+        }
         //public virtual IEnumerable<TEntity> AllMatching(ISpecification<TEntity> specification)
         //{
         //    return GetSet().Where(specification.SatisfiedBy())
