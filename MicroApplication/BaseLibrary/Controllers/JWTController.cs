@@ -100,8 +100,7 @@ namespace BaseLibrary.Controllers
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
                     jwt.Permissions = BSF.UserRoleService.GetUserAllPermissions(user);
                     jwt.Role =user.Role;
-                    jwt.Name = user.Name;
-                    jwt.DefaultStudyId = user.DefaultStudyId;
+                    jwt.Name = user.Name;                    
                     CommitTransaction();
                     return Ok(jwt);
                 }
