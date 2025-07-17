@@ -43,10 +43,10 @@ namespace BaseLibrary.Configurations
                 case BasePage.ManageOrganizationPageId: return new OrganizationPageHandler(BSF, loggedInUser);
                 default:
                     var appPage = BSF.AppPageService.GetPage(pageId);
-                    if (appPage == null)
+                    if (appPage is null)
                         throw new ValidationException($"No application page found with {pageId} page id. Please use correct page id.");
                     var form = BSF.AppFormService.GetForm(pageId);
-                    if (form == null)
+                    if (form is null)
                         throw new ValidationException($"No application page found with {pageId} page id. Please use correct page id.");
                     var layoutControl = BSF.AppFormControlService.GetLayoutControl(pageId);
                     return new DefaultPageHandler(BSF, loggedInUser, appPage, form, layoutControl?.AppControl);

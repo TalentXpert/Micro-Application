@@ -1,4 +1,6 @@
-﻿namespace BaseLibrary.Controllers
+﻿using BaseLibrary.Configurations;
+
+namespace BaseLibrary.Controllers
 {
     public class BaseLibraryController : Controller
     {
@@ -189,31 +191,38 @@
         }
         #endregion
 
+        #region Permissions
         protected void IsOperationAllowed(string code, string operation)
         {
             if (C.IsNullOrEmpty(code)) throw new ValidationException("Operation code can not be null");
             if (C.IsNullOrEmpty(operation)) throw new ValidationException("Operation can not be null");
             if (C.IsNull(LoggedInUser)) throw new AuthenticationException($"To perform this operation {operation} you need to login in to system.");
-            var permission = BSF.MicroAppContract.GetApplicationPermission().GetPermissions().FirstOrDefault(x => x.Code == code);
-            if (BSF.UserRoleService.IsOperationAllowed(LoggedInUser, permission))
+            if (HasOperationPermission(code))
                 return;
             throw new ValidationException($"You do not have permission to perform this operation {operation}.");
         }
-        protected void IsInRole(ApplicationRole role, string operation)
+        private bool HasOperationPermission(string code)
         {
-            if (LoggedInUser == null)
-                throw new ValidationException($"Login is required to perform this {operation}.");
-            if (LoggedInUser.OrganizationId.HasValue == false)
-                throw new ValidationException($"Organization is required to perform this {operation}.");
-            if (BSF.UserRoleService.IsInRole(role, LoggedInUser))
-                return;
-            throw new ValidationException($"You must have {role.Name} to perform this operation {operation}.");
+            var permission = BSF.MicroAppContract.GetApplicationPermission().GetPermissions().FirstOrDefault(x => x.Code == code);
+            if (BSF.UserRoleService.IsOperationAllowed(LoggedInUser, permission))
+                return true;
+            return false;
         }
+        //protected void IsInRole(ApplicationRole role, string operation)
+        //{
+        //    if (LoggedInUser == null)
+        //        throw new ValidationException($"Login is required to perform this {operation}.");
+        //    if (LoggedInUser.OrganizationId.HasValue == false)
+        //        throw new ValidationException($"Organization is required to perform this {operation}.");
+        //    if (BSF.UserRoleService.IsInRole(role, LoggedInUser))
+        //        return;
+        //    throw new ValidationException($"You must have {role.Name} to perform this operation {operation}.");
+        //}
         protected void IsInOrganizationAdminRole(string operation)
         {
             if (LoggedInUser.IsOrgAdmin)
                 return;
-            IsInRole(ApplicationRole.OrganizationAdminRole, operation);
+            IsOperationAllowed(BasePermission.ManageOrganization.Code, BasePermission.ManageOrganization.Name);
         }
         protected void IsInWebsiteAdminRole(string operation)
         {
@@ -221,6 +230,8 @@
                 return;
             throw new ValidationException($"You must have website admin role to perform this operation {operation}.");
         }
+
+        #endregion
 
         protected IActionResult GeneratePdfInvoice(byte[] bytes)
         {

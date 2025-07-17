@@ -2,7 +2,7 @@
 {
     public class ApplicationControlFormHandler : FormHandlerBase
     {
-        public ApplicationControlFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
+        public ApplicationControlFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.ApplicationControlForm, null, null, false)
         {
 

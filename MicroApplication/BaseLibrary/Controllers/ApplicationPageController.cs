@@ -60,7 +60,7 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var pageHandler = GetSmartPageHandler(pageId);
+                 var pageHandler = GetSmartPageHandler(pageId);
                 var smartPage = pageHandler.GetSmartPage();
                 return Ok(smartPage);
             }

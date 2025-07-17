@@ -5,7 +5,7 @@ namespace BaseLibrary.Configurations.FormHandlers
 {
     public class RolePermissionFormHandler : FormHandlerBase
     {
-        public RolePermissionFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
+        public RolePermissionFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.RolePermission, null, null, true)
         {
 

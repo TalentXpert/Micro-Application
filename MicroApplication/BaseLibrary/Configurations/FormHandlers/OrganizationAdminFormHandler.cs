@@ -6,7 +6,7 @@ namespace BaseLibrary.Configurations.FormHandlers
 
     public class OrganizationAdminFormHandler : FormHandlerBase
     {
-        public OrganizationAdminFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
+        public OrganizationAdminFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.ManageOrganizationAdminForm, null, null, true)
         {
 

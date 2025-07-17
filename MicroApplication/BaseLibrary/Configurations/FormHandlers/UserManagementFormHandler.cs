@@ -4,7 +4,7 @@ namespace BaseLibrary.Configurations.FormHandlers
 
     public class UserManagementFormHandler : FormHandlerBase
     {
-        public UserManagementFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
+        public UserManagementFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.UserManagement, null, null, true)
         {
 

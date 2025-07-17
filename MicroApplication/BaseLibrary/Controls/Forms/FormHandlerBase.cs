@@ -25,7 +25,7 @@ namespace BaseLibrary.Controls.Forms
         public AppControl? LayoutControl { get; }
         public string Language { get; }
 
-        public FormHandlerBase(IBaseLibraryServiceFactory baseLibraryServiceFactory, ApplicationUser loggedInUser, AppForm form, AppControl? parentControl, AppControl? layoutControl, bool hasPrivateDataStore)
+        public FormHandlerBase(IBaseLibraryServiceFactory baseLibraryServiceFactory, ApplicationUser? loggedInUser, AppForm form, AppControl? parentControl, AppControl? layoutControl, bool hasPrivateDataStore)
         {
             BaseLibraryServiceFactory = baseLibraryServiceFactory;
             LoggedInUser = loggedInUser;

@@ -23,7 +23,7 @@ namespace BaseLibrary.Controllers
         [HttpGet("GetDataSources")]
         public IActionResult GetDataSources()
         {
-            IsInRole(ApplicationRole.OrganizationAdminRole, "View Data Sources");
+            IsInOrganizationAdminRole("View Data Sources");
             var sources = BSF.SqlDataSourceService.GetDatasources(SqlDataSourceType.Chart);
             return Ok(sources.Select(s => new { Id = s.Id, Name = s.Name }));
         }
@@ -39,7 +39,7 @@ namespace BaseLibrary.Controllers
         [HttpGet("GetDataSourceColumns/{id}")]
         public IActionResult GetDataSourceColumns(Guid id)
         {
-            IsInRole(ApplicationRole.OrganizationAdminRole, "View Data Source Columns");
+            IsInOrganizationAdminRole("View Data Source Columns");
             var result = new List<ChartColumnSchema>();
             var dt = BSF.SqlDataSourceService.GetDataSourceColumns(id);
             foreach (DataColumn column in dt.Columns)
@@ -84,7 +84,7 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                IsInRole(ApplicationRole.OrganizationAdminRole, "Save or Update Chart");
+                IsInOrganizationAdminRole("Save or Update Chart");
                 BSF.ComponentSchemaService.SaveUpdateChartSchema(vm, LoggedInUser.OrganizationId, LoggedInUser.Id);
                 CommitTransaction();
                 return Ok(true);
