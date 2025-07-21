@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[ApplicationUser](
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
 	[Data] [nvarchar](max) NULL,
+	[TimeZone] [nvarchar](64) NULL,
 	[AddedByUserId] [uniqueidentifier] NULL,
  CONSTRAINT [PK_ApplicationUser] PRIMARY KEY CLUSTERED 
 (

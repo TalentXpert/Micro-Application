@@ -11,7 +11,7 @@ namespace BaseLibrary.Services
     /// </summary>
     public class FormBuilderService : ServiceLibraryBase, IFormBuilderService
     {
-        public FormBuilderService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public FormBuilderService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<FormBuilderService>())
         {
 
         }

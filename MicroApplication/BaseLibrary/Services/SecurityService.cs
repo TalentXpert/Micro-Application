@@ -8,7 +8,7 @@ namespace BaseLibrary.Services
     }
     public class SecurityService : ServiceLibraryBase, ISecurityService
     {
-        public SecurityService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public SecurityService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<SecurityService>())
         {
         }
 

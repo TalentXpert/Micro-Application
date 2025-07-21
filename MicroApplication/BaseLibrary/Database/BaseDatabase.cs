@@ -1,4 +1,6 @@
-﻿using BaseLibrary.Domain.DataSources;
+﻿using BaseLibrary.Domain.Audit;
+using BaseLibrary.Domain.DataSources;
+using BaseLibrary.Domain.PerformanceLogs;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaseLibrary.Database
@@ -21,9 +23,11 @@ namespace BaseLibrary.Database
 
         DbSet<ApplicationRolePermission> RolePermission { get; }
         DbSet<Organization> Organizations { get; }
+        DbSet<AuditLog> AuditLogs { get; }
+        DbSet<PerformanceLog> PerformanceLogs { get; }
     }
 
-    public abstract class BaseDatabase : QueryableUnitOfWork, IBaseDatabase
+    public class BaseDatabase : QueryableUnitOfWork, IBaseDatabase
     {
         public BaseDatabase(DbContextOptions options, IEntityValidator entityValidator) : base(options, entityValidator)
         {
@@ -65,6 +69,8 @@ namespace BaseLibrary.Database
             modelBuilder.Entity<ComponentSchema>().ToTable("ComponentSchema").HasKey(x => x.Id);
             modelBuilder.Entity<SqlDataSource>().ToTable("SQLDataSource").HasKey(x => x.Id);
             modelBuilder.Entity<Organization>().ToTable("Organization").HasKey(x => x.Id);
+            modelBuilder.Entity<AuditLog>().ToTable("AuditLog").HasKey(x => x.Id);
+            modelBuilder.Entity<PerformanceLog>().ToTable("PerformanceLog").HasKey(x => x.Id);
             
         }
         DbSet<Permission> permission;
@@ -112,6 +118,12 @@ namespace BaseLibrary.Database
 
         DbSet<Organization>? organization;
         public DbSet<Organization> Organizations { get { return organization ?? (organization = Set<Organization>()); } }
+
+        DbSet<AuditLog>? auditLog;
+        public DbSet<AuditLog> AuditLogs { get { return auditLog ??= Set<AuditLog>(); } }
+
+        DbSet<PerformanceLog>? performanceLog;
+        public DbSet<PerformanceLog> PerformanceLogs { get { return performanceLog ??= Set<PerformanceLog>(); } }
 
         
     }

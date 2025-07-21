@@ -7,7 +7,7 @@ namespace BaseLibrary.Services
     }
     public class FormConfigurationService : ServiceLibraryBase, IFormConfigurationService
     {
-        public FormConfigurationService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public FormConfigurationService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<FormConfigurationService>())
         {
 
         }

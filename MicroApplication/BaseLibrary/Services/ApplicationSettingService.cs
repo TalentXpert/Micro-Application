@@ -8,7 +8,7 @@
 
     public class ApplicationSettingService : ServiceLibraryBase, IApplicationSettingService
     {
-        public ApplicationSettingService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public ApplicationSettingService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ApplicationSettingService>())
         {
         }
         public ApplicationSetting GetApplicationSetting()

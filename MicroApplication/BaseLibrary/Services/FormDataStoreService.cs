@@ -16,7 +16,7 @@ namespace BaseLibrary.Services
     public class FormDataStoreService : ServiceLibraryBase, IFormDataStoreService
     {
         public IFormDataStoreRepository PageDataStoreRepository { get; }
-        public FormDataStoreService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public FormDataStoreService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<FormDataStoreService>())
         {
             PageDataStoreRepository = RF.PageDataStoreRepository;
         }

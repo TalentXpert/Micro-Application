@@ -7,7 +7,7 @@
     }
     public class AppFormService : ServiceLibraryBase, IAppFormService
     {
-        public AppFormService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public AppFormService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<AppFormService>())
         {
         }
 

@@ -1,5 +1,9 @@
-﻿namespace BaseLibrary.Repositories
+﻿using BaseLibrary.Domain.Audit;
+
+namespace BaseLibrary.Repositories
 {
+    
+
     public interface IAppFormRepository : IRepository<AppForm>
     {
         List<AppForm> GetAllCustomizableForms();

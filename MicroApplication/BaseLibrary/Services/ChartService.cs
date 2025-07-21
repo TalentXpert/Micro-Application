@@ -9,7 +9,7 @@ namespace BaseLibrary.Services
 
     public class ChartService : ServiceLibraryBase, IChartService
     {
-        public ChartService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public ChartService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ChartService>())
         {
         }
         public DashboardChart GetChart(Guid chartId, Guid? organizationId, ApplicationUser? loggedInUser)

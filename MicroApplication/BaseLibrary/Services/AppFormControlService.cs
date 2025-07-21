@@ -20,7 +20,7 @@ namespace BaseLibrary.Services
 
     public class AppFormControlService : ServiceLibraryBase, IAppFormControlService
     {
-        public AppFormControlService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public AppFormControlService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<AppFormControlService>())
         {
         }
         public List<AppFormControl> GetFormControls(AppFormControlRequestVM model, ApplicationUser loggedInUser)

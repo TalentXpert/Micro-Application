@@ -24,7 +24,7 @@ namespace BaseLibrary.Services
     }
     public class UserService : ServiceLibraryBase, IUserService
     {
-        public UserService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public UserService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<UserService>())
         {
         }
 

@@ -7,7 +7,7 @@
     }
     public class OrganizationService : ServiceLibraryBase, IOrganizationService
     {
-        public OrganizationService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public OrganizationService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<OrganizationService>())
         {
         }
 

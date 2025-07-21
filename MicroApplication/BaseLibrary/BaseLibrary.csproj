@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <Folder Include="Components\DataViews\" />
+    <Folder Include="Domain\Exceptions\" />
   </ItemGroup>
 
 </Project>

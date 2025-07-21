@@ -21,7 +21,7 @@ namespace BaseLibrary.Services
     public class UserSettingService : ServiceLibraryBase, IUserSettingService
     {
         public IUserSettingRepository UserSettingRepository { get; }
-        public UserSettingService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public UserSettingService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<UserSettingService>())
         {
             UserSettingRepository = RF.UserSettingRepository;
         }

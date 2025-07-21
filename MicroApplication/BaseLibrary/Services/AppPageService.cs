@@ -7,7 +7,7 @@
     }
     public class AppPageService : ServiceLibraryBase, IAppPageService
     {
-        public AppPageService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public AppPageService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<AppPageService>())
         {
         }
 

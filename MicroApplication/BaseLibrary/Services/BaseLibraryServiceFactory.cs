@@ -28,7 +28,8 @@ namespace BaseLibrary.Services
         IFormBuilderService FormBuilderService { get; }
         IFormConfigurationService FormConfigurationService { get; }
         IOrganizationService OrganizationService { get; }
-        ApplicationUser? LoggedInUser { get; set; } 
+        ApplicationUser? LoggedInUser { get; set; }
+        IAuditEventBaseService AuditEventBaseService { get; }
     }
     public class BaseLibraryServiceFactory : IBaseLibraryServiceFactory
     {
@@ -110,6 +111,10 @@ namespace BaseLibrary.Services
         public IOrganizationService? organizationService;
         public IOrganizationService OrganizationService { get { return organizationService ?? (organizationService = new OrganizationService(this, LoggerFactory)); } }
 
+        public IAuditEventBaseService? auditEventBaseService;
+        public IAuditEventBaseService AuditEventBaseService { get { return auditEventBaseService ??= new AuditEventBaseService(this, LoggerFactory.CreateLogger<AuditEventBaseService>()); } }
+
+        
         public ApplicationUser? LoggedInUser { get; set; }
     }
 }

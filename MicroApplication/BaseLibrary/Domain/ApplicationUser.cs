@@ -19,6 +19,7 @@ namespace BaseLibrary.Domain
         public DateTime? PasswordResetCodeTimeStamp { get; set; }
         public string? Role { get; set; }
         public Guid? DefaultStudyId { get;set;}
+        public string? TimeZone { get; set; }
         public bool IsPasswordHashMatching(string password)
         {
             return Password == X.Security.PasswordHasher.ComputeSaltedHash(password, Salt.Value);
@@ -73,6 +74,14 @@ namespace BaseLibrary.Domain
                 return;
             }
             throw new ValidationException("Invalid organization Id.");
+        }
+        public string GetTimeZone()
+        {
+            if(TimeZone is not null)
+                return TimeZone.ToString();
+            if(string.IsNullOrWhiteSpace(ApplicationSettingBase.DefaultTimeZone)==false)
+                return ApplicationSettingBase.DefaultTimeZone;
+            return TimeZoneInfo.Local.StandardName;
         }
     }
 

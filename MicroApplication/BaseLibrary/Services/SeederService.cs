@@ -14,7 +14,7 @@ namespace BaseLibrary.Services
     public class SeederService : ServiceLibraryBase, ISeederService
     {
         IMicroAppContract MicroAppContract { get; } 
-        public SeederService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public SeederService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<SeederService>())
         {
             MicroAppContract = serviceFactory.MicroAppContract;
         }

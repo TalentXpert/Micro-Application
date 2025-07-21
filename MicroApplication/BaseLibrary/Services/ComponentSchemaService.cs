@@ -16,7 +16,7 @@ namespace BaseLibrary.Services
 
     public class ComponentSchemaService : ServiceLibraryBase, IComponentSchemaService
     {
-        public ComponentSchemaService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public ComponentSchemaService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ComponentSchemaService>())
         {
 
         }

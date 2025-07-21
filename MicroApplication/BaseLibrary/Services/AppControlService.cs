@@ -12,7 +12,7 @@ namespace BaseLibrary.Services
     }
     public class AppControlService : ServiceLibraryBase, IAppControlService
     {
-        public AppControlService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public AppControlService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<AppControlService>())
         {
 
         }

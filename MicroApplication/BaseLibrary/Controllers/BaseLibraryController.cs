@@ -7,7 +7,7 @@ namespace BaseLibrary.Controllers
         protected ILogger Logger { get; private set; }
         protected IUserService UserService { get; }
         protected ISecurityService SecurityService { get; }
-        protected IBaseLibraryServiceFactory BaseLibraryServiceFactory { get; }
+        public IBaseLibraryServiceFactory BaseLibraryServiceFactory { get; }
         protected IBaseLibraryServiceFactory BSF { get; }
         public BaseLibraryController(IBaseLibraryServiceFactory baseLibraryServiceFactory ,ILogger logger)
         {
@@ -43,7 +43,7 @@ namespace BaseLibrary.Controllers
             return Guid.Empty;
         }
         private DateTime? TokenIssueTime { get; set; }
-        protected Guid GetSafeCurrentUserId()
+        public Guid GetSafeCurrentUserId()
         {
             try
             {

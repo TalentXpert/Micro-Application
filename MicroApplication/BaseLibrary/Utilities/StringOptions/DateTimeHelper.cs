@@ -128,6 +128,99 @@
         {
             return GetDayStartDateTime(scheduleAt) < GetDayStartDateTime(startDatum);
         }
+        public static string GetFormattedDateTime(DateTime? date, string timeZone)
+        {
+            if (date.HasValue)
+            {
+                date = ConvertToUserTimeZone(date.Value, timeZone);
+                return date.Value.ToString("dd-MMM-yyyy HH:mm");
+            }
+            return string.Empty;
+        }
 
+        public static DateTime ConvertToUserTimeZone(DateTime utcDate, string timeZone)
+        {
+            var timezone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+            var userTimeZoneDateTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, timezone);
+            return userTimeZoneDateTime;
+        }
+    }
+    public class ConvertDateTime 
+    {
+        public DateTime ConvertToUserTimeZone(DateTime utcDate, string timeZone)
+        {
+            try
+            {
+                var timezone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+                var userTimeZoneDateTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, timezone);
+                return userTimeZoneDateTime;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public DateTime GetConvertedTimeToUserTimeZone(DateTime utcDate, string timeZone)
+        {
+            try
+            {
+                var timezone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+                var userTimeZoneDateTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, timezone);
+                return userTimeZoneDateTime;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public DateTime ConvertTimeToUtc(DateTime localTime, string timeZone)
+        {
+            try
+            {
+                var temp = DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified);
+                var timezone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+                var userTimeZoneDateTime = TimeZoneInfo.ConvertTimeToUtc(temp, timezone);
+                return userTimeZoneDateTime;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string MinutesToHours(int minutes)
+        {
+            int hours = minutes / 60;
+            int mins = minutes % 60;
+            var minutesInHours = string.Format("{0:00}:{1:00}", hours, mins);
+            return minutesInHours;
+        }
+
+        public DateTime StringToDate(string date)
+        {
+            // return in the format of year, month, day)           
+            var parts = date.Split('-');
+
+            if (parts.Length == 1)
+                parts = date.Split('/');
+
+            try
+            {
+                return new DateTime(int.Parse(parts[2]), int.Parse(parts[0]), int.Parse(parts[1]));//return when date format is mm/dd//yyyy
+            }
+            catch (Exception)
+            {
+                return new DateTime(int.Parse(parts[2]), int.Parse(parts[1]), int.Parse(parts[0]));//return when date format is dd/mm//yyyy
+            }
+
+        }
+
+        public DateTime GetDateTimeFromString(string datetime)
+        {
+            var parts = datetime.Split('-');
+            return new DateTime(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
+        }
     }
 }

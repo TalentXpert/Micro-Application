@@ -1,4 +1,5 @@
-﻿using UserManagement.Services.Repositories;
+﻿using BaseLibrary.Domain.PerformanceLogs;
+using UserManagement.Services.Repositories;
 
 namespace BaseLibrary.Repositories
 {
@@ -20,6 +21,9 @@ namespace BaseLibrary.Repositories
         IApplicationRolePermissionRepository ApplicationRolePermissionRepository { get; }
 
         IOrganizationRepository OrganizationRepository { get; }
+        IAuditLogRepository AuditLogRepository { get; }
+        IPerformanceLogRepository PerformanceLogRepository { get; }
+        LogPerformance LogPerformance { get; }
     }
 
     public class BaseLibraryRepositoryFactory : IBaseLibraryRepositoryFactory
@@ -74,6 +78,22 @@ namespace BaseLibrary.Repositories
 
         IOrganizationRepository? organizationRepository;
         public IOrganizationRepository OrganizationRepository { get { return organizationRepository ?? (organizationRepository = new OrganizationRepository(UnitOfWork, LoggerFactory)); } }
-        
+
+        IAuditLogRepository? auditLogRepository;
+        public IAuditLogRepository AuditLogRepository { get { return auditLogRepository ??= new AuditLogRepository(UnitOfWork, LoggerFactory); } }
+
+        IPerformanceLogRepository? performanceLogRepository;
+        public IPerformanceLogRepository PerformanceLogRepository { get { return performanceLogRepository ??= new PerformanceLogRepository(UnitOfWork, LoggerFactory); } }
+
+        private LogPerformance _logPerformance;
+        public LogPerformance LogPerformance
+        {
+            get
+            {
+                if (_logPerformance == null)
+                    _logPerformance = new LogPerformance();
+                return _logPerformance;
+            }
+        }
     }
 }

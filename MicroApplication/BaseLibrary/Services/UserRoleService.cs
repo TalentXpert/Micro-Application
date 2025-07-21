@@ -16,7 +16,7 @@ namespace BaseLibrary.Services
 
     public class UserRoleService : ServiceLibraryBase, IUserRoleService
     {
-        public UserRoleService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public UserRoleService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<UserRoleService>())
         {
 
         }

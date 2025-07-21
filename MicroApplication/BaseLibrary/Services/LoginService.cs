@@ -9,7 +9,7 @@ namespace BaseLibrary.Services
     }
     public class LoginService : ServiceLibraryBase, ILoginService
     {
-        public LoginService(IBaseLibraryServiceFactory repositoryFactory, ILoggerFactory loggerFactory) : base(repositoryFactory, loggerFactory)
+        public LoginService(IBaseLibraryServiceFactory repositoryFactory, ILoggerFactory loggerFactory) : base(repositoryFactory, loggerFactory.CreateLogger<LoginService>())
         {
 
         }

@@ -15,7 +15,7 @@ namespace BaseLibrary.Services
 
     public class SqlDataSourceService : ServiceLibraryBase, ISqlDataSourceService
     {
-        public SqlDataSourceService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public SqlDataSourceService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<SqlDataSourceService>())
         {
 
         }

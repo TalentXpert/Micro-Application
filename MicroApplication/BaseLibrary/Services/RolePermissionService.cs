@@ -10,7 +10,7 @@ namespace BaseLibrary.Services
     }
     public class RolePermissionService : ServiceLibraryBase, IRolePermissionService
     {
-        public RolePermissionService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory)
+        public RolePermissionService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<RolePermissionService>())
         {
 
         }

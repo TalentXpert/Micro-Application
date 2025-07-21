@@ -6,14 +6,13 @@ namespace BaseLibrary.Services
     public class ServiceLibraryBase : CleanCode
     {
         public IBaseLibraryServiceFactory SF { get; }
-        public ILoggerFactory LoggerFactory { get; }
         public IBaseLibraryRepositoryFactory RF { get; }
-
-        public ServiceLibraryBase(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory)
+        public ILogger Logger { get; }
+        public ServiceLibraryBase(IBaseLibraryServiceFactory serviceFactory, ILogger logger)
         {
             SF = serviceFactory;
             RF = SF.RF;
-            LoggerFactory = loggerFactory;
+            Logger = logger;
         }
         protected void CheckForNullForm(AppForm? form, Guid formId)
         {
