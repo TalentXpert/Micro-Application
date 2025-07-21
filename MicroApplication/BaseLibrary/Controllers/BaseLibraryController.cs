@@ -43,7 +43,7 @@ namespace BaseLibrary.Controllers
             return Guid.Empty;
         }
         private DateTime? TokenIssueTime { get; set; }
-        public Guid GetSafeCurrentUserId()
+        protected Guid GetSafeCurrentUserId()
         {
             try
             {
