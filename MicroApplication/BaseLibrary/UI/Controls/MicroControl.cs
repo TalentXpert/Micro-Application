@@ -14,6 +14,21 @@
         public string? ParentControlIdentifier { get; protected set; } // parent control identifier to listen for event if parent changes value and update itself if needed. 
         public List<SmartControlOption> Options { get; set; } //options for this control lile dropdown options. 
         public string? Tooltip { get; protected set; }
+        public MicroControl(Guid controlId, int position, string controlIdentifier, string dataType, string controlType, string displayLabel, string? value, bool isParent, string? parentControlIdentifier, List<SmartControlOption> options, string? tooltip)
+        {
+            ControlId = controlId;
+            Position = position;
+            ControlIdentifier = controlIdentifier;
+            DataType = dataType;
+            ControlType = controlType;
+            DisplayLabel = displayLabel;
+            Value = value;
+            IsParent = isParent;
+            ParentControlIdentifier = parentControlIdentifier;
+            Options = options;
+            Tooltip = tooltip;
+        }
+
         public MicroControl(AppControl appControl, List<string>? values)
         {
             ControlIdentifier = appControl.ControlIdentifier;
