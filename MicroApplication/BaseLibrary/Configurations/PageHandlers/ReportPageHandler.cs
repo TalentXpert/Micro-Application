@@ -2,7 +2,8 @@
 
 namespace BaseLibrary.Configurations.PageHandlers
 {
-    public class ReportPageHandler : DefaultPageHandler
+   
+        public class ReportPageHandler : DefaultPageHandler
     {
         public ReportPageHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser) : base(serviceFactory, loggedInUser, BasePage.ReportPage, BaseForm.UserManagement, null)
         {

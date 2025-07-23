@@ -23,6 +23,7 @@ namespace BaseLibrary.Configurations
                 case BaseForm.RolePermissionFormId: return new RolePermissionFormHandler(BSF, loggedInUser);
                 case BaseForm.ManageOrganizationAdminFormId: return new OrganizationAdminFormHandler(BSF, loggedInUser);
                 case BaseForm.ManageOrganizationFormId: return new OrganizationFormHandler(BSF, loggedInUser);
+                //case BaseForm.AuditFormId:return new AuditPageHandler(BSF, loggedInUser);
                 default:
                     var form = BSF.AppFormService.GetForm(formId);
                     if (form == null)
@@ -41,6 +42,7 @@ namespace BaseLibrary.Configurations
                 case BasePage.ApplicationControlPageId: return new ApplicationControlPageHandler(BSF, loggedInUser);
                 case BasePage.ManageOrganizationAdminPageId: return new OrganizationAdminPageHandler(BSF, loggedInUser);
                 case BasePage.ManageOrganizationPageId: return new OrganizationPageHandler(BSF, loggedInUser);
+                case BaseForm.AuditFormId: return new AuditPageHandler(BSF, loggedInUser);
                 default:
                     var appPage = BSF.AppPageService.GetPage(pageId);
                     if (appPage is null)

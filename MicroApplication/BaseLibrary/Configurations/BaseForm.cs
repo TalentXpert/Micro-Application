@@ -94,11 +94,15 @@
         public const string UserRoleFormId = "442B1CD9-6331-49B9-AB50-6BB97F6A2BB5";
         public static AppForm UserRoleForm = AppForm.Create(UserRoleFormId, "User Role", BaseMenu.NoneMenuId, 1, false, BasePermission.None);
 
+        public const string AuditFormId = "0CEA3092-0B53-4B40-9F44-8F37077819A3";
+        public static AppForm AuditForm = AppForm.Create(AuditFormId, "Audit", BaseMenu.NoneMenuId, 1, false, BasePermission.None);
+
         public const string UserManagementFormId = "76BDCE12-97AA-C988-F075-08D906182053";
         public const string ApplicationControlFormId = "4E1851CE-CE89-CEAE-E37B-08D90619EC92";
         public const string RolePermissionFormId = "2DFC689E-ED79-C45D-4516-08D9086E7CDB";
         public const string ManageOrganizationFormId = "0122D161-C76E-45CD-A5FE-74CD83F58223";
         public const string ManageOrganizationAdminFormId = "A5443C1E-C8BF-4D57-B527-C1949C97716F";
+        
     }
 }
 

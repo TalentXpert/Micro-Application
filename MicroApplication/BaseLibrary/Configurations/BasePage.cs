@@ -54,6 +54,9 @@
 
         public const string ManageOrganizationPageId = "0122D161-C76E-45CD-A5FE-74CD83F58223";
         public static AppPage ManageOrganizationPage = AppPage.Create(ManageOrganizationPageId, "Manage Organization", BaseMenu.SystemConfigurationMenuId, 1, BasePermission.ManageSystem);
+
+        public const string AuditPageId = "0CEA3092-0B53-4B40-9F44-8F37077819A3";
+        public static AppPage AuditPage = AppPage.Create(AuditPageId, "Audit", BaseMenu.SystemConfigurationMenuId, 1, BasePermission.None);
     }
 }
 

@@ -77,8 +77,8 @@ namespace BaseLibrary.DatabaseMigrations
         public static void UpgradeDatabase(ISqlQueryExecutor sqlCommandExecutor, DatabaseOption database, Assembly assembly)
         {
             sqlCommandExecutor.GaurdForNonExistingDatabase();
-            UpgradeMicroApplicationDatabase(sqlCommandExecutor);
-            UpgradeApplicationDatabase(sqlCommandExecutor, database, assembly);
+           // UpgradeMicroApplicationDatabase(sqlCommandExecutor);
+           // UpgradeApplicationDatabase(sqlCommandExecutor, database, assembly);
         }
 
         private static void UpgradeApplicationDatabase(ISqlQueryExecutor sqlCommandExecutor, DatabaseOption database, Assembly assembly)
