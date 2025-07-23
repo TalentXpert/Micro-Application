@@ -128,5 +128,33 @@
         {
             return userPermissions.Any(p => AreEqualsIgnoreCase(p, permissionCode));
         }
+
+        public string GetFormattedDate(DateTime? date)
+        {
+            string result = string.Empty;
+            if (date.HasValue)
+            {
+                result = date.Value.ToString("dd-MMM-yyyy");
+            }
+            return result;
+        }
+        public string FormatNumber(int? number)
+        {
+            if (number is not null && number.HasValue) return number.ToString();
+            return "";
+        }
+
+        public string FormatDecimal(decimal? number)
+        {
+            if (number is not null && number.HasValue) return number.ToString();
+            return "";
+        }
+
+        public string FormatBoolean(bool? boolean)
+        {
+            if (boolean.HasValue)
+                return boolean.Value ? "Yes" : "No";
+            return "";
+        }
     }
 }

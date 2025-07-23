@@ -3,7 +3,7 @@
     public class AuditEvent
     {
         #region Properties
-        private AuditEvent(int id, string name)
+        protected AuditEvent(int id, string name)
         {
             Id = id;
             Name = name;
@@ -17,5 +17,10 @@
         //public static AuditEvent AddJobEvent => new AuditEvent(1, "Add Job");
         //public static AuditEvent UpdateJobEvent => new AuditEvent(2, "Update Job");
         #endregion
+
+
+       
+
+
     }
 }
