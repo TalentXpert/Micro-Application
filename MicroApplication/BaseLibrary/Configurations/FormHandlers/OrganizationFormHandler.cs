@@ -1,4 +1,5 @@
-﻿namespace BaseLibrary.Configurations.FormHandlers
+﻿
+namespace BaseLibrary.Configurations.FormHandlers
 {
     public class OrganizationFormHandler : FormHandlerBase
     {
@@ -22,6 +23,10 @@
         {
             //var asset = ServiceFactory.RepositoryFactory.AssetRepository.Get(id);
             //ServiceFactory.RepositoryFactory.AssetRepository.Remove(asset);
+        }
+        public override List<SmartControlOption> GetControlOptions(Guid? organizationId, Guid? parentId, string searchTerm)
+        {
+            return BaseLibraryServiceFactory.RF.OrganizationRepository.GetSearchResult(searchTerm);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BaseLibrary.Configurations.PageHandlers
             var result = new List<List<GridCell>>();
             if (LoggedInUser != null && LoggedInUser.OrganizationId.HasValue)
             {
-                var users = BaseLibraryServiceFactory.UserService.GetUsers(LoggedInUser.OrganizationId.Value, model);
+                var users = BaseLibraryServiceFactory.RF.UserRepository.GetOrganizationAdmins(model);
                 foreach (var user in users)
                 {
                     if (user.IsOrgAdmin) 

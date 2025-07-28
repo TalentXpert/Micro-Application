@@ -360,6 +360,7 @@ namespace BaseLibrary.Controllers
             try
             {
                 var factory = BSF.ApplicationControlBaseFactory;
+                GaurdForNullInputModel(model);
                 var pageHandler = GetFormHandler(model.FormId);
                 var form = pageHandler.ProcessFormGenerateRequest(model, factory);
                 return Ok(form);

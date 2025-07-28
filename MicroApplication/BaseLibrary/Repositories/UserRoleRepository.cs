@@ -1,12 +1,15 @@
 ﻿
 
 using BaseLibrary.Configurations;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Data;
 
 namespace UserManagement.Services.Repositories
 {
     public interface IOrganizationRepository : IRepository<Organization>
     {
         List<Organization> GetOrganizations(ApplicationUser loggedInUser, GridRequestVM model);
+        List<SmartControlOption> GetSearchResult(string searchTerm);
     }
     public class OrganizationRepository : Repository<Organization>, IOrganizationRepository
     {
@@ -31,6 +34,22 @@ namespace UserManagement.Services.Repositories
                 query = query.Where(a => a.Website.StartsWith(filter.Value));
 
             return query.ToList();
+        }
+        public List<SmartControlOption> GetSearchResult(string searchTerm)
+        {
+            List<SmartControlOption> options = new List<SmartControlOption>();
+            if (IsNullOrEmpty(searchTerm))
+                return options;
+            var query = $"select Id,Name from Organization";
+            if(IsNotNullOrEmpty(searchTerm))
+                query += $" where name like '{searchTerm}%'";
+
+            var dt = new SqlCommandExecutor().GetDataTable(query);
+            foreach (DataRow dr in dt.Rows)
+            {
+                options.Add(new SmartControlOption(dr[1]?.ToString(), dr[0]?.ToString()));
+            }
+            return options;
         }
     }
         public interface IApplicationRolePermissionRepository : IRepository<ApplicationRolePermission>

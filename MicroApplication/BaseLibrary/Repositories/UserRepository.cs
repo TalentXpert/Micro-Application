@@ -1,4 +1,5 @@
 ﻿using BaseLibrary.Configurations;
+using BaseLibrary.Domain;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace BaseLibrary.Repositories
         List<List<GridCell>> GetRows(List<ControlFilter> filters, List<GridHeader> headers, ApplicationUser loggedInUser);
         List<ApplicationUser> GetUsers(Guid organizationId, GridRequestVM model);
         List<ApplicationUser> GetUsersByOrganization(Guid organizationId);
+        List<ApplicationUser> GetOrganizationAdmins(GridRequestVM model);
     }
 
     public class UserRepository : Repository<ApplicationUser>, IUserRepository
@@ -75,6 +77,29 @@ namespace BaseLibrary.Repositories
             return query.ToList();
             
         }
+        public List<ApplicationUser> GetOrganizationAdmins(GridRequestVM model)
+        {
+            var query = unitOfWork.ApplicationUsers.AsQueryable();
+
+            var filter = model.GetFilterControlValue(BaseControl.Name);
+            if (IsNotNull(filter))
+                query = query.Where(a => a.Name == filter.Value);
+
+            filter = model.GetFilterControlValue(BaseControl.Email);
+            if (IsNotNull(filter))
+                query = query.Where(a => a.Email == filter.Value);
+
+            filter = model.GetFilterControlValue(BaseControl.ContactNumber);
+            if (IsNotNull(filter))
+                query = query.Where(a => a.ContactNumber == filter.Value);
+
+            filter = model.GetFilterControlValue(BaseControl.LoginId);
+            if (IsNotNull(filter))
+                query = query.Where(a => a.LoginId == filter.Value);
+
+            return query.ToList();
+        }
+
         public List<List<GridCell>> GetRows(List<ControlFilter> filters, List<GridHeader> headers, ApplicationUser loggedInUser)
         {
             var result = new List<List<GridCell>>();

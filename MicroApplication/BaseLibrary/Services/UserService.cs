@@ -20,6 +20,7 @@ namespace BaseLibrary.Services
         ApplicationUser SaveUpdateOrganizationAdmin(SmartFormTemplateRequest model, ApplicationUser loggedInUser);
         void UpdateUserDefaultStudy(Guid userId, Guid studyId);
         List<ApplicationUser> GetUsersByOrganization(Guid organizationId);
+        
         List<ApplicationUser> GetUsersForCache();
     }
     public class UserService : ServiceLibraryBase, IUserService
@@ -195,5 +196,7 @@ namespace BaseLibrary.Services
         {
             return RF.UserRepository.GetAll().ToList();
         }
+
+        
     }
 }

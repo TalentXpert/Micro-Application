@@ -11,6 +11,7 @@ namespace BaseLibrary.Domain.Audit
         public Guid UserId { get; protected set; }
         public Guid ReferenceObjectId { get; protected set; }
         public Guid? OriginalUserId { get; protected set; }
+
         protected AuditLog() { }
         public static AuditLog Create(AuditEvent auditEvent, Guid referenceObjectId, RecordFieldChanges? recordFieldChanges, Guid loggedInUserId, Guid? organizationId)
         {
