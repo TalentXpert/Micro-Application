@@ -44,7 +44,7 @@ namespace BaseLibrary.Repositories
         private DataTable GetAppControls(List<ControlFilter> filters, ApplicationUser loggedInUser)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            var query = $"select * from auditlog where (organizationId='{loggedInUser.OrganizationId}') order by CreatedOn desc";
+            var query = $"select top 200 * from auditlog where (organizationId='{loggedInUser.OrganizationId}') order by CreatedOn desc";
           // var where = "";
             //if (filters.Any())
             //{
