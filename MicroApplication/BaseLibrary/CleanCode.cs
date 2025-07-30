@@ -30,11 +30,11 @@
         {
             return content.Contains(input,StringComparison.InvariantCultureIgnoreCase);
         }
-        public static bool AreEqualsIgnoreCase(string left, string right)
+        public static bool AreEqualsIgnoreCase(string? left, string? right)
         {
             return string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase);
         }
-        public static bool AreNotEqualsIgnoreCase(string left, string right)
+        public static bool AreNotEqualsIgnoreCase(string? left, string? right)
         {
             return string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase)==false;
         }
