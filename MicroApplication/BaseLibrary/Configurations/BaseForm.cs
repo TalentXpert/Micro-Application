@@ -41,7 +41,7 @@
             appForm.AddFormControl("453D188B-B7B6-CEE5-4C4D-08D90A01D43A", BaseControl.Email, true, true, true, true);
             appForm.AddFormControl("71035984-37CD-C5DC-51C8-08D90A04F665", BaseControl.ContactNumber, true, true, true, true);
             appForm.AddFormControl("6B610E04-EFD4-CE32-B69F-08D90A051284", BaseControl.LoginId, true, false, true, true);
-            appForm.AddFormControl("92A2EAE2-01E6-CBD1-00A5-08D7CC999A61", BaseControl.Aadhar, true, true, true, true);
+           // appForm.AddFormControl("92A2EAE2-01E6-CBD1-00A5-08D7CC999A61", BaseControl.Aadhar, true, true, true, true);
             appForms.Add(appForm);
 
             appForm = BaseForm.ApplicationControlForm;

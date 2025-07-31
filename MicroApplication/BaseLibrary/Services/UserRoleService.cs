@@ -99,7 +99,7 @@ namespace BaseLibrary.Services
                 var permission = permissions.First(p => p.Id == rolePermission.PermissionId);
                 result.Add(permission);
             }
-            return permissions.Select(x => x.Code).ToList();
+            return result.Select(x => x.Code).ToList();
         }
 
         private List<string> WebsiteAdminPermissions()
