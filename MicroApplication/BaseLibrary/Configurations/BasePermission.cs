@@ -12,7 +12,7 @@ namespace BaseLibrary.Configurations
             permissions.AddRange(GetApplicationPermissions());
             return permissions;
         }
-        private List<Permission> GetBasePermissions()
+        public virtual List<Permission> GetBasePermissions()
         {
             return new List<Permission>
             {
