@@ -6,5 +6,6 @@
         public const string NvarcharMax = "nvarchar(max)";
         public const string Integer = "int";
         public const string Bit = "bit";
+        public const string DateTime = "datetime";
     }
 }

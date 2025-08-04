@@ -124,6 +124,12 @@ namespace BaseLibrary.DatabaseMigrations
                 ExecuteQuery($"Update {table} Set {column}=0 where {column} is null");
             ChangeColumnDataType(table, column, DBTypes.Bit, false);
         }
+        protected void CreateGuidColumnWithDefaultValue(string table, string column, Guid defaultValue)
+        {
+            AddColumn(table, column, DBTypes.Uniqueidentifier, true);
+            ExecuteQuery($"Update {table} Set {column}='{defaultValue}' where {column} is null");
+            ChangeColumnDataType(table, column, DBTypes.Uniqueidentifier, false);
+        }
 
         protected void CreateTable(string fileName)
         {

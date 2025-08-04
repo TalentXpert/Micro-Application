@@ -35,9 +35,9 @@ namespace BaseLibrary.Utilities
 
     public class GuidValidator
     {
-        public void CheckForEmpltyOrDefaulValue(Guid input, string FieldName, List<ValidationResult> validationResults)
+        public void CheckForEmpltyOrDefaulValue(Guid? input, string FieldName, List<ValidationResult> validationResults)
         {
-            if (input.IsEmpty())
+            if (input is null || input.Value.IsEmpty())
                 validationResults.Add(new ValidationResult(FieldName + " can not be empty.", new string[] { FieldName }));
         }
         
