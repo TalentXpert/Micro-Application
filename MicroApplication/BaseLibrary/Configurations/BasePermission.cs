@@ -16,13 +16,13 @@ namespace BaseLibrary.Configurations
         {
             return new List<Permission>
             {
-                ManageUsers,FormConfiguration, ManageCharts,  ManageFormControls, ManageRoles, ManageRolePermissions, ManageUserRoles, ManageDashboard, OrganizationConfiguration, ViewReports, ViewDashboards
+                ManageUsers,FormConfiguration, ManageCharts,  ManageFormControls, ManageRoles, ManageDashboard, OrganizationConfiguration, ViewReports, ViewDashboards
             };
         }
         
         public virtual List<Permission> GetOrganizationAdminPermissions()
         {
-            return new List<Permission> { ManageOrganization, ManageUsers, FormConfiguration, ManageCharts, ManageFormControls, ManageRoles, ManageRolePermissions, ManageUserRoles , ManageDashboard, OrganizationConfiguration, ViewReports, ViewDashboards };
+            return new List<Permission> { ManageOrganization, ManageUsers, FormConfiguration, ManageCharts, ManageFormControls, ManageRoles, ManageDashboard, OrganizationConfiguration, ViewReports, ViewDashboards };
         }
         public virtual List<Permission> GetWebsiteAdminPermissions()
         {
@@ -51,8 +51,8 @@ namespace BaseLibrary.Configurations
         public static Permission ManageCharts = new Permission("DF0B1DF0-06C7-C4FF-8F75-08DAC6C661D5", "Manage Charts", "");
         public static Permission ManageFormControls = new Permission("69D5D849-295E-C649-7057-08DAC6C679CD", "Manage Form Controls", "");
         public static Permission ManageRoles = new Permission("61E47F60-874A-C14B-874E-08DAC6C67BDD", "Manage Roles", "");
-        public static Permission ManageRolePermissions = new Permission("6C969054-45D7-C6F3-B9C8-08DAC6C6A72C", "Manage Role Permissions", "");
-        public static Permission ManageUserRoles = new Permission("2A3A73A0-759D-C300-36F5-08DAC6C6DE77", "Manage User Roles", "");
+        //public static Permission ManageRolePermissions = new Permission("6C969054-45D7-C6F3-B9C8-08DAC6C6A72C", "Manage Role Permissions", "");
+        //public static Permission ManageUserRoles = new Permission("2A3A73A0-759D-C300-36F5-08DAC6C6DE77", "Manage User Roles", "");
         public static Permission ManageDashboard = new Permission("15FABDD6-8166-C990-7D3F-08DAC6C77D3F", "Manage Dashboard", "");
         public static Permission OrganizationConfiguration = new Permission("BA07069F-3659-C1B3-66DD-08DAC6C7B633", "Organization Configuration", "");
         public static Permission ViewReports = new Permission("561E3398-CD38-C500-9370-08DAC6C7DEB8", "View Reports", "");
