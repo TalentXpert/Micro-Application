@@ -46,17 +46,17 @@ namespace BaseLibrary.Configurations
         public static Permission ManageOrganizationAdmin = new Permission("F314B393-CA50-4BF3-9FDB-995F5510D607", "Manage Organization Admin", "");
         
         //Organization Admin Permissions
-        public static Permission ManageUsers = new Permission("D387B73D-45AC-C116-A741-08D909447A8A", "Manage Users", "");
+        public static Permission ManageUsers = new Permission("D387B73D-45AC-C116-A741-08D909447A8A", "Manage Users", "manage users and their roles");
         public static Permission FormConfiguration = new Permission("9EFDE8E5-C64E-CA80-9974-08DAC6C65BF1", "Form Configuration", "");
         public static Permission ManageCharts = new Permission("DF0B1DF0-06C7-C4FF-8F75-08DAC6C661D5", "Manage Charts", "");
         public static Permission ManageFormControls = new Permission("69D5D849-295E-C649-7057-08DAC6C679CD", "Manage Form Controls", "");
-        public static Permission ManageRoles = new Permission("61E47F60-874A-C14B-874E-08DAC6C67BDD", "Manage Roles", "");
+        public static Permission ManageRoles = new Permission("61E47F60-874A-C14B-874E-08DAC6C67BDD", "Manage Roles", "create, update role and manage role permissions");
         //public static Permission ManageRolePermissions = new Permission("6C969054-45D7-C6F3-B9C8-08DAC6C6A72C", "Manage Role Permissions", "");
         //public static Permission ManageUserRoles = new Permission("2A3A73A0-759D-C300-36F5-08DAC6C6DE77", "Manage User Roles", "");
         public static Permission ManageDashboard = new Permission("15FABDD6-8166-C990-7D3F-08DAC6C77D3F", "Manage Dashboard", "");
-        public static Permission OrganizationConfiguration = new Permission("BA07069F-3659-C1B3-66DD-08DAC6C7B633", "Organization Configuration", "");
-        public static Permission ViewReports = new Permission("561E3398-CD38-C500-9370-08DAC6C7DEB8", "View Reports", "");
-        public static Permission ViewDashboards = new Permission("2E578AA1-E3AE-CE79-8BEE-08DAC6C84E89", "View Dashboards", "");
+        public static Permission OrganizationConfiguration = new Permission("BA07069F-3659-C1B3-66DD-08DAC6C7B633", "Organization Configuration", "manage organization level settings");
+        public static Permission ViewReports = new Permission("561E3398-CD38-C500-9370-08DAC6C7DEB8", "View Reports", "view allowed reports");
+        public static Permission ViewDashboards = new Permission("2E578AA1-E3AE-CE79-8BEE-08DAC6C84E89", "View Dashboards", "view allowed dashboards");
 
         //[Guid("")]
         //No permission
