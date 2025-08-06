@@ -19,7 +19,7 @@ namespace BaseLibrary.Controllers
             LoggerFactory = loggerFactory;
         }
     }
-        [Route("api/[controller]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
 
     public class ApplicationPageController : BaseLibraryController
@@ -60,13 +60,13 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                 var pageHandler = GetSmartPageHandler(pageId);
+                var pageHandler = GetSmartPageHandler(pageId);
                 var smartPage = pageHandler.GetSmartPage();
                 return Ok(smartPage);
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),pageId);
             }
         }
 
@@ -86,7 +86,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),vm.PageId);
             }
         }
 
@@ -105,7 +105,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.PageId);
             }
         }
 
@@ -124,7 +124,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),pageId);
             }
         }
 
@@ -136,13 +136,13 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var pageHandler = GetSmartPageHandler(pageId);                
+                var pageHandler = GetSmartPageHandler(pageId);
                 var gridModel = pageHandler.ProcessRowDataRequest(datakey);
                 return Ok(gridModel);
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), pageId);
             }
         }
 
@@ -166,7 +166,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.PageId);
             }
         }
         private string GetSafeDownloadFileName(string input)
@@ -199,7 +199,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model);
             }
         }
 
@@ -218,7 +218,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),filterId);
             }
         }
 
@@ -267,7 +267,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), vm);
             }
         }
 
@@ -288,7 +288,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),model);
             }
         }
 
@@ -311,12 +311,12 @@ namespace BaseLibrary.Controllers
                     throw new ValidationException($"Control with {controlId} is not found.");
                 if (appControl.OptionFormId == null)
                     throw new ValidationException("OptionFormId cannot be null for this control.");
-                var options = BSF.MicroAppContract.GetHandlerFactory().GetFormHandler(appControl.OptionFormId.Value, LoggedInUser).GetControlOptions(GetSafeCurrentUser()?.OrganizationId, parentId, searchTerm); 
+                var options = BSF.MicroAppContract.GetHandlerFactory().GetFormHandler(appControl.OptionFormId.Value, LoggedInUser).GetControlOptions(GetSafeCurrentUser()?.OrganizationId, parentId, searchTerm);
                 return Ok(options);
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { ControlId = controlId });
             }
         }
 
@@ -342,7 +342,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { controlId });
             }
         }
 
@@ -367,7 +367,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { model.FormId });
             }
         }
 
@@ -395,7 +395,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { model.FormId });
             }
         }
 
@@ -410,14 +410,14 @@ namespace BaseLibrary.Controllers
             try
             {
                 var pageHandler = GetFormHandler(model.FormId);
-                pageHandler.ProcessFormConsentRequest(model);                
+                pageHandler.ProcessFormConsentRequest(model);
                 CommitTransaction();
                 return Ok(true);
             }
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { model.FormId });
             }
         }
 
@@ -436,7 +436,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),new {formId});
             }
         }
 
@@ -456,7 +456,7 @@ namespace BaseLibrary.Controllers
                 {
                     Directory.CreateDirectory(dataKeyPath);
                 }
-                if (fileUploadViewModel.UploadFiles != null) 
+                if (fileUploadViewModel.UploadFiles != null)
                 {
                     foreach (var uploadedFile in fileUploadViewModel.UploadFiles)
                     {
@@ -469,7 +469,7 @@ namespace BaseLibrary.Controllers
                                 uploadedFile.CopyTo(stream);
                             }
                         }
-                    }              
+                    }
                 }
                 return Ok(true);
             }
@@ -486,7 +486,7 @@ namespace BaseLibrary.Controllers
             try
             {
                 var fileControl = formViewModel.ControlValues.First(y => y.ControlId.ToString() == formViewModel.RemoveControlId.ToString());
-                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString(),formViewModel.DataKey.ToString());
+                var directoryPath = Path.Combine(_studyDocumentsPath, formViewModel.FormId.ToString(), formViewModel.DataKey.ToString());
                 var filePath = string.Concat(Path.Combine(directoryPath, $"{formViewModel.RemoveControlId.ToString()}_{fileControl.Values.First()}"));
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
@@ -500,12 +500,12 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { formViewModel.FormId});
             }
         }
 
         [HttpGet("DownloadFile/{formId}/{dataKey}/{controlId}/{fileName}")]
-        public IActionResult DownloadFile(string formId,string dataKey,string controlId, string fileName)
+        public IActionResult DownloadFile(string formId, string dataKey, string controlId, string fileName)
         {
             var directoryPath = Path.Combine(_studyDocumentsPath, formId.ToString(), dataKey.ToString());
             var filePath = string.Concat(Path.Combine(directoryPath, $"{controlId}_{fileName}"));
@@ -535,7 +535,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { formId });
             }
         }
         #endregion
@@ -577,7 +577,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.FormId);
             }
         }
 
@@ -588,12 +588,12 @@ namespace BaseLibrary.Controllers
             {
                 var factory = BSF.ApplicationControlBaseFactory;
                 var pageHandler = GetFormHandler(model.FormId);
-               // var form = pageHandler.ImportDataFromExcel(model, factory, LoggedInUser);
+                // var form = pageHandler.ImportDataFromExcel(model, factory, LoggedInUser);
                 return Ok(true);
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model.FormId);
             }
         }
 

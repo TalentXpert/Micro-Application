@@ -99,14 +99,18 @@ namespace BaseLibrary.Utilities
                 }
                 catch
                 {
-                    if (userId.HasValue == false)
-                        userId = Guid.Empty;
-                    if (string.IsNullOrWhiteSpace(LogFileFolderPath) == false)
+                    try
                     {
-                        var filePath = Path.Combine(LogFileFolderPath, "ApplicationError", "ErrorLog.txt");
-                        var error = $"user-{userId}, method-{method}, message-{message}, stack strace-{stackTrace}, details-{detail}";
-                        File.AppendAllText(filePath, error);
+                        if (userId.HasValue == false)
+                            userId = Guid.Empty;
+                        if (string.IsNullOrWhiteSpace(LogFileFolderPath) == false)
+                        {
+                            var filePath = Path.Combine(LogFileFolderPath, "ApplicationError", "ErrorLog.txt");
+                            var error = $"user-{userId}, method-{method}, message-{message}, stack strace-{stackTrace}, details-{detail}";
+                            File.AppendAllText(filePath, error);
+                        }
                     }
+                    catch { }
                 }
             }
         }

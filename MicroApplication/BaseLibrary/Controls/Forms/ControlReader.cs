@@ -84,7 +84,7 @@
         {
             string value = GetControl(appControl, ControlValues)?.GetFirstValue();
             if (!C.IsNull(value))
-                return Convert.ToInt16(value);
+                return Convert.ToInt32(value);
             return 0;
         }
         public static double GetControlFirstValueAsDouble(AppControl appControl, List<ControlValue> ControlValues)
