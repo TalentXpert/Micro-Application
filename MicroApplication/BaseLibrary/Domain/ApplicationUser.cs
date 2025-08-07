@@ -22,7 +22,9 @@ namespace BaseLibrary.Domain
         public string? TimeZone { get; set; }
         public bool IsPasswordHashMatching(string password)
         {
-            return Password == X.Security.PasswordHasher.ComputeSaltedHash(password, Salt.Value);
+            if(Salt.HasValue)
+                return Password == X.Security.PasswordHasher.ComputeSaltedHash(password, Salt.Value);
+            return IsPasswordMatching(password);
         }
         public bool IsPasswordMatching(string password)
         {
@@ -62,8 +64,13 @@ namespace BaseLibrary.Domain
             ContactNumber = ControlReader.GetControlFirstValue(BaseControls.ContactNumber, model.ControlValues);
             LoginId = ControlReader.GetControlFirstValue(BaseControls.LoginId, model.ControlValues);
             LastLogin = DateTime.UtcNow;
-            Password = "12345";
+            SetPassword("12345");
             SetUpdatedOn();
+        }
+        public void SetPassword(string password)
+        {
+            Salt = PasswordHasher.CreateRandomSalt();
+            Password = new PasswordHasher().ComputeSaltedHash(password, Salt.Value);
         }
         public void UpdateOrganization(SmartFormTemplateRequest model)
         {
