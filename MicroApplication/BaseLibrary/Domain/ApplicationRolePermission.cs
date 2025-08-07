@@ -50,6 +50,7 @@ namespace BaseLibrary.Domain
         public Guid PermissionId { get; set; }
         public string Name { get; set; }
         public bool IsSelected { get; set; }
+        public string Description { get; set; }
 
         public RolePermissionVM() { }
         public RolePermissionVM(List<ApplicationRolePermission> rolePermissions, Permission permission)
@@ -61,6 +62,7 @@ namespace BaseLibrary.Domain
             }
             PermissionId = permission.Id;
             Name = permission.Name;
+            Description = permission.Description;
         }
     }
 

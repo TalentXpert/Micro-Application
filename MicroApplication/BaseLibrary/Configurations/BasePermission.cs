@@ -64,7 +64,7 @@ namespace BaseLibrary.Configurations
         public static Permission ManageOrganization = new Permission("8A1C034C-9374-4EBE-931E-39B655C70E4D", "Manage Organization", "");
 
         //
-        public static Permission ViewAuditLog = new Permission("375F4D1B-3DB7-428F-97B3-43633FAED676", "View Audit Log", "");
+        public static Permission ViewAuditLog = new Permission("375F4D1B-3DB7-428F-97B3-43633FAED676", "View Audit Log", "View Audit Log");
         #endregion
     }
 }

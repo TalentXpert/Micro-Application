@@ -224,7 +224,7 @@ namespace BaseLibrary.Controllers
         {
             if (LoggedInUser.IsOrgAdmin)
                 return;
-            IsOperationAllowed(BasePermission.ManageOrganization.Code, BasePermission.ManageOrganization.Name);
+            IsOperationAllowed(BasePermission.OrganizationConfiguration.Code, BasePermission.OrganizationConfiguration.Name);
         }
         protected void IsInWebsiteAdminRole(string operation)
         {
