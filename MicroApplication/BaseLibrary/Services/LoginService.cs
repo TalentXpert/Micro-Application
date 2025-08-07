@@ -17,9 +17,9 @@ namespace BaseLibrary.Services
         public ApplicationUser GetUserAfterValidatingUserCredential(string login, string password)
         {
             var applicationUser = SF.UserService.GetUserByLoginId(login);
-            if (applicationUser == null)
+            if (applicationUser is null)
                 throw new ValidationException("Either login or password is wrong. Please try with right login and password.");
-            return applicationUser;
+            return GetUserAfterValidatingUserCredential(applicationUser, login, password);
         }
 
         public ApplicationUser GetUserAfterValidatingUserCredential(string key)
@@ -27,7 +27,7 @@ namespace BaseLibrary.Services
             throw new NotImplementedException();
         }
 
-        private ApplicationUser GetJobproviderAfterValidatingUserCredential(ApplicationUser user, string loginId, string password)
+        private ApplicationUser GetUserAfterValidatingUserCredential(ApplicationUser user, string loginId, string password)
         {
             if (user == null)
                 throw new ValidationException("Either login or password is wrong. Please try with right login and password.");
