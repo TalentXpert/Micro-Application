@@ -45,6 +45,15 @@ namespace BaseLibrary.Configurations.PageHandlers
             var form = formHandler.ProcessFormGenerateRequest(new SmartFormGenerateRequest { FormId = AppForm.Id, FormMode = "Add" }, ApplicationControlFactory);
             return form.UIControls.Where(c => c.IsGlobalControl == false).ToList();
         }
-
+        protected override List<SmartAction> PrepareColumnActions(AppForm form)
+        {
+            var actions = new List<SmartAction>
+            {
+                new SmartAction(form,FormTypes.DynamicForm, "View","View","View", SmartActionFormMode.View),
+                new SmartAction(form,FormTypes.DynamicForm,"Edit","Edit","Edit", SmartActionFormMode.Edit),
+                new SmartAction(BaseForm.UserRoleForm,FormTypes.SelectFromListForm, "Manage Roles","ManageRoles","ManageRoles",SmartActionFormMode.Add),
+            };
+            return actions;
+        }
     }
 }
