@@ -53,7 +53,7 @@ namespace BaseLibrary.Services
         public UserRole DeleteUserRole(Guid Id, Guid organizationId)
         {
             var userRole = RF.UserRoleRepository.Get(Id);
-            if (userRole != null)
+            if (userRole is not null)
             {
                 var role = RF.RoleRepository.Get(userRole.RoleId);
                 if(role?.OrganizationId==organizationId)
@@ -74,7 +74,7 @@ namespace BaseLibrary.Services
             {
                 var isSelected = false;
                 var rolePermission = rolePermissions.FirstOrDefault(r => r.PermissionId == permission.Id);
-                if (rolePermission != null)
+                if (rolePermission is not null)
                     isSelected = true;
                 options.Add(new SmartControlOption(permission.Name, permission.Id.ToString(), isSelected));
             }
@@ -96,8 +96,9 @@ namespace BaseLibrary.Services
             var result = new List<Permission>();
             foreach (var rolePermission in userPermissions)
             {
-                var permission = permissions.First(p => p.Id == rolePermission.PermissionId);
-                result.Add(permission);
+                var permission = permissions.FirstOrDefault(p => p.Id == rolePermission.PermissionId);
+                if(permission != null)
+                    result.Add(permission);
             }
             return result.Select(x => x.Code).ToList();
         }
