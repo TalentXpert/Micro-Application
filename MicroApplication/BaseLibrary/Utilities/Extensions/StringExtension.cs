@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace BaseLibrary.Utilities
 {
@@ -47,6 +49,20 @@ namespace BaseLibrary.Utilities
         public bool AreEqual(string input1,string input2)
         {
             return input1.Equals(input2, System.StringComparison.OrdinalIgnoreCase);
+        }
+        public string KeepOnlyLettersDigitsAndSpaces(string input)
+        {
+            try
+            {
+                var cleaned = new string(input
+                        .Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                        .ToArray());
+                return Regex.Replace(cleaned, @"\s+", " ").Trim();
+            }
+            catch
+            {
+                return input;
+            }
         }
     }
 }

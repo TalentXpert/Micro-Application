@@ -59,7 +59,7 @@ namespace BaseLibrary.Utilities
 
 
 
-        public void LogError(Exception exception, string method, Guid? userId, object dataVM = null, bool isValidationException = false)
+        public void LogError(Exception exception, string method, Guid? userId, object? dataVM = null, bool isValidationException = false)
         {
             LogError(exception.Message, exception.StackTrace, exception.ToString(), method, userId, dataVM, isValidationException);
         }
@@ -73,7 +73,7 @@ namespace BaseLibrary.Utilities
             return dataJson;
 
         }
-        public void LogError(string message, string stackTrace, string detail, string method, Guid? userId, object dataVM, bool isValidationException = false)
+        public void LogError(string message, string? stackTrace, string detail, string method, Guid? userId, object? dataVM, bool isValidationException = false)
         {
             if (IsValidConnection)
             {
@@ -84,6 +84,8 @@ namespace BaseLibrary.Utilities
                         SqlCommand sqlCommand = new SqlCommand(InsertExceptionQuery(), SqlConnection);
                         sqlCommand.Parameters.Add(new SqlParameter("@id", IdentityGenerator.NewSequentialGuid()));
                         sqlCommand.Parameters.Add(new SqlParameter("@message", message));
+                        if(stackTrace==null)
+                            stackTrace = string.Empty;
                         sqlCommand.Parameters.Add(new SqlParameter("@stackTrace", stackTrace));
                         if (userId.HasValue ==false)
                             sqlCommand.Parameters.Add(new SqlParameter("@userId", Guid.Empty));
@@ -119,7 +121,7 @@ namespace BaseLibrary.Utilities
         {
             string insertQuery = @"INSERT INTO [dbo].[ExceptionLog] ([Id],[Message],[StackTrace],[UserId],[DateTime],[ExceptionDump],[MethodInfo],[CreatedOn],[UpdatedOn],[MethodParams],[IsValidation])
             VALUES
-           (@id,@message,@stackTrace, @userId,getdate(),@exceptionDump,@methodInfo,getdate(),getdate(),@params,@isValidationException)";
+           (@id,@message,@stackTrace, @userId,GETUTCDATE(),@exceptionDump,@methodInfo,GETUTCDATE(),GETUTCDATE(),@params,@isValidationException)";
             return insertQuery;
         }
 
