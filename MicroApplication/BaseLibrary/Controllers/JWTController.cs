@@ -1,7 +1,6 @@
 ﻿using BaseLibrary.Security;
 using Microsoft.IdentityModel.Tokens;
 
-
 namespace BaseLibrary.Controllers
 {
 
@@ -98,7 +97,8 @@ namespace BaseLibrary.Controllers
                     user.SessionId = Guid.NewGuid();
                     BSF.UserService.UpdateLastLogin(user);
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
-                    jwt.Permissions = BSF.UserRoleService.GetUserAllPermissions(user);
+                    var permissions = BSF.UserRoleService.GetUserAllPermissions(user);
+                    jwt.Permissions = GetPermissionsWithoutStudyPermissions(permissions);
                     jwt.Role =user.Role;
                     jwt.Name = user.Name;                    
                     CommitTransaction();
@@ -115,7 +115,12 @@ namespace BaseLibrary.Controllers
             return BadRequest("Invalid username or password.");
         }
 
-        
+        private List<string> GetPermissionsWithoutStudyPermissions(List<string> permissions)
+        {
+            //permissions - study specific permissions
+            return permissions;
+        }
+
 
         //private void UpdateDatabase(string user)
         //{

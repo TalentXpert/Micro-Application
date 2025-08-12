@@ -56,7 +56,7 @@ namespace BaseLibrary.Services
             if (userRole is not null)
             {
                 var role = RF.RoleRepository.Get(userRole.RoleId);
-                if(role?.OrganizationId==organizationId)
+                if (role?.OrganizationId == organizationId)
                     RF.UserRoleRepository.Remove(userRole);
             }
 
@@ -93,14 +93,14 @@ namespace BaseLibrary.Services
         {
             var userPermissions = RF.UserRoleRepository.GetUserPermissions(user.Id);
             var permissions = SF.MicroAppContract.GetApplicationPermission().GetPermissions();
-            var result = new List<Permission>();
+            var result = new Dictionary<Guid, Permission>();
             foreach (var rolePermission in userPermissions)
             {
                 var permission = permissions.FirstOrDefault(p => p.Id == rolePermission.PermissionId);
-                if(permission != null)
-                    result.Add(permission);
+                if (permission != null)
+                    result[permission.Id] = permission;
             }
-            return result.Select(x => x.Code).ToList();
+            return result.Values.Select(x => x.Code).ToList();
         }
 
         private List<string> WebsiteAdminPermissions()
@@ -134,7 +134,7 @@ namespace BaseLibrary.Services
 
         public bool IsInOrganizationAdminRole(ApplicationUser loggedInUser)
         {
-            if(loggedInUser.IsOrgAdmin)
+            if (loggedInUser.IsOrgAdmin)
                 return true;
             return IsInRole(ApplicationRole.OrganizationAdminRole, loggedInUser);
         }

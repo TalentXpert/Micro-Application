@@ -87,5 +87,9 @@ namespace BaseLibrary.Domain
             if(OrganizationId.HasValue) return OrganizationId.Value;
             throw new ValidationException($"You must be part of an organization to perform this operation.");
         }
+        public void UpdateOrganizationId(Guid? organiztionId)
+        {
+            OrganizationId = organiztionId;
+        }
     }
 }
