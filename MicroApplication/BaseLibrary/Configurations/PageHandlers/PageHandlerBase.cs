@@ -268,7 +268,7 @@ namespace BaseLibrary.Configurations.PageHandlers
                 new SmartAction(form,FormTypes.DynamicForm, "View","View","View", SmartActionFormMode.View),
                 new SmartAction(form,FormTypes.DynamicForm,"Edit","Edit","Edit", SmartActionFormMode.Edit),
                 new SmartAction(form,FormTypes.DynamicForm,"Delete","Delete","Delete", SmartActionFormMode.Delete),
-                new SmartAction(BaseForm.UserRoleForm,FormTypes.SelectFromListForm, "Manage Roles","ManageRoles","ManageRoles",SmartActionFormMode.Add),
+                //new SmartAction(BaseForm.UserRoleForm,FormTypes.SelectFromListForm, "Manage Roles","ManageRoles","ManageRoles",SmartActionFormMode.Add),
             };
             return actions;
         }
