@@ -44,7 +44,7 @@ namespace BaseLibrary.DatabaseMigrations
             string query;
             if (migration.HasTable("DatabaseMigration"))
             {
-                var id = sqlCommandExecutor.ExecuteScalar("Select Id from DatabaseMigration WHERE DatabaseName = '{database.Value}'");
+                var id = sqlCommandExecutor.ExecuteScalar($"Select Id from DatabaseMigration WHERE DatabaseName = '{database.Value}'");
                 if (id == 0)
                 {
                     var maxId = sqlCommandExecutor.ExecuteScalar("Select MAx(Id) from DatabaseMigration");
@@ -54,7 +54,7 @@ namespace BaseLibrary.DatabaseMigrations
                 }
                 else
                 {
-                    query = $"Update DatabaseMigration set [ScriptSerialNumber]={maxExecutedScriptSerialNumber} WHERE DatabaseName = '{{database.Value}}'";
+                    query = $"Update DatabaseMigration set [ScriptSerialNumber]={maxExecutedScriptSerialNumber} WHERE DatabaseName = '{database.Value}'";
                     sqlCommandExecutor.ExecuteQuery(query);
                 }
             }
@@ -77,8 +77,8 @@ namespace BaseLibrary.DatabaseMigrations
         public static void UpgradeDatabase(ISqlQueryExecutor sqlCommandExecutor, DatabaseOption database, Assembly assembly)
         {
             sqlCommandExecutor.GaurdForNonExistingDatabase();
-           // UpgradeMicroApplicationDatabase(sqlCommandExecutor);
-           // UpgradeApplicationDatabase(sqlCommandExecutor, database, assembly);
+            UpgradeMicroApplicationDatabase(sqlCommandExecutor);
+            UpgradeApplicationDatabase(sqlCommandExecutor, database, assembly);
         }
 
         private static void UpgradeApplicationDatabase(ISqlQueryExecutor sqlCommandExecutor, DatabaseOption database, Assembly assembly)
@@ -94,7 +94,7 @@ namespace BaseLibrary.DatabaseMigrations
                 throw new ValidationException("Failed to upgrade application database. Please contact your administrator." + message);
             }
         }
-        public static void UpgradeMicroApplicationDatabase(ISqlQueryExecutor sqlCommandExecutor)
+        private static void UpgradeMicroApplicationDatabase(ISqlQueryExecutor sqlCommandExecutor)
         {
             try
             {

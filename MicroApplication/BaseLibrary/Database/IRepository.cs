@@ -57,6 +57,8 @@ namespace BaseLibrary.Database
         /// <returns>An Entity if found else null.</returns>
         TEntity? Get(Guid id);
 
+        TEntity Find(Guid id);
+
         /// <summary>
         /// Get all elements of type {T} in repository
         /// </summary>

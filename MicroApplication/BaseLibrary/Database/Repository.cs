@@ -113,6 +113,16 @@ namespace BaseLibrary.Database
                 return GetSet().Find(id);
             return null;
         }
+        public virtual TEntity Find(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                var entity = GetSet().Find(id);
+                if(entity is not null)
+                    return entity;
+            }
+            throw new ValidationException($"Entity not found with given id-{id}");
+        }
 
         public virtual IEnumerable<TEntity> GetAll()
         {
