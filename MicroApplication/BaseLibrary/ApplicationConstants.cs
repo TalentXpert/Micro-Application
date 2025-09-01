@@ -5,6 +5,6 @@
         public static DateTime? ReleaseDate { get; internal set; }
         public const string JobApproval = "JobApproval";       
         public const string Incomplete = "Incomplete";
-        public static string ReleaseVersion = "2025.08.11.01";
+        public static string ReleaseVersion = "2025.09.01.01";
     }
 }
