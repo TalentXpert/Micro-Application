@@ -1,4 +1,5 @@
 ﻿
+using BaseLibrary.Configurations;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace BaseLibrary.Services
@@ -98,16 +99,26 @@ namespace BaseLibrary.Services
 
             if (model.DataKey.IsNullOrEmpty())
             {
+                string loginId = ControlReader.GetControlFirstValue(BaseControls.LoginId, model.ControlValues);
+                string emailId = ControlReader.GetControlFirstValue(BaseControls.Email, model.ControlValues);
+
+                user = RF.UserRepository.GetByLoginId(loginId);
+                if (user != null)
+                    throw new ValidationException("A user account with this login ID already exists. Please provide a unique login ID.");
+                
+                user = RF.UserRepository.GetUserByEmail(emailId);
+                if (user != null)
+                    throw new ValidationException("This email address has already been associated with an existing account.");
+
                 user = new ApplicationUser(loggedInUser);
                 RF.UserRepository.Add(user);
             }
             else
             {
                 user = RF.UserRepository.Get(model.DataKey.Value);
-            }
+            }           
+
             user.Update(model);
-
-
             return user;
 
         }
