@@ -9,9 +9,9 @@ namespace BaseLibrary.Controllers
         protected ISecurityService SecurityService { get; }
         public IBaseLibraryServiceFactory BaseLibraryServiceFactory { get; }
         protected IBaseLibraryServiceFactory BSF { get; }
-        public BaseLibraryController(IBaseLibraryServiceFactory baseLibraryServiceFactory ,ILogger logger)
+        public BaseLibraryController(IBaseLibraryServiceFactory baseLibraryServiceFactory, ILogger logger)
         {
-            BaseLibraryServiceFactory=baseLibraryServiceFactory;
+            BaseLibraryServiceFactory = baseLibraryServiceFactory;
             BSF = baseLibraryServiceFactory;
             Logger = logger;
             UserService = baseLibraryServiceFactory.UserService;
@@ -28,22 +28,24 @@ namespace BaseLibrary.Controllers
             BaseLibraryServiceFactory.UnitOfWork.RollbackChanges();
         }
 
-        protected Guid GetCurrentUserId()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private Guid GetCurrentUserId()
         {
-            // if the user is not authenticated, throw an exception
-            //if (!User.Identity.IsAuthenticated) throw new NotSupportedException();
             var userClaim = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             var issueTime = User?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Iat);
-            if (C.IsNotNull(issueTime))
+            if (issueTime is not null)
             {
                 TokenIssueTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(issueTime.Value)).DateTime;
             }
-            if (userClaim != null) 
+            if (userClaim != null)
                 return Guid.Parse(userClaim.Value);
             return Guid.Empty;
         }
         private DateTime? TokenIssueTime { get; set; }
-        
+
         [NonAction]
         public Guid GetSafeCurrentUserId()
         {
@@ -72,7 +74,7 @@ namespace BaseLibrary.Controllers
 
         private Guid _signInUserId;
 
-        protected Guid SignInUserId
+        private Guid SignInUserId
         {
             get
             {
@@ -92,17 +94,17 @@ namespace BaseLibrary.Controllers
                 if (C.IsNull(_currentUser))
                 {
                     _currentUser = UserService.GetUser(SignInUserId);
-                    if (C.IsNotNull(_currentUser) && _currentUser.IsBlocked)
+                    if (_currentUser is not null && _currentUser.IsBlocked)
                         throw new ValidationException($"Your account has been disabled. Please contact support team for more information. Message from disabler - {_currentUser.BlockReason}");
                 }
 
-                if (C.IsNull(_currentUser))
+                if (_currentUser is null)
                     throw new ValidationException("Login session has expired. Please login again.");
 
                 var releaseDate = ApplicationConstants.ReleaseDate;
                 if (TokenIssueTime.HasValue && TokenIssueTime < releaseDate)
                     throw new ValidationException("Login session has expired. Please login again.");
-
+               
                 return _currentUser;
             }
         }
@@ -325,8 +327,8 @@ namespace BaseLibrary.Controllers
                 X.Logger.LogError(exception.Message, exception.StackTrace, exception.ToString(), method, userId, dataVM, false);
             }
 
-            return BadRequest(new ExceptionErrorVM(1,"Error Information",CommonErrorMessage));
-           
+            return BadRequest(new ExceptionErrorVM(1, "Error Information", CommonErrorMessage));
+
         }
 
         protected string CommonErrorMessage => "An unhandled error has occurred while serving your request. Concern team has been informed to look into it. Please try again. If you face this error frequently please contact support.";
@@ -341,9 +343,9 @@ namespace BaseLibrary.Controllers
                 if (exception is ValidationException)
                 {
                     if (exception.InnerException != null)
-                        return BadRequest(new ExceptionErrorVM ( 4,  "Validation Information", exception.Message)); // for check for overlap exception.
+                        return BadRequest(new ExceptionErrorVM(4, "Validation Information", exception.Message)); // for check for overlap exception.
                     else
-                        return BadRequest(new ExceptionErrorVM (3, "Validation Information",    exception.Message));
+                        return BadRequest(new ExceptionErrorVM(3, "Validation Information", exception.Message));
                 }
             }
             catch { }
@@ -362,6 +364,6 @@ namespace BaseLibrary.Controllers
 
         #endregion
 
-        
+
     }
 }

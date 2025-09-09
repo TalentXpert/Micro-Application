@@ -54,7 +54,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         public virtual List<SqlParameter> GetQueryParameters(string query, Dictionary<string, object>? parameters, ApplicationUser? user)
         {
             var param = new List<SqlParameter>();
-            if (user != null)
+            if (user is not null)
             {
                 if (user.OrganizationId.HasValue && ContainsIgnoreCase(query, "@organizationid"))
                     param.Add(new SqlParameter("@organizationid", user.OrganizationId.Value));

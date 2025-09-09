@@ -26,7 +26,7 @@ namespace BaseLibrary.Configurations
                 //case BaseForm.AuditFormId:return new AuditPageHandler(BSF, loggedInUser);
                 default:
                     var form = BSF.AppFormService.GetForm(formId);
-                    if (form == null)
+                    if (form is null)
                         throw new ValidationException($"No application form found with {formId} id. Please use correct form id.");
                     var layoutControl = BSF.AppFormControlService.GetLayoutControl(formId);
                     return new DefaultFormHandler(BSF, loggedInUser, form, null, layoutControl?.AppControl, false);

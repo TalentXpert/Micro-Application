@@ -11,14 +11,15 @@
         public override void ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
             AppControlVM vm = new AppControlVM();
-            if (IsNotNullOrEmpty(model.DataKey))
+            if (IsNotNullOrEmpty(model.DataKey) && model.DataKey.HasValue)
                 vm.Id = model.DataKey.Value;
 
-            vm.ControlIdentifier = model.ControlValues.GetControlFirstValue(BaseControl.ControlIdentifier);
-            vm.DataType = model.ControlValues.GetControlFirstValue(BaseControl.ControlDataTypes);
-            vm.ControlType = model.ControlValues.GetControlFirstValue(BaseControl.ControlType);
-            vm.DisplayLabel = model.ControlValues.GetControlFirstValue(BaseControl.DisplayLabel);
+            vm.ControlIdentifier = model.ControlValues.GetControlFirstValue(BaseControl.ControlIdentifier) ?? string.Empty;
+            vm.DataType = model.ControlValues.GetControlFirstValue(BaseControl.ControlDataTypes) ?? string.Empty;
+            vm.ControlType = model.ControlValues.GetControlFirstValue(BaseControl.ControlType) ?? string.Empty;
+            vm.DisplayLabel = model.ControlValues.GetControlFirstValue(BaseControl.DisplayLabel) ?? string.Empty;
             vm.Options = model.ControlValues.GetControlFirstValue(BaseControl.Options);
+
             BaseLibraryServiceFactory.AppControlService.SaveUpdateAppControl(GetLoggedInUserOrganization(LoggedInUser), vm);
         }
 
@@ -26,17 +27,18 @@
         {
             var id = model.DataKey;
             AppControl? appControl = null;
-            if (IsNotNullOrEmpty(id))
+            if (IsNotNullOrEmpty(id) && id.HasValue)
                 appControl = BaseLibraryServiceFactory.AppControlService.GetAppControl(id.Value);
 
             var controlValues = new List<ControlValue>();
             if (IsNotNull(appControl))
             {
-                controlValues.Add(new ControlValue(BaseControl.ControlIdentifier, appControl.ControlIdentifier));
-                controlValues.Add(new ControlValue(BaseControl.ControlDataTypes, appControl.DataType));
-                controlValues.Add(new ControlValue(BaseControl.ControlType, appControl.ControlType));
-                controlValues.Add(new ControlValue(BaseControl.DisplayLabel, appControl.DisplayLabel));
-                controlValues.Add(new ControlValue(BaseControl.Options, appControl.Options));
+                // Fix CS8602: check for null before dereferencing appControl properties
+                controlValues.Add(new ControlValue(BaseControl.ControlIdentifier, appControl?.ControlIdentifier ?? string.Empty));
+                controlValues.Add(new ControlValue(BaseControl.ControlDataTypes, appControl?.DataType ?? string.Empty));
+                controlValues.Add(new ControlValue(BaseControl.ControlType, appControl?.ControlType ?? string.Empty));
+                controlValues.Add(new ControlValue(BaseControl.DisplayLabel, appControl?.DisplayLabel ?? string.Empty));
+                controlValues.Add(new ControlValue(BaseControl.Options, appControl?.Options ?? string.Empty));
             }
             return controlValues;
         }

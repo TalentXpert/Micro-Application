@@ -108,7 +108,7 @@
         }
         public static Guid GetLoggedInUserOrganization(ApplicationUser? user)
         {
-            if (user == null)
+            if (user is null)
                 throw new ValidationException($"You must login to perform this operation.");
             if(user.OrganizationId.HasValue==false)
                 throw new ValidationException($"You must be part of an organization to perform this operation.");
@@ -116,7 +116,7 @@
         }
         public static ApplicationUser GetLoggedInUser(ApplicationUser? user)
         {
-            if (user == null)
+            if (user is null)
                 throw new ValidationException($"You must login to perform this operation.");
             return user;
         }
@@ -140,13 +140,13 @@
         }
         public string FormatNumber(int? number)
         {
-            if (number is not null && number.HasValue) return number.ToString();
+            if (number is not null && number.HasValue) return number.Value.ToString();
             return "";
         }
 
         public string FormatDecimal(decimal? number)
         {
-            if (number is not null && number.HasValue) return number.ToString();
+            if (number is not null && number.HasValue) return number.Value.ToString();
             return "";
         }
 
