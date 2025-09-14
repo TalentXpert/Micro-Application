@@ -41,6 +41,13 @@ namespace BaseLibrary.DatabaseMigrations
             ExecuteQuery(query);
         }
 
+        public void RenameColumn(string table, string oldName, string newName)
+        {
+            if (!HasColumn(table,oldName)) return;
+            var query = $"EXEC sp_rename 'dbo.{table}.{oldName}', '{newName}', 'COLUMN';";
+            ExecuteQuery(query);
+        }
+
         public void DropIndex(string table, string index)
         {
             if (HasIndex(table, index))
