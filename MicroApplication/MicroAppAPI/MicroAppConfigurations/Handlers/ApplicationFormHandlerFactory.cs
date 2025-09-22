@@ -3,7 +3,7 @@ namespace MicroAppAPI.Configurations
 {
     public class ApplicationFormHandlerFactory : FormHandlerFactory
     {
-        public ApplicationFormHandlerFactory(IServiceFactory serviceFactory)
+        public ApplicationFormHandlerFactory(IServiceFactory serviceFactory) : base(serviceFactory) 
         {
             ServiceFactory = serviceFactory;
         }
