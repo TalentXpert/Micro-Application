@@ -20,6 +20,18 @@ namespace BaseLibrary.Domain
         public string? Role { get; set; }
         public Guid? DefaultStudyId { get;set;}
         public string? TimeZone { get; set; }
+        public static ApplicationUser Create(Guid id,string name,string email,string contactNumber)
+        {
+            return new ApplicationUser
+            {
+                Id = id,
+                Name = name,
+                Email = email,
+                LoginId = email,
+                ContactNumber = contactNumber,
+                Password = "12345"
+            };
+        }
         public bool IsPasswordHashMatching(string password)
         {
             if(Salt.HasValue)

@@ -19,6 +19,12 @@ namespace BaseLibrary.DTOs
         protected Option(string value):this(value,value)
         {
         }
+        public int GetIntValue()
+        {
+            if(int.TryParse(Value, out int result))
+                return result;
+            throw new ValidationException("Value can not be convert to integer.");
+        }
     }
 
     public class DatabaseOption : Option

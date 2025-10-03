@@ -156,5 +156,9 @@
                 return boolean.Value ? "Yes" : "No";
             return "";
         }
+        public string RemoveSpace(string input)
+        {
+            return input.Replace(" ", "");
+        }
     }
 }
