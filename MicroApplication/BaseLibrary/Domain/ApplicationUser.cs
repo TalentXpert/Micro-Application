@@ -102,6 +102,23 @@ namespace BaseLibrary.Domain
                 return ApplicationSettingBase.DefaultTimeZone;
             return TimeZoneInfo.Local.StandardName;
         }
+        public static string GenerateRandomPassword()
+        {
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_-+=<>?";
+            const int defaultLength = 12; // Default length for the password
+
+            byte[] randomBytes = new byte[defaultLength];
+            System.Security.Cryptography.RandomNumberGenerator.Fill(randomBytes);
+
+            // Convert random bytes to characters from validChars
+            StringBuilder passwordBuilder = new StringBuilder(defaultLength);
+            for (int i = 0; i < defaultLength; i++)
+            {
+                int index = randomBytes[i] % validChars.Length;
+                passwordBuilder.Append(validChars[index]);
+            }
+            return passwordBuilder.ToString();
+        }
     }
 
     public class UserFilterVM

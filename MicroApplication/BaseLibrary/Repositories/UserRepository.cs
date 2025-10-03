@@ -18,6 +18,7 @@ namespace BaseLibrary.Repositories
         List<ApplicationUser> GetUsers(Guid organizationId, GridRequestVM model);
         List<ApplicationUser> GetUsersByOrganization(Guid organizationId);
         List<ApplicationUser> GetOrganizationAdmins(GridRequestVM model);
+        List<ApplicationUser> GetUsersByEmail(string email);
     }
 
     public class UserRepository : Repository<ApplicationUser>, IUserRepository
@@ -148,6 +149,13 @@ namespace BaseLibrary.Repositories
         {
             var query = unitOfWork.ApplicationUsers.Where(p => p.OrganizationId == organizationId);
             return query.ToList();
+        }
+
+        public List<ApplicationUser> GetUsersByEmail(string email)
+        {
+            if (!string.IsNullOrWhiteSpace(email))
+                email = email.ToLower().Trim();
+            return this.unitOfWork.ApplicationUsers.Where(j => j.Email.ToLower() == email).ToList();
         }
     }
 }
