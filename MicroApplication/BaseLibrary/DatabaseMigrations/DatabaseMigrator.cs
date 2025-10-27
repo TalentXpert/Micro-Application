@@ -54,8 +54,14 @@ namespace BaseLibrary.DatabaseMigrations
                 }
                 else
                 {
-                    query = $"Update DatabaseMigration set [ScriptSerialNumber]={maxExecutedScriptSerialNumber} WHERE DatabaseName = '{database.Value}'";
-                    sqlCommandExecutor.ExecuteQuery(query);
+                    var currentVersionObj = sqlCommandExecutor.ExecuteScalar($@"SELECT ScriptSerialNumber FROM DatabaseMigration WHERE DatabaseName = '{database.Value}'");
+                    int currentVersion = currentVersionObj == null ? 1 : Convert.ToInt32(currentVersionObj);
+
+                    if (maxExecutedScriptSerialNumber > currentVersion)
+                    {
+                        query = $"Update DatabaseMigration set [ScriptSerialNumber]={maxExecutedScriptSerialNumber} WHERE DatabaseName = '{database.Value}'";
+                        sqlCommandExecutor.ExecuteQuery(query);
+                    }
                 }
             }
         }
