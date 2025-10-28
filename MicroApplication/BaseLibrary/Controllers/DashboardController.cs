@@ -91,12 +91,12 @@ namespace BaseLibrary.Controllers
             }
         }
 
-        [HttpGet("GetDashboardChart/{chartId}")]
-        public IActionResult GetDashboardChart(Guid chartId)
+        [HttpGet("GetDashboardChart/{chartId}/{studyId}")]
+        public IActionResult GetDashboardChart(Guid chartId, Guid? studyId)
         {
             try
             {
-                var chart = BSF.ChartService.GetChart(chartId, LoggedInUser.OrganizationId, LoggedInUser);
+                var chart = BSF.ChartService.GetChart(chartId, LoggedInUser.OrganizationId, LoggedInUser, studyId);
                 if (chart != null && chart.SeriesData.Count != 0)
                     return Ok(chart);
                 throw new ValidationException("No Chart with given id exits.");
