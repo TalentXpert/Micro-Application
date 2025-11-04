@@ -54,8 +54,8 @@ namespace BaseLibrary.DatabaseMigrations
                 }
                 else
                 {
-                    var currentVersionObj = sqlCommandExecutor.ExecuteScalar($@"SELECT ScriptSerialNumber FROM DatabaseMigration WHERE DatabaseName = '{database.Value}'");
-                    int currentVersion = currentVersionObj == null ? 1 : Convert.ToInt32(currentVersionObj);
+                    var currentMigrationId = sqlCommandExecutor.ExecuteScalar($@"SELECT ScriptSerialNumber FROM DatabaseMigration WHERE DatabaseName = '{database.Value}'");
+                    int currentVersion = currentMigrationId == 0 ? 1 : Convert.ToInt32(currentMigrationId);
 
                     if (maxExecutedScriptSerialNumber > currentVersion)
                     {
