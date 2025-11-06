@@ -5,7 +5,7 @@ namespace BaseLibrary.DatabaseMigrations.Migrations
 {
     public class Migration0001 : MigrationBase
     {
-        public Migration0001(ISqlQueryExecutor sqlCommandExecutor, Assembly assembly) : base(sqlCommandExecutor, assembly)
+        public Migration0001(ISqlQueryExecutor sqlCommandExecutor, IBaseDatabase unitOfWork, Assembly assembly) : base(sqlCommandExecutor, unitOfWork, assembly)
         {
         }
 

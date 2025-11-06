@@ -17,7 +17,7 @@
         /// Enumerable results 
         /// </returns>
         IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery, params object[] parameters);
-
+        IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery);
         /// <summary>
         /// Execute arbitrary command into underliying persistence store
         /// </summary>
@@ -30,7 +30,7 @@
         /// <param name="parameters">A vector of parameters values</param>
         /// <returns>The number of affected records</returns>
         int ExecuteCommand(string sqlCommand, params object[] parameters);
-
+        int ExecuteCommand(string sqlCommand);
 
     }
 }

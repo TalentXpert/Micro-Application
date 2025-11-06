@@ -41,11 +41,13 @@ namespace BaseLibrary.DatabaseMigrations
         protected ISqlQueryExecutor SqlCommandExecutor { get; }
         public Assembly Assembly { get; }
         private DbScriptReader DbScriptReader { get; }
-        public MigrationBase(ISqlQueryExecutor sqlCommandExecutor, Assembly assembly)
+        public IBaseDatabase UnitOfWork { get; }
+        public MigrationBase(ISqlQueryExecutor sqlCommandExecutor, IBaseDatabase unitOfWork , Assembly assembly)
         {
             SqlCommandExecutor = sqlCommandExecutor;
             Assembly = assembly;
             DbScriptReader = new DbScriptReader();
+            UnitOfWork = unitOfWork;
         }
 
         public virtual void Execute() { }

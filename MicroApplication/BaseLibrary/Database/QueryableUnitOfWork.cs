@@ -77,15 +77,20 @@ namespace BaseLibrary.Database
 
         public IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery, params object[] parameters)
         {
-            return null;
-            // return Database..SqlQuery<TEntity>(sqlQuery, parameters);
+            return Database.SqlQueryRaw<TEntity>(sqlQuery, parameters);
         }
-
+        public IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery)
+        {
+            return Database.SqlQueryRaw<TEntity>(sqlQuery);
+        }
         public int ExecuteCommand(string sqlCommand, params object[] parameters)
         {
-            return 0;// Database.ExecuteSqlCommand(sqlCommand, parameters);
+            return Database.ExecuteSqlRaw(sqlCommand, parameters);
         }
-
+        public int ExecuteCommand(string sqlCommand)
+        {
+            return Database.ExecuteSqlRaw(sqlCommand);
+        }
         public IEntityValidator EntityValidator { get; set; }
 
         #endregion

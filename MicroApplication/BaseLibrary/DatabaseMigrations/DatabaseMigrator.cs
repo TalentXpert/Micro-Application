@@ -5,6 +5,7 @@ namespace BaseLibrary.DatabaseMigrations
 {
     public class DatabaseMigrator
     {
+        static IBaseDatabase UnitOfWork;
         private static void MigrateDatabaseSchema(int lastExecutedScriptSerialNumber, DatabaseOption database, Assembly assembly, ISqlQueryExecutor sqlCommandExecutor)
         {
             sqlCommandExecutor.StartTransaction();
@@ -22,7 +23,7 @@ namespace BaseLibrary.DatabaseMigrations
                     if (migrationNumber <= lastExecutedScriptSerialNumber)
                         continue;
 
-                    MigrationBase? migration = Activator.CreateInstance(type, sqlCommandExecutor, assembly) as MigrationBase;
+                    MigrationBase? migration = Activator.CreateInstance(type, sqlCommandExecutor, UnitOfWork, assembly) as MigrationBase;
                     if (migration != null)
                         migration.Execute();
                 }
@@ -40,7 +41,7 @@ namespace BaseLibrary.DatabaseMigrations
 
         private static void UpdateDatabaseMigrationInformation(int maxExecutedScriptSerialNumber, Assembly assembly, DatabaseOption database, ISqlQueryExecutor sqlCommandExecutor)
         {
-            var migration = new MigrationBase(sqlCommandExecutor, assembly);
+            var migration = new MigrationBase(sqlCommandExecutor, UnitOfWork, assembly);
             string query;
             if (migration.HasTable("DatabaseMigration"))
             {
@@ -80,8 +81,9 @@ namespace BaseLibrary.DatabaseMigrations
             }
         }
 
-        public static void UpgradeDatabase(ISqlQueryExecutor sqlCommandExecutor, DatabaseOption database, Assembly assembly)
+        public static void UpgradeDatabase(ISqlQueryExecutor sqlCommandExecutor, IBaseDatabase unitOfWork, DatabaseOption database, Assembly assembly)
         {
+            UnitOfWork= unitOfWork;
             sqlCommandExecutor.GaurdForNonExistingDatabase();
             UpgradeMicroApplicationDatabase(sqlCommandExecutor);
             UpgradeApplicationDatabase(sqlCommandExecutor, database, assembly);
