@@ -65,13 +65,11 @@
             return !HasChildren(list);
         }
 
-        public static bool IsNotNullOrEmpty(Guid? input)
+        public static bool IsNotNullOrEmpty(Guid? value)
         {
-            if (IsNull(input))
-                return false;
-            if (input == Guid.Empty)
-                return false;
-            return true;
+            if (value is not null && value.HasValue && value.Value != Guid.Empty)
+                return true;
+            return false;
         }
 
         public static string Trim(string input)

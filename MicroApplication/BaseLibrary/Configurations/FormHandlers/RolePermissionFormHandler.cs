@@ -10,7 +10,7 @@ namespace BaseLibrary.Configurations.FormHandlers
         {
 
         }
-        public override void ProcessFormSaveRequest(SmartFormTemplateRequest model)
+        public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
             var roleId = model.DataKey;
             if (IsNullOrEmpty(model.DataKey))
@@ -21,6 +21,7 @@ namespace BaseLibrary.Configurations.FormHandlers
             var permissions = ControlReader.GetControlValues(BaseControl.PermissionSelection, model.ControlValues).Select(c => Convertor.ToGuid(c)).ToList();
 
             BaseLibraryServiceFactory.RolePermissionService.SaveUpdateRolePermissions(roleId.Value, permissions);
+            return roleId.Value.ToString();
         }
 
         protected override List<ControlValue> GetFormControlValues(SmartFormGenerateRequest model)

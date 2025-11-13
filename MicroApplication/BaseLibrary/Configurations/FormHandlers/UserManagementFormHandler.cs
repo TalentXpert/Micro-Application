@@ -8,9 +8,9 @@
 
         }
 
-        public override void ProcessFormSaveRequest(SmartFormTemplateRequest model)
+        public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
-            BaseLibraryServiceFactory.UserService.SaveUpdate(model, LoggedInUser);
+            return BaseLibraryServiceFactory.UserService.SaveUpdate(model, LoggedInUser).Id.ToString();
         }
 
         public override FormStoreBase? GetStoreObject(Guid id)

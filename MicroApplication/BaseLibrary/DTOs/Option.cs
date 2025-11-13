@@ -7,6 +7,17 @@ using System.Threading.Tasks;
 
 namespace BaseLibrary.DTOs
 {
+    public class NumberOption
+    {
+        public string Text { get; set; }
+        public int Value { get; set; }
+        protected NumberOption(string text, int value)
+        {
+            Text = text;
+            Value = value;
+        }
+    }
+
     public class Option
     {
         public string Text { get; set; }

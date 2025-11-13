@@ -9,9 +9,9 @@ namespace BaseLibrary.Configurations.FormHandlers
 
         }
 
-        public override void ProcessFormSaveRequest(SmartFormTemplateRequest model)
+        public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
-            BaseLibraryServiceFactory.OrganizationService.SaveUpdateOrganization(model, LoggedInUser);
+            return BaseLibraryServiceFactory.OrganizationService.SaveUpdateOrganization(model, LoggedInUser).ToString();
         }
 
         public override FormStoreBase? GetStoreObject(Guid id)

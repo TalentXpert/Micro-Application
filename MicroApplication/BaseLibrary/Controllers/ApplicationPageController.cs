@@ -1,9 +1,10 @@
-﻿using BaseLibrary.Configurations.PageHandlers;
-using BaseLibrary.Utilities.Excels;
-using System.Data;
-using Microsoft.Extensions.Configuration;
+﻿using BaseLibrary.Configurations;
+using BaseLibrary.Configurations.PageHandlers;
 using BaseLibrary.Controls.Forms;
 using BaseLibrary.UI.Controls;
+using BaseLibrary.Utilities.Excels;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace BaseLibrary.Controllers
 {
@@ -66,7 +67,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),pageId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), pageId);
             }
         }
 
@@ -86,7 +87,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),vm.PageId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), vm.PageId);
             }
         }
 
@@ -105,7 +106,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.PageId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model.PageId);
             }
         }
 
@@ -124,7 +125,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),pageId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), pageId);
             }
         }
 
@@ -166,7 +167,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.PageId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model.PageId);
             }
         }
         private string GetSafeDownloadFileName(string input)
@@ -218,7 +219,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),filterId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), filterId);
             }
         }
 
@@ -288,7 +289,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),model);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model);
             }
         }
 
@@ -342,7 +343,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { controlId });
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { controlId });
             }
         }
 
@@ -359,6 +360,8 @@ namespace BaseLibrary.Controllers
         {
             try
             {
+                if (BSF.MicroAppContract is not null)
+                    BSF.MicroAppContract.TrackActivity(ActivityTypeBase.FormGenerate, NewtonsoftJsonAdapter.SerializeObject(model));
                 var factory = BSF.ApplicationControlBaseFactory;
                 GaurdForNullInputModel(model);
                 var pageHandler = GetFormHandler(model.FormId);
@@ -381,9 +384,16 @@ namespace BaseLibrary.Controllers
         {
             try
             {
+
                 var pageHandler = GetFormHandler(model.FormId);
-                pageHandler.ProcessFormSaveRequest(model);
-                //RemoveOlderFilesIfAny(model);
+                var id = pageHandler.ProcessFormSaveRequest(model);
+                if(Guid.TryParse(id,out Guid uniqueKey))
+                {
+                    model.DataKey = uniqueKey;
+                    if(BSF.MicroAppContract is not null)
+                        BSF.MicroAppContract.TrackActivity(ActivityTypeBase.ProcessForm, NewtonsoftJsonAdapter.SerializeObject(model));
+                }
+                
                 CommitTransaction();
                 return Ok();
             }
@@ -436,7 +446,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),new {formId});
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
             }
         }
 
@@ -500,7 +510,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 RollbackTransaction();
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { formViewModel.FormId});
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formViewModel.FormId });
             }
         }
 
@@ -535,7 +545,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),new { formId });
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
             }
         }
         #endregion
@@ -577,7 +587,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),model.FormId);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model.FormId);
             }
         }
 

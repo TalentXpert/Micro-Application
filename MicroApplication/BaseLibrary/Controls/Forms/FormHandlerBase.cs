@@ -38,9 +38,9 @@ namespace BaseLibrary.Controls.Forms
 
         #region Save Form
         //this method should implement all validation logic here. 
-        public virtual void ProcessFormSaveRequest(SmartFormTemplateRequest model)
+        public virtual string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
-            BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
+            return BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
         }
 
         public virtual string ProcessFormSaveRequestAndReturnDataKey(SmartFormTemplateRequest model)

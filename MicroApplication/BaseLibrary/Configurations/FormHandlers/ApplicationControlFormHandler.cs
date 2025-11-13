@@ -8,7 +8,7 @@
 
         }
 
-        public override void ProcessFormSaveRequest(SmartFormTemplateRequest model)
+        public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
             AppControlVM vm = new AppControlVM();
             if (IsNotNullOrEmpty(model.DataKey) && model.DataKey.HasValue)
@@ -20,7 +20,7 @@
             vm.DisplayLabel = model.ControlValues.GetControlFirstValue(BaseControl.DisplayLabel) ?? string.Empty;
             vm.Options = model.ControlValues.GetControlFirstValue(BaseControl.Options);
 
-            BaseLibraryServiceFactory.AppControlService.SaveUpdateAppControl(GetLoggedInUserOrganization(LoggedInUser), vm);
+            return BaseLibraryServiceFactory.AppControlService.SaveUpdateAppControl(GetLoggedInUserOrganization(LoggedInUser), vm).Id.ToString();
         }
 
         protected override List<ControlValue> GetFormControlValues(SmartFormGenerateRequest model)

@@ -129,7 +129,7 @@ namespace BaseLibrary.Domain
 
         #endregion
 
-        public DateTime UtcNow()
+        public static DateTime UtcNow()
         {
             return DateTime.UtcNow;
         }

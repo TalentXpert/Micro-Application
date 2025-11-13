@@ -3,7 +3,7 @@
     public interface IOrganizationService
     {
         List<Organization> GetOrganizations(ApplicationUser loggedInUser, GridRequestVM model);
-        void SaveUpdateOrganization(SmartFormTemplateRequest model, ApplicationUser loggedInUser);
+        Guid SaveUpdateOrganization(SmartFormTemplateRequest model, ApplicationUser loggedInUser);
     }
     public class OrganizationService : ServiceLibraryBase, IOrganizationService
     {
@@ -16,7 +16,7 @@
             return RF.OrganizationRepository.GetOrganizations(loggedInUser, model);
         }
 
-        public void SaveUpdateOrganization(SmartFormTemplateRequest model, ApplicationUser loggedInUser)
+        public Guid SaveUpdateOrganization(SmartFormTemplateRequest model, ApplicationUser loggedInUser)
         {
             Organization organization;
 
@@ -31,6 +31,7 @@
                 organization = RF.OrganizationRepository.Get(model.DataKey.Value);
                 organization.Update(model);
             }
+            return organization.Id;
         }
     }
 }
