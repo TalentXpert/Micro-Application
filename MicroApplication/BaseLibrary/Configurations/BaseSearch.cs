@@ -7,6 +7,7 @@
     {
         public const int FormGenerate = 1;
         public const int ProcessForm = 2;
+        public const int UserLoggedIn = 3;
     }
     public abstract class BaseSearch
     {

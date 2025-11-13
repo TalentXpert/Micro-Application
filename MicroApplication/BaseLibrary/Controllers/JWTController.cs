@@ -1,4 +1,5 @@
-﻿using BaseLibrary.Security;
+﻿using BaseLibrary.Configurations;
+using BaseLibrary.Security;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BaseLibrary.Controllers
@@ -49,7 +50,7 @@ namespace BaseLibrary.Controllers
             SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
             this.AuthOptions = BSF.MicroAppContract.GetAuthOptions();
         }
-        
+
         [HttpPost("LoginWithId")]
         public IActionResult LoginWithId([FromBody] LoginWithKeyVM loginWithKeyVM)
         {
@@ -61,12 +62,13 @@ namespace BaseLibrary.Controllers
 
                 loginWithKeyVM.TrimAllStrings();
 
-               var user = BSF.LoginService.GetUserAfterValidatingUserCredential(loginWithKeyVM.Key);
+                var user = BSF.LoginService.GetUserAfterValidatingUserCredential(loginWithKeyVM.Key);
 
                 var success = user != null;
                 if (success)
                 {
-                    var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id,"en",user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
+                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty);
+                    var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
                     //UnitOfWork.Commit();
                     return Ok(jwt);
                 }
@@ -74,7 +76,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 // TODO: handle errors
-               // UnitOfWork.RollbackChanges();
+                // UnitOfWork.RollbackChanges();
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
 
@@ -89,18 +91,19 @@ namespace BaseLibrary.Controllers
             {
 
                 if (!ModelState.IsValid) return BadRequest(ModelState);
-               
-                ApplicationUser user = BSF.LoginService.GetUserAfterValidatingUserCredential(jwtTokenRequestVM.LoginId, jwtTokenRequestVM.Password); 
-                
+
+                ApplicationUser user = BSF.LoginService.GetUserAfterValidatingUserCredential(jwtTokenRequestVM.LoginId, jwtTokenRequestVM.Password);
+
                 if (user != null)
                 {
+                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty);
                     user.SessionId = Guid.NewGuid();
                     BSF.UserService.UpdateLastLogin(user);
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
                     var permissions = BSF.UserRoleService.GetUserAllPermissions(user);
                     jwt.Permissions = GetPermissionsWithoutStudyPermissions(permissions);
-                    jwt.Role =user.Role;
-                    jwt.Name = user.Name;                    
+                    jwt.Role = user.Role;
+                    jwt.Name = user.Name;
                     CommitTransaction();
                     return Ok(jwt);
                 }
@@ -108,7 +111,7 @@ namespace BaseLibrary.Controllers
             catch (Exception exception)
             {
                 // TODO: handle errors
-                RollbackTransaction(); 
+                RollbackTransaction();
                 return HandleException(exception, CodeHelper.CallingMethodInfo(), jwtTokenRequestVM);
             }
 
