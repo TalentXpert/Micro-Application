@@ -361,7 +361,7 @@ namespace BaseLibrary.Controllers
             try
             {
                 if (BSF.MicroAppContract is not null)
-                    BSF.MicroAppContract.TrackActivity(ActivityTypeBase.FormGenerate, NewtonsoftJsonAdapter.SerializeObject(model));
+                    BSF.MicroAppContract.TrackActivity(ActivityTypeBase.FormGenerate, NewtonsoftJsonAdapter.SerializeObject(model),LoggedInUser);
                 var factory = BSF.ApplicationControlBaseFactory;
                 GaurdForNullInputModel(model);
                 var pageHandler = GetFormHandler(model.FormId);
@@ -391,7 +391,7 @@ namespace BaseLibrary.Controllers
                 {
                     model.DataKey = uniqueKey;
                     if(BSF.MicroAppContract is not null)
-                        BSF.MicroAppContract.TrackActivity(ActivityTypeBase.ProcessForm, NewtonsoftJsonAdapter.SerializeObject(model));
+                        BSF.MicroAppContract.TrackActivity(ActivityTypeBase.ProcessForm, NewtonsoftJsonAdapter.SerializeObject(model), LoggedInUser);
                 }
                 
                 CommitTransaction();

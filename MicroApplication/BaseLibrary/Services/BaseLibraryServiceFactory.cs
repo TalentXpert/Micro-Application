@@ -4,6 +4,7 @@ namespace BaseLibrary.Services
 {
     public interface IBaseLibraryServiceFactory
     {
+        ILoggerFactory LoggerFactory { get; }
         IBaseDatabase UnitOfWork { get; }
         IBaseLibraryRepositoryFactory RF { get; }
         IAppControlService AppControlService { get; }

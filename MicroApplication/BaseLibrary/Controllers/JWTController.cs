@@ -64,10 +64,9 @@ namespace BaseLibrary.Controllers
 
                 var user = BSF.LoginService.GetUserAfterValidatingUserCredential(loginWithKeyVM.Key);
 
-                var success = user != null;
-                if (success)
+                if (user is not null)
                 {
-                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty);
+                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty, user);
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
                     //UnitOfWork.Commit();
                     return Ok(jwt);
@@ -96,7 +95,7 @@ namespace BaseLibrary.Controllers
 
                 if (user != null)
                 {
-                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty);
+                    BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty, user);
                     user.SessionId = Guid.NewGuid();
                     BSF.UserService.UpdateLastLogin(user);
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);

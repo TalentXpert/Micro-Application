@@ -23,6 +23,6 @@ namespace BaseLibrary
         List<DashboardSchema> GetApplicationDashboards();
         BaseSqlDataSource GetBaseSqlDataSource();
         BaseDataSourceParameter GetBaseDataSourceParameter();
-        void TrackActivity(int activityType, string activityDataJson);
+        void TrackActivity(int activityType, string activityDataJson,ApplicationUser loggedInUser);
     }
 }
