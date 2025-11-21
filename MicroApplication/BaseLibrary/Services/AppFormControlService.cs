@@ -15,6 +15,7 @@ namespace BaseLibrary.Services
         AppFormControl GetAppFormControl(Guid id);
         void RemoveAllOrganizationConfiguredControls(AppFormResetRequestVM model, ApplicationUser loggedInUser);
         List<UIControl> GetGlobalControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory);
+        List<UIControl> GetUIControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory);
         AppFormControl? GetLayoutControl(Guid formId);
     }
 
@@ -163,6 +164,11 @@ namespace BaseLibrary.Services
         public AppFormControl? GetLayoutControl(Guid formId)
         {
             return RF.AppFormControlRepository.GetLayoutControl(formId);
+        }
+
+        public List<UIControl> GetUIControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory)
+        {
+            throw new NotImplementedException();
         }
     }
 }

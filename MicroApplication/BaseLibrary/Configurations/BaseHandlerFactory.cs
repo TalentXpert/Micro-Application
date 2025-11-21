@@ -3,6 +3,9 @@ using BaseLibrary.Configurations.PageHandlers;
 
 namespace BaseLibrary.Configurations
 {
+    /// <summary>
+    /// This class is used to get appropriate FormHandler or PageHandler based on formId or pageId. This class can be extended in application to add more handlers for custom forms or pages.
+    /// </summary>
     public class BaseHandlerFactory
     {
         public IBaseLibraryServiceFactory BSF { get; }
@@ -12,7 +15,14 @@ namespace BaseLibrary.Configurations
             BSF = serviceFactory;
         }
 
-        public virtual FormHandlerBase GetFormHandler(Guid formId, ApplicationUser? loggedInUser)
+        /// <summary>
+        /// This method return form hadler for normal form
+        /// </summary>
+        /// <param name="formId"></param>
+        /// <param name="loggedInUser"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException"></exception>
+        public virtual FormHandlerBase GetFormHandler(Guid formId, ApplicationUser loggedInUser)
         {
             switch (formId.ToString().ToUpper())
             {
@@ -33,6 +43,13 @@ namespace BaseLibrary.Configurations
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="loggedInUser"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException"></exception>
         public virtual PageHandlerBase GetSmartPageHandler(Guid pageId, ApplicationUser loggedInUser)
         {
             switch (pageId.ToString().ToUpper())
@@ -54,5 +71,16 @@ namespace BaseLibrary.Configurations
                     return new DefaultPageHandler(BSF, loggedInUser, appPage, form, layoutControl?.AppControl);
             }
         }
+
+        public virtual SelectFromListFormHandler GetSelectFromListFormHandler(Guid formId, ApplicationUser loggedInUser)
+        {
+            switch (formId.ToString().ToUpper())
+            {
+                case BaseForm.UserRoleFormId:
+                    return new UserRoleSelectFromListFormHandler(BSF);
+            }
+            throw new ValidationException($"No form handler found for form id -{formId}");
+        }
+
     }
 }

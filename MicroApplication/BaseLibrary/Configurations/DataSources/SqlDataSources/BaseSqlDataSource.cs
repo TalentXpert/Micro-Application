@@ -8,6 +8,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         /// Implement this method to return your application SqlDataSources
         /// </summary>
         protected abstract List<SqlDataSource> GetApplicationSqlDataSources();
+        protected abstract void PrepareDataSourceParameters(string query, List<ControlValue> filterValues, List<SqlParameter> parameters);
 
         /// <summary>
         /// Override this method if you want to change base SqlDataSources or their sequence. You can return empty list and return all SqlDataSources from GetApplicationSqlDataSources method.
@@ -51,7 +52,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return title.Trim();
         }
 
-        public virtual List<SqlParameter> GetQueryParameters(string query, Dictionary<string, object>? parameters, ApplicationUser? user)
+        public virtual List<SqlParameter> GetQueryParameters(string query, List<ControlValue> filterValues, ApplicationUser? user)
         {
             var param = new List<SqlParameter>();
             if (user is not null)
@@ -61,14 +62,9 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                 if (ContainsIgnoreCase(query, "@userId"))
                     param.Add(new SqlParameter("@userId", user.Id));
             }
-            if (parameters != null)
+            if (filterValues != null && filterValues.Count > 0)
             {
-                foreach (var key in parameters.Keys)
-                {
-                    if (param.Any(k => k.ParameterName == key))
-                        continue;
-                    param.Add(new SqlParameter(key, parameters[key]));
-                }
+                PrepareDataSourceParameters(query, filterValues, param);
             }
             return param;
         }

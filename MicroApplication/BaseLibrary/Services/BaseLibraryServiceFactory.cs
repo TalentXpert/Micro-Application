@@ -115,7 +115,6 @@ namespace BaseLibrary.Services
         public IAuditEventBaseService? auditEventBaseService;
         public IAuditEventBaseService AuditEventBaseService { get { return auditEventBaseService ??= new AuditEventBaseService(this, LoggerFactory.CreateLogger<AuditEventBaseService>()); } }
 
-        
         public ApplicationUser? LoggedInUser { get; set; }
     }
 }

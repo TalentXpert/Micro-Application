@@ -1,5 +1,4 @@
 ﻿using BaseLibrary.Controls.Pages;
-using BaseLibrary.UI.Controls;
 
 namespace BaseLibrary.Configurations.PageHandlers
 {
@@ -50,12 +49,7 @@ namespace BaseLibrary.Configurations.PageHandlers
         /// <returns></returns>
         public List<UIControl> GetGlobalControls()
         {
-           
-
             List<UIControl> controls = BaseLibraryServiceFactory.AppFormControlService.GetGlobalControls(LoggedInUser.OrganizationId, AppForm, SmartPageState.GlobalControls, ApplicationControlFactory);
-
-            
-
             return controls;
 
         }
@@ -298,9 +292,9 @@ namespace BaseLibrary.Configurations.PageHandlers
         }
 
         public GridModel ProcessRowDataRequest(Guid datakey)
-        {            
+        {
             Grid.Headers = GetGridHeaders(null, false);
-            Grid.Rows = GetRow(datakey);           
+            Grid.Rows = GetRow(datakey);
             return Grid;
         }
         public abstract List<List<GridCell>> GetRow(Guid datakey);

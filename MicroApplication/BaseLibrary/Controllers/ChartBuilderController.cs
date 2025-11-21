@@ -101,7 +101,10 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                BSF.ChartService.GetChartPreview(vm, LoggedInUser.OrganizationId, LoggedInUser);
+                var id = Guid.NewGuid();
+                if(vm.Id.HasValue)
+                    id= vm.Id.Value;
+                BSF.ChartService.GetChartPreview(id,vm,  LoggedInUser,new List<ControlValue>());
                 CommitTransaction();
                 return Ok(true);
             }

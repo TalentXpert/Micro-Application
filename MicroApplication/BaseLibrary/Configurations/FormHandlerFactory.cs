@@ -3,6 +3,9 @@
 namespace BaseLibrary.Configurations
 {
     
+    /// <summary>
+    /// This class is 
+    /// </summary>
     public abstract class FormHandlerFactory
     {
         public FormHandlerFactory(IBaseLibraryServiceFactory serviceFactory)

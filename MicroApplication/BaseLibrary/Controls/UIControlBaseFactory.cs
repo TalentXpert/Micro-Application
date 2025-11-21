@@ -1,12 +1,13 @@
 ﻿
-using BaseLibrary.UI.Controls;
-using System.Data;
-
 namespace BaseLibrary.Controls
 {
+    /// <summary>
+    /// This is the base class to build different UI controls to be render on a form. This class can be extended in application to add more controls.
+    /// </summary>
     public abstract class UIControlBaseFactory : CleanCode
     {
         IBaseLibraryServiceFactory SF { get; }
+      
         public ApplicationUser LoggedInUser { get; set; }
 
         public UIControlBaseFactory(IBaseLibraryServiceFactory serviceFactory)

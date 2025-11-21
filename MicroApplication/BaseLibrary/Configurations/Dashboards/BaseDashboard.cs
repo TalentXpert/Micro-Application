@@ -1,6 +1,6 @@
 ﻿using BaseLibrary.Domain.ComponentSchemas;
 
-namespace BaseLibrary.Configurations
+namespace BaseLibrary.Configurations.Dashboards
 {
     public abstract class BaseDashboard
     {
@@ -19,6 +19,7 @@ namespace BaseLibrary.Configurations
 
             };
         }
+
         public List<DashboardSchema> GetDashboards()
         {
             var sqlDataSources = new List<DashboardSchema>();
@@ -26,7 +27,10 @@ namespace BaseLibrary.Configurations
             sqlDataSources.AddRange(GetBaseDashboards());
             return sqlDataSources;
         }
-
+        public DashboardSchema? GetDashboardById(Guid id)
+        {
+            return GetDashboards().FirstOrDefault(ds => ds.Id == id);
+        }
     }
 }
 

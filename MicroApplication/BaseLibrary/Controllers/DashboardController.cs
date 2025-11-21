@@ -1,4 +1,6 @@
-﻿using BaseLibrary.Controls.Dashboard;
+﻿using BaseLibrary.Controls;
+using BaseLibrary.Controls.Dashboard;
+using BaseLibrary.Domain;
 using System.Data;
 
 namespace BaseLibrary.Controllers
@@ -20,8 +22,20 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var ds = BSF.ComponentSchemaService.GetComponent(id);
-                return Ok(ds.GetDashboardSchema());
+                var dashboards = BSF.MicroAppContract.GetApplicationDashboards();
+                var dashboard = dashboards.FirstOrDefault(d => d.Id == id);
+                if (dashboard is null)
+                {
+                    var ds = BSF.ComponentSchemaService.GetComponent(id);
+                    if (ds is null)
+                        throw new ValidationException("No Dashboard with given id exits.");
+                    dashboard = ds.GetDashboardSchema();
+                }
+                var factory = BaseLibraryServiceFactory.ApplicationControlBaseFactory;
+
+               // var smartControl = factory.GetUIControl(LoggedInUser.OrganizationId, appControl, control, controlValues, parentId, false);
+
+                return Ok(dashboard);
             }
             catch (Exception exception)
             {
@@ -91,12 +105,20 @@ namespace BaseLibrary.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will be used by dashboard render to get information needed to render a chart.
+        /// </summary>
+        /// <param name="chartId"></param>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException"></exception>
         [HttpGet("GetDashboardChart/{chartId}/{studyId}")]
         public IActionResult GetDashboardChart(Guid chartId, Guid? studyId)
         {
             try
             {
-                var chart = BSF.ChartService.GetChart(chartId, LoggedInUser.OrganizationId, LoggedInUser, studyId);
+                var model = new GetDashboardChartInputVM { ChartId = chartId, FilterValues = new List<ControlValue>() };
+                var chart = BSF.ChartService.GetChart(model, LoggedInUser);
                 if (chart != null && chart.SeriesData.Count != 0)
                     return Ok(chart);
                 throw new ValidationException("No Chart with given id exits.");
@@ -106,5 +128,26 @@ namespace BaseLibrary.Controllers
                 return HandleException(exception, CodeHelper.CallingMethodInfo());
             }
         }
+
+        [HttpPost("GetDashboardChart")]
+        public IActionResult GetDashboardChart([FromBody] GetDashboardChartInputVM model)
+        {
+            try
+            {
+                var chart = BSF.ChartService.GetChart(model, LoggedInUser);
+                if (chart != null && chart.SeriesData.Count != 0)
+                    return Ok(chart);
+                throw new ValidationException("No Chart with given id exits.");
+            }
+            catch (Exception exception)
+            {
+                return HandleException(exception, CodeHelper.CallingMethodInfo());
+            }
+        }
+    }
+    public class GetDashboardChartInputVM
+    {
+        public Guid ChartId { get; set; }
+        public List<ControlValue> FilterValues { get; set; } = [];
     }
 }

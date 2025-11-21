@@ -1,4 +1,5 @@
 ﻿using BaseLibrary.Configurations;
+using BaseLibrary.Configurations.Dashboards;
 using BaseLibrary.Configurations.DataSources.LinqDataSources;
 using BaseLibrary.Configurations.DataSources.SqlDataSources;
 using BaseLibrary.Security;

@@ -1,10 +1,12 @@
 ﻿
+using BaseLibrary.Controllers;
+
 namespace BaseLibrary.Services
 {
     public interface IChartService
     {
-        DashboardChart GetChart(Guid chartId, Guid? organizationId, ApplicationUser? loggedInUser, Guid? studyId = null);
-        DashboardChart GetChartPreview(ChartSchema chartSchema, Guid? organizationId, ApplicationUser? loggedInUser, Guid? studyId = null);
+        DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser);
+        DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues);
     }
 
     public class ChartService : ServiceLibraryBase, IChartService
@@ -12,23 +14,27 @@ namespace BaseLibrary.Services
         public ChartService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ChartService>())
         {
         }
-        public DashboardChart GetChart(Guid chartId, Guid? organizationId, ApplicationUser? loggedInUser, Guid? studyId = null)
+        public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
         {
-            var ds = SF.ComponentSchemaService.GetComponent(chartId);
-            if (ds == null)
-                throw new ValidationException($"Chart with {chartId} not found.");
+            var ds = SF.ComponentSchemaService.GetComponent(model.ChartId);
+            if (ds is null)
+                throw new ValidationException($"Chart with {model.ChartId} not found.");
             var chartSchema = ds.GetChartSchema();
-            return GetChartPreview(chartSchema, organizationId, loggedInUser, studyId);
+            return GetChartPreview(model.ChartId,chartSchema, loggedInUser, model.FilterValues);
         }
-        public DashboardChart GetChartPreview(ChartSchema chartSchema, Guid? organizationId, ApplicationUser? loggedInUser, Guid? studyId = null)
+        public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
         {
-            var datasource = SF.RF.SqlDataSourceRepository.Get(chartSchema.DataSourceId);
+            var datasource = SF.MicroAppContract.GetSqlDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId); 
+            if(datasource is null)
+                datasource = SF.RF.SqlDataSourceRepository.Get(chartSchema.DataSourceId);
+            if (datasource is null)
+                throw new ValidationException($"Data source with id {chartSchema.DataSourceId} not found for chart {chartId}.");
             var query = datasource.Query;
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(query,null,loggedInUser);
-                if(studyId.HasValue)
-                    param.Add( new Microsoft.Data.SqlClient.SqlParameter("@studyId", studyId));
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(query, filterValues, loggedInUser);
+                //if(studyId.HasValue)
+                //    param.Add( new Microsoft.Data.SqlClient.SqlParameter("@studyId", studyId));
 
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);

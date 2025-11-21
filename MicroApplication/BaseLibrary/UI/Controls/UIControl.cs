@@ -53,7 +53,6 @@
             IsSingleLine = appFormControl.IsSingleLine;
             Tooltip = appFormControl.Tooltip;
         }
-
         
         private void SetEditable(bool isEditable)
         {

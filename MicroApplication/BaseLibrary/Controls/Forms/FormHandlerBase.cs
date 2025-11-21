@@ -1,6 +1,4 @@
-﻿using BaseLibrary.Utilities.Excels;
-
-
+﻿
 namespace BaseLibrary.Controls.Forms
 {
     /// <summary>
@@ -9,7 +7,7 @@ namespace BaseLibrary.Controls.Forms
     public abstract class FormHandlerBase : CleanCode
     {
         public IBaseLibraryServiceFactory BaseLibraryServiceFactory { get; }
-        public ApplicationUser? LoggedInUser { get; }
+        public ApplicationUser LoggedInUser { get; }
         public AppForm Form { get; }
         /// <summary>
         /// This property should be true for form having it own table and storing data into it instead of default data store.
@@ -25,7 +23,7 @@ namespace BaseLibrary.Controls.Forms
         public AppControl? LayoutControl { get; }
         public string Language { get; }
 
-        public FormHandlerBase(IBaseLibraryServiceFactory baseLibraryServiceFactory, ApplicationUser? loggedInUser, AppForm form, AppControl? parentControl, AppControl? layoutControl, bool hasPrivateDataStore)
+        public FormHandlerBase(IBaseLibraryServiceFactory baseLibraryServiceFactory, ApplicationUser loggedInUser, AppForm form, AppControl? parentControl, AppControl? layoutControl, bool hasPrivateDataStore)
         {
             BaseLibraryServiceFactory = baseLibraryServiceFactory;
             LoggedInUser = loggedInUser;
@@ -37,7 +35,11 @@ namespace BaseLibrary.Controls.Forms
         }
 
         #region Save Form
-        //this method should implement all validation logic here. 
+        /// <summary>
+        /// This method process form save request and return saved data key. This method should be overriden for form having its private data store.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public virtual string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
             return BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
@@ -83,6 +85,8 @@ namespace BaseLibrary.Controls.Forms
             var form = BaseLibraryServiceFactory.AppFormService.GetForm(Form.Id);
             if (IsNull(form))
                 throw new ValidationException($"No form found for given form id {Form.Id}");
+            
+            applicationControlFactory.LoggedInUser = LoggedInUser;
 
             Guid? layoutControlValue = null;
             if (IsNotNull(LayoutControl))
@@ -110,7 +114,7 @@ namespace BaseLibrary.Controls.Forms
                 }
                 else
                 {
-                    applicationControlFactory.LoggedInUser = LoggedInUser;
+                    
                     smartForm.AddControl(applicationControlFactory.GetUIControl(LoggedInUser?.OrganizationId, appcontrol, formControl, formControl.GetFormControlValue(controlValues), parentId, true));
                 }
             }

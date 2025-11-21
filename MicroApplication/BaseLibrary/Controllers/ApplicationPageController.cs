@@ -1,36 +1,16 @@
-﻿using BaseLibrary.Configurations;
-using BaseLibrary.Configurations.PageHandlers;
-using BaseLibrary.Controls.Forms;
-using BaseLibrary.UI.Controls;
-using BaseLibrary.Utilities.Excels;
-using Microsoft.Extensions.Configuration;
-using System.Data;
-
-namespace BaseLibrary.Controllers
+﻿namespace BaseLibrary.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     [Produces("application/json")]
-
-    public class DataViewController : BaseLibraryController
-    {
-        public ILoggerFactory LoggerFactory { get; }
-
-        public DataViewController(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ApplicationPageController>())
-        {
-            LoggerFactory = loggerFactory;
-        }
-    }
-    [Route("api/[controller]")]
-    [Produces("application/json")]
-
     public class ApplicationPageController : BaseLibraryController
     {
-        public ILoggerFactory LoggerFactory { get; }
         private string? _studyDocumentsPath { get; set; }
 
         public ApplicationPageController(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ApplicationPageController>())
         {
-            LoggerFactory = loggerFactory;
             _studyDocumentsPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("FileUploadSettings")["StudyDocumentsPath"];
         }
 
@@ -47,8 +27,7 @@ namespace BaseLibrary.Controllers
         /// </summary>
         private FormHandlerBase GetFormHandler(Guid formId)
         {
-            var loggedInUser = GetSafeCurrentUser();
-            return BSF.MicroAppContract.GetHandlerFactory().GetFormHandler(formId, loggedInUser);
+            return BSF.MicroAppContract.GetHandlerFactory().GetFormHandler(formId, LoggedInUser);
         }
 
         /// <summary>

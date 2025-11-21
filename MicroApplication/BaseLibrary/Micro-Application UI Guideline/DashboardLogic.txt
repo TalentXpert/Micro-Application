@@ -1,0 +1,6 @@
+﻿Component Schema - Generic component
+Dashboad Schema - specific component 
+Row 
+DashboardPanel
+DashboardPanelContent
+Chart

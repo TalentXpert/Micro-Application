@@ -4,12 +4,15 @@ namespace BaseLibrary.Domain.ComponentSchemas
     public class DashboardSchema
     {
         public Guid? Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }= string.Empty;
+        public string Description { get; set; }= string.Empty;
         public int MinimumRowHeight { get; set; }
         public Guid MenuId { get; set; }
         public int Position { get; set; }
         public List<DashboardRow> Rows { get; set; } = new List<DashboardRow>();
+        public List<string> DataSources { get; set; } = new List<string>();
+        public List<Guid> FilterControlIds { get; set; } = new List<Guid>();
+        public List<UIControl> Filters { get; set; } = []; // These control will be on list page at the top with a search button and read only on add or update form
     }
     
     public class DashboardRow

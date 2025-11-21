@@ -25,7 +25,7 @@ namespace BaseLibrary.Configurations.PageHandlers
         public override List<GridHeader> GetGridHeaders(SmartGridConfigurationVM vm, bool includeExcludedHeaders)
         {
             Guid? globalControlValue = null;
-            if (ParentControl != null)
+            if (ParentControl is not null)
                 globalControlValue = vm.GetControlValue(ParentControl);
             var headers = GetGridHeaders(LoggedInUser.OrganizationId, AppForm.Id, globalControlValue, includeExcludedHeaders, null);
             return headers;
@@ -42,7 +42,7 @@ namespace BaseLibrary.Configurations.PageHandlers
         {
             var result = new List<List<GridCell>>();
             Guid? parentId = null;
-            if (ParentControl != null)
+            if (ParentControl is not null)
                 parentId = model.GetGlobalFilterControlValue(ParentControl);
             var countries = BaseLibraryServiceFactory.PageDataStoreService.GetFormData(null, LoggedInUser.OrganizationId, AppForm.Id, parentId);
             foreach (var country in countries)
