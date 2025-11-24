@@ -1,5 +1,8 @@
 ﻿
 using BaseLibrary.Controllers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace BaseLibrary.Services
 {
@@ -20,22 +23,22 @@ namespace BaseLibrary.Services
             if (ds is null)
                 throw new ValidationException($"Chart with {model.ChartId} not found.");
             var chartSchema = ds.GetChartSchema();
-            return GetChartPreview(model.ChartId,chartSchema, loggedInUser, model.FilterValues);
+            return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.FilterValues);
         }
         public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
         {
-            var datasource = SF.MicroAppContract.GetSqlDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId); 
-            if(datasource is null)
+            var datasource = SF.MicroAppContract.GetSqlDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId);
+            if (datasource is null)
                 datasource = SF.RF.SqlDataSourceRepository.Get(chartSchema.DataSourceId);
             if (datasource is null)
                 throw new ValidationException($"Data source with id {chartSchema.DataSourceId} not found for chart {chartId}.");
-            var query = datasource.Query;
+            var microSqlQuery = datasource.GetSqlQuery();
+            if (microSqlQuery is null)
+                throw new ValidationException($"Data source with id {chartSchema.DataSourceId} found without data query for chart {chartId}.");
+            
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(query, filterValues, loggedInUser);
-                //if(studyId.HasValue)
-                //    param.Add( new Microsoft.Data.SqlClient.SqlParameter("@studyId", studyId));
-
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, loggedInUser, SF.MicroAppContract.GetBaseControl(), out string  query);
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);
                 return chart;

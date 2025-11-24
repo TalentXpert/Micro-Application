@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\Exceptions\**" />
+    <EmbeddedResource Remove="Domain\Exceptions\**" />
+    <None Remove="Domain\Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="DatabaseMigrations\Scripts\Tables\AppControlTable.txt" />
     <None Remove="DatabaseMigrations\Scripts\Tables\AppFormControlTable.txt" />
     <None Remove="DatabaseMigrations\Scripts\Tables\AppFormTable.txt" />
@@ -55,7 +61,6 @@
 
   <ItemGroup>
     <Folder Include="Components\DataViews\" />
-    <Folder Include="Domain\Exceptions\" />
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,8 @@ namespace BaseLibrary.Configurations.Dashboards
         {
             return GetDashboards().FirstOrDefault(ds => ds.Id == id);
         }
+        
     }
+    
 }
 

@@ -64,5 +64,29 @@ namespace BaseLibrary.Utilities
                 return input;
             }
         }
+
+        public List<string> GetAllWordStartWith(string inputText,string startWith="@")
+        {
+            string pattern = @$"\b{startWith}\w+";
+
+            // Create a Regex object
+            Regex regex = new Regex(pattern);
+
+            // Find all matches in the input string
+            MatchCollection matches = regex.Matches(inputText);
+
+            // Store the found strings in a list
+            List<string> foundStrings = new List<string>();
+
+            // Iterate through the matches and extract the values
+            foreach (Match match in matches)
+            {
+                if (match.Success)
+                {
+                    foundStrings.Add(match.Value);
+                }
+            }
+            return foundStrings;
+        }
     }
 }

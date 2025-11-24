@@ -11,6 +11,7 @@ namespace BaseLibrary.Services
         DataTable GetDataSourceColumns(Guid id);
         List<SqlDataSource> GetDatasources(SqlDataSourceType chart);
         void SaveUpdateDataSources(SqlDataSource datasource);
+        SqlDataSource GetDataSource(Guid id);
     }
 
     public class SqlDataSourceService : ServiceLibraryBase, ISqlDataSourceService
@@ -18,6 +19,16 @@ namespace BaseLibrary.Services
         public SqlDataSourceService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<SqlDataSourceService>())
         {
 
+        }
+
+        public SqlDataSource GetDataSource(Guid id)
+        {
+            var source = SF.MicroAppContract.GetBaseSqlDataSource().GetSqlDataSources().FirstOrDefault(s=>s.Id==id);
+            if(source is not null)
+                return source;
+            source = SF.RF.SqlDataSourceRepository.Get(id);
+            if(source is not null) return source;
+            throw new ValidationException($"No data source found with given key-{id}");
         }
 
         public DataTable GetDataSourceColumns(Guid id)
@@ -36,13 +47,14 @@ namespace BaseLibrary.Services
         public void SaveUpdateDataSources(SqlDataSource datasource)
         {
             SqlDataSource ds = RF.SqlDataSourceRepository.Get(datasource.Id);
+            var sqlQuery = new MicroSqlQuery(datasource.Query);
             if (ds == null)
             {
                 RF.SqlDataSourceRepository.Add(datasource);
             }
             else
             {
-                ds.Update(datasource.Name, datasource.Query, datasource.DataSourceType);
+                ds.Update(datasource.Name, sqlQuery, datasource.DataSourceType);
             }
         }
     }

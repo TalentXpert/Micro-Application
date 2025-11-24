@@ -19,6 +19,7 @@ namespace BaseLibrary.Controls
         /// Return a UIControl to be render on a form
         /// </summary>
         public abstract UIControl GetUIControl(Guid? organizationId, AppControl appControl, AppFormControl appFormControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
+        public abstract UIControl GetFilterUIControl(Guid? organizationId, AppControl appControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
         public abstract UIControl GetComplexUIControl(AppControl appControl, AppFormControl appFormControl,Guid dataKey);
 
         /// <summary>
@@ -27,6 +28,30 @@ namespace BaseLibrary.Controls
         protected UIControl BuildUIControl(AppControl appControl, AppFormControl appFormControl, List<string>? values, List<SmartControlOption> options, bool addEmptyEntry)
         {
             UIControl smartControl = new UIControl(appControl, appFormControl, values);
+            if (options == null)
+                options = new List<SmartControlOption>();
+
+            if (IsNotNullOrEmpty(appControl.Options))
+                options = GetOptions(appControl.Options);
+
+
+            if (ControlTypes.IsDropdownControl(appControl.ControlType))
+            {
+                if (addEmptyEntry && !appControl.ControlType.Equals("RadioButton"))
+                    options.Insert(0, new SmartControlOption("Select", ""));
+
+                smartControl.Options = options;
+                if (options.Any())
+                {
+                    smartControl.SetValue(GetRightOptionValue(options, values));
+                }
+            }
+
+            return smartControl;
+        }
+        protected UIControl BuildFilterUIControl(AppControl appControl, List<string>? values, List<SmartControlOption> options, bool addEmptyEntry)
+        {
+            UIControl smartControl = new UIControl(appControl, options, values);
             if (options == null)
                 options = new List<SmartControlOption>();
 

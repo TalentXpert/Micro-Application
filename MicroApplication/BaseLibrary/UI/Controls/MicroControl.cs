@@ -28,6 +28,17 @@
             Options = options;
             Tooltip = tooltip;
         }
+        public MicroControl(Guid controlId, int position, string controlIdentifier, string dataType, string controlType, string displayLabel, List<SmartControlOption> options)
+        {
+            ControlId = controlId;
+            Position = position;
+            ControlIdentifier = controlIdentifier;
+            DataType = dataType;
+            ControlType = controlType;
+            DisplayLabel = displayLabel;
+            IsParent = false;
+            Options = options;
+        }
 
         public MicroControl(AppControl appControl, List<string>? values)
         {
@@ -42,6 +53,22 @@
             IsParent = appControl.IsParent;
             ParentControlIdentifier = appControl.ParentControlIdentifier;
         }
+        public MicroControl(AppControl appControl, List<SmartControlOption> options, List<string>? values)
+        {
+            ControlIdentifier = appControl.ControlIdentifier;
+            ControlId = appControl.Id;
+            DataType = appControl.DataType;
+            ControlType = appControl.ControlType;
+            DisplayLabel = appControl.DisplayLabel;
+            if (values != null && values.Any())
+                Value = string.Join(",", values);
+            Options = new List<SmartControlOption>();
+            if (options is not null && options.Any())
+                Options = options;
+            IsParent = appControl.IsParent;
+            ParentControlIdentifier = appControl.ParentControlIdentifier;
+        }
+
         public void SetPosition(int position)
         {
             Position = position;

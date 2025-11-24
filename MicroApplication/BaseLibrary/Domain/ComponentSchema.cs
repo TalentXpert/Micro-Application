@@ -54,7 +54,11 @@ namespace BaseLibrary.Domain
 
         public DashboardSchema GetDashboardSchema()
         {
+            if (Data is null)
+                throw new ValidationException("Data for this dashbaord is empty");
             var d = NewtonsoftJsonAdapter.DeserializeObject<DashboardSchema>(Data);
+            if (d is null)
+                throw new ValidationException("Data for this dashbaord is invalid");
             d.Id = this.Id;
             return d;
         }

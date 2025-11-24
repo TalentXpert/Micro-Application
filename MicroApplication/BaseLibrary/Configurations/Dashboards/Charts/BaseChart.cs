@@ -1,7 +1,7 @@
 ﻿using BaseLibrary.Controls.Charts;
 using BaseLibrary.Domain.ComponentSchemas;
 
-namespace BaseLibrary.Configurations
+namespace BaseLibrary.Configurations.Dashboards.Charts
 {
     public abstract class BaseChart
     {
@@ -43,8 +43,6 @@ namespace BaseLibrary.Configurations
             sqlDataSources.AddRange(GetBaseCharts());
             return sqlDataSources;
         }
-
-
     }
 }
 

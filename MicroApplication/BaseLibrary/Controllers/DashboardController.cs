@@ -31,9 +31,17 @@ namespace BaseLibrary.Controllers
                         throw new ValidationException("No Dashboard with given id exits.");
                     dashboard = ds.GetDashboardSchema();
                 }
+
+                var parameters = BSF.ComponentSchemaService.GetMicroSqlQueryParameters(dashboard);
                 var factory = BaseLibraryServiceFactory.ApplicationControlBaseFactory;
 
-               // var smartControl = factory.GetUIControl(LoggedInUser.OrganizationId, appControl, control, controlValues, parentId, false);
+                foreach (var parameter in parameters)
+                {
+                    var appControl = BSF.MicroAppContract.GetBaseControl().GetAppControlByParameter(parameter.Name);
+                    if (appControl is null)
+                        continue;
+                    var smartControl = factory.GetFilterUIControl(LoggedInUser.OrganizationId, appControl, null, null, parameter.IsMandatory);
+                }
 
                 return Ok(dashboard);
             }
@@ -148,6 +156,7 @@ namespace BaseLibrary.Controllers
     public class GetDashboardChartInputVM
     {
         public Guid ChartId { get; set; }
+        public string? GlobalFilterId { get; set; }
         public List<ControlValue> FilterValues { get; set; } = [];
     }
 }

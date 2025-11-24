@@ -21,7 +21,22 @@
         //complexcontrol 
         public string ControlConfigurationJson { get; set; } // this json string will help to render a comlex control
 
+
         public UIControl(AppControl appControl, List<string>? values) : base(appControl, values)
+        {
+            SetEditable(true);
+
+            IsMandatory = false;
+            IsUnique = false;
+            Minimum = null;
+            Maximum = null;
+
+            IsGlobalControl = false;
+            IsFormLayoutOwner = appControl.IsFormLayoutOwner;
+            IsPageRefreshNeeded = false;
+            IsSingleLine = true;
+        }
+        public UIControl(AppControl appControl, List<SmartControlOption> options, List<string>? values) : base(appControl, options, values)
         {
             SetEditable(true);
 

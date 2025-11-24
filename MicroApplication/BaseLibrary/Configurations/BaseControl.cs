@@ -47,6 +47,8 @@
             };
             return controls;
         }
+        public abstract AppControl? GetAppControlByParameter(string parameter);
+        
         public List<AppControl> GetControls()
         {
             var controls = new List<AppControl>();

@@ -10,8 +10,6 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public Guid MenuId { get; set; }
         public int Position { get; set; }
         public List<DashboardRow> Rows { get; set; } = new List<DashboardRow>();
-        public List<string> DataSources { get; set; } = new List<string>();
-        public List<Guid> FilterControlIds { get; set; } = new List<Guid>();
         public List<UIControl> Filters { get; set; } = []; // These control will be on list page at the top with a search button and read only on add or update form
     }
     

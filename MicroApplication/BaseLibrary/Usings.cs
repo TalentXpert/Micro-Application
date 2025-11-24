@@ -33,3 +33,4 @@ global using BaseLibrary.Utilities.Excels;
 global using Microsoft.Extensions.Configuration;
 global using System.Data;
 global using BaseLibrary.UI.Controls;
+global using Microsoft.Data.SqlClient;
