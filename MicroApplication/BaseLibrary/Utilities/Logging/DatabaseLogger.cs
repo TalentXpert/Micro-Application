@@ -1,5 +1,9 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
+using Microsoft.Data.SqlClient;
+using SqlCommand = Microsoft.Data.SqlClient.SqlCommand;
+using SqlParameter = Microsoft.Data.SqlClient.SqlParameter;
+using SqlDataAdapter = Microsoft.Data.SqlClient.SqlDataAdapter;
 
 namespace BaseLibrary.Utilities
 {
@@ -12,7 +16,7 @@ namespace BaseLibrary.Utilities
 
     public class DatabaseLogger : IDisposable, IDatabaseLogger
     {
-        public SqlConnection SqlConnection;
+        public Microsoft.Data.SqlClient.SqlConnection SqlConnection;
         public bool IsValidConnection = false;
 
         private static DatabaseLogger? _databaseLogger;
@@ -26,7 +30,7 @@ namespace BaseLibrary.Utilities
         {
             if (SqlConnection == null)
             {
-                SqlConnection = new SqlConnection(connectionString);
+                SqlConnection = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
                 try
                 {
                     SqlConnection.Open();
