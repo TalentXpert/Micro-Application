@@ -14,13 +14,13 @@
         /// <param name="parameter"></param>
         /// <param name="filterValues"></param>
         /// <returns></returns>
-        protected abstract SqlParameter? GetParameter(BaseControl baseControl, MicroSqlQueryParameter parameter, List<ControlValue> filterValues);
+        protected abstract SqlParameter? GetParameter(BaseControl baseControl, string parameter, bool isMandatory, List<ControlValue> filterValues);
 
         /// <summary>
-        /// Return all this parameter list to display on dashboard builder to be used in data source query.
+        /// Return all parameter list to display on dashboard builder to be used in data source query. These are the only parameters that can be used in data source queries.
         /// </summary>
         /// <returns></returns>
-        protected abstract List<string> GetAllParameters();
+        public abstract List<string> GetAllParameters();
 
         /// <summary>
         /// Override this method if you want to change base SqlDataSources or their sequence. You can return empty list and return all SqlDataSources from GetApplicationSqlDataSources method.
@@ -65,41 +65,86 @@
             return title.Trim();
         }
 
-        public virtual List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
+        //public List<SqlParameter> GetQueryParameters(List<string> allQueryParameters, MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
+        //{
+        //    var parameters = new List<SqlParameter>();
+        //    foreach (var param in allQueryParameters)
+        //    {
+        //        if (microSqlQuery.QueryTextWithMandatoryParameters.Contains(param, StringComparison.CurrentCultureIgnoreCase))
+        //        {
+        //            var sqlParameter = GetStandardParameter(user, param);
+        //            if (sqlParameter is null)
+        //                GetParameter(baseControl, param, true, filterValues);
+        //            if (sqlParameter == null)
+        //                throw new Exception($"Mandatory parameter {param} is missing for query.");
+        //            parameters.Add(sqlParameter);
+        //            continue;
+        //        }
+        //        if (microSqlQuery.QueryTextWithMandatoryParameters.Contains(param, StringComparison.CurrentCultureIgnoreCase))
+        //        {
+        //            var sqlParameter = GetStandardParameter(user, param);
+        //            if (sqlParameter is null)
+        //                sqlParameter = GetParameter(baseControl, param, false, filterValues);
+        //            if (sqlParameter != null)
+        //                parameters.Add(sqlParameter);
+        //            continue;
+        //        }
+        //    }
+        //    query = BuildQuery(microSqlQuery, parameters);
+        //    return parameters;
+        //}
+        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
         {
             var parameters = new List<SqlParameter>();
-            foreach (var parameter in microSqlQuery.Parameters)
-            {
-                if (user is not null && user.OrganizationId.HasValue && AreEqualsIgnoreCase(parameter.Name, "@organizationid") || AreEqualsIgnoreCase(parameter.Name, "@orgid"))
-                { parameters.Add(new SqlParameter("@organizationid", user.OrganizationId.Value)); continue; }
-                if (user is not null && AreEqualsIgnoreCase(parameter.Name, "@userId"))
-                { parameters.Add(new SqlParameter("@userId", user.Id)); continue; }
-                var param = GetParameter(baseControl, parameter, filterValues);
-                if (param != null)
-                    parameters.Add(param);
-            }
-            query = BuildQuery(microSqlQuery, parameters);
-            return parameters;
-        }
+            var mandatoryParameters = microSqlQuery.GetAllParameters(microSqlQuery.QueryTextWithMandatoryParameters);
 
-        private string BuildQuery(MicroSqlQuery microSqlQuery, List<SqlParameter> parameters)
-        {
-            var parametersWithValue = parameters.Select(p => p.ParameterName).ToList();
+            foreach (var param in mandatoryParameters)
+            {
+                var sqlParameter = GetParameter(filterValues, user, baseControl, param, true);
+                if (sqlParameter == null)
+                    throw new Exception($"Mandatory parameter {param} is missing for query.");
+                parameters.Add(sqlParameter);
+            }
             var optionalQueryText = new StringBuilder();
             foreach (var optionalQuery in microSqlQuery.OptionalFilterQueryTextWithParameters)
             {
-                var optionalQueryParameters = microSqlQuery.GetAllParameters(optionalQuery);
-                bool hasAllQueryParameters = true;
-                foreach (var parameter in optionalQueryParameters)
+                var optionalParameters = microSqlQuery.GetAllParameters(optionalQuery);
+                var allParametersFound = true;
+                foreach (var param in optionalParameters)
                 {
-                    if (parametersWithValue.Any(p => AreNotEqualsIgnoreCase(p, parameter)) == false)
-                        hasAllQueryParameters = false;
+                    SqlParameter? sqlParameter = GetParameter(filterValues, user, baseControl, param,false);
+                    if (sqlParameter != null)
+                        parameters.Add(sqlParameter);
+                    else
+                        allParametersFound = false;
                 }
-                if (hasAllQueryParameters)
+                if (allParametersFound)
                     optionalQueryText.Append(" " + optionalQuery);
             }
-            var query = microSqlQuery.QueryTextWithMandatoryParameters.Replace(SqlQueryConstants.OptionFilterPlaceHolder, optionalQueryText.ToString());
-            return query;
+            query = microSqlQuery.QueryTextWithMandatoryParameters.Replace(SqlQueryConstants.OptionFilterPlaceHolder, optionalQueryText.ToString());
+            return parameters;
+        }
+
+        private SqlParameter? GetParameter(List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, string param, bool isMandatory)
+        {
+            var sqlParameter = GetStandardParameter(user, param);
+            if (sqlParameter is null)
+                sqlParameter = GetParameter(baseControl, param, isMandatory, filterValues);
+            return sqlParameter;
+        }
+
+        private static SqlParameter? GetStandardParameter(ApplicationUser? user, string parameter)
+        {
+            if (user is not null && user.OrganizationId.HasValue && AreEqualsIgnoreCase(parameter, "@organizationid") || AreEqualsIgnoreCase(parameter, "@orgid"))
+            {
+                return new SqlParameter("@organizationid", user.OrganizationId.Value);
+            }
+            if (user is not null && AreEqualsIgnoreCase(parameter, "@userId"))
+            {
+                return new SqlParameter("@userId", user.Id);
+            }
+
+            return null;
         }
     }
 }

@@ -70,8 +70,8 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var ds = BSF.ComponentSchemaService.GetComponent(id);
-                return Ok(ds.GetChartSchema());
+                var ds = BSF.ComponentSchemaService.GetChartSchema(id);
+                return Ok(ds);
             }
             catch (Exception exception)
             {

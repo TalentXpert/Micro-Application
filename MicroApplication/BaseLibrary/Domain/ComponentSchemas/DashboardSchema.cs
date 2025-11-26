@@ -30,9 +30,15 @@ namespace BaseLibrary.Domain.ComponentSchemas
     {
         public string Title { get; set; } = string.Empty;
         public int Width { get; set; }
+        /// <summary>
+        /// This specify type of content this panel will have from DashboardPanelContentType Chart, Grid, List View, Summary
+        /// </summary>
         public string ContentType { get; set; } = string.Empty;
         public int Position { get; set; }
-        public Guid? ContentId { get; set; }
+        /// <summary>
+        /// This specify actual content id from - ComponentSchema table
+        /// </summary>
+        public Guid? ContentId { get; set; } 
         public DashboardPanel() { }
         public DashboardPanel(DashboardPanelContentType contentType)
         {

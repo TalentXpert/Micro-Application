@@ -9,7 +9,7 @@
     {
         public string Name { get; set; } = string.Empty;
         public bool IsMandatory { get; set; }
-        MicroSqlQueryParameter() { }
+        public MicroSqlQueryParameter() { }
         public MicroSqlQueryParameter(string name, bool isMandatory)
         {
             Name = name;
@@ -22,31 +22,47 @@
         /// <summary>
         /// This is the base query text that contains mandatory parameters with placeholders for optional filters.
         /// </summary>
-        public string QueryTextWithMandatoryParameters { get; set; } = "select * from user where organization=@org ##OptionalFilterPlaceHolder##";
+        public string QueryTextWithMandatoryParameters { get; set; } = "select * from user where organization=@orgId ##OptionalFilterPlaceHolder##";
         /// <summary>
         /// This is a list of optional query texts that can be appended to the base query. Each optional query text may contain its own parameters. Only those optional query texts whose parameters are provided will be included in the final query.
         /// </summary>
-        public List<string> OptionalFilterQueryTextWithParameters { get; set; } = new List<string>(); // e.g. "and (age > @age || age < @ age)"
-        public List<MicroSqlQueryParameter> Parameters { get; set; } = []; // e.g. @org, @age
+        public List<string> OptionalFilterQueryTextWithParameters { get; set; } = []; // e.g. "and (age > @age || age < @age)"
         public MicroSqlQuery() { }
         public MicroSqlQuery(string queryTextWithMandatoryParameters)
         {
             QueryTextWithMandatoryParameters = queryTextWithMandatoryParameters;
-            Parameters.AddRange(X.Extension.String.GetAllWordStartWith(QueryTextWithMandatoryParameters, "@").Select(a=>new MicroSqlQueryParameter(a,true)));
         }
         public MicroSqlQuery(string queryTextWithMandatoryParameters, List<string> optionalQueryTextWithParameters) : this(queryTextWithMandatoryParameters)
         {
             OptionalFilterQueryTextWithParameters.AddRange(optionalQueryTextWithParameters);
-            Parameters.AddRange(X.Extension.String.GetAllWordStartWith(string.Join(" ", OptionalFilterQueryTextWithParameters), "@").Select(a => new MicroSqlQueryParameter(a, false)));
         }
         public void AddOptionalFilterQueryTextWithParameter(string optionQuery)
         {
             OptionalFilterQueryTextWithParameters.Add(optionQuery);
-            Parameters.AddRange(X.Extension.String.GetAllWordStartWith(optionQuery, "@").Select(a => new MicroSqlQueryParameter(a, true)));
         }
         public List<string> GetAllParameters(string query)
         {
             return X.Extension.String.GetAllWordStartWith(query, "@");
+        }
+        public List<MicroSqlQueryParameter> GetAllQueryParameters()
+        {
+            var parameters = new List<MicroSqlQueryParameter>();
+            var mandatoryParams = GetAllParameters(QueryTextWithMandatoryParameters);
+            foreach (var param in mandatoryParams)
+            {
+                parameters.Add(new MicroSqlQueryParameter(param, true));
+            }
+            foreach (var optionalQuery in OptionalFilterQueryTextWithParameters)
+            {
+                var optionalParams = GetAllParameters(optionalQuery);
+                foreach (var param in optionalParams)
+                {
+                    if (parameters.Any(p => p.Name == param))
+                        continue;
+                    parameters.Add(new MicroSqlQueryParameter(param, false));
+                }
+            }
+            return parameters;
         }
     }
 
@@ -82,7 +98,16 @@
         }
         public MicroSqlQuery? GetSqlQuery()
         {
-            return NewtonsoftJsonAdapter.DeserializeObject<MicroSqlQuery>(Query);
+            try
+            {
+                return NewtonsoftJsonAdapter.DeserializeObject<MicroSqlQuery>(Query);
+            }
+            catch
+            {
+                if(string.IsNullOrWhiteSpace(Query)==false)
+                    return new MicroSqlQuery(Query);
+            }
+            return null;    
         }
     }
 }

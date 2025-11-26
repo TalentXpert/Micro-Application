@@ -19,10 +19,7 @@ namespace BaseLibrary.Services
         }
         public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
         {
-            var ds = SF.ComponentSchemaService.GetComponent(model.ChartId);
-            if (ds is null)
-                throw new ValidationException($"Chart with {model.ChartId} not found.");
-            var chartSchema = ds.GetChartSchema();
+            var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
             return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.FilterValues);
         }
         public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)

@@ -49,7 +49,7 @@ namespace BaseLibrary.Configurations.PageHandlers
         /// <returns></returns>
         public List<UIControl> GetGlobalControls()
         {
-            List<UIControl> controls = BaseLibraryServiceFactory.AppFormControlService.GetGlobalControls(LoggedInUser.OrganizationId, AppForm, SmartPageState.GlobalControls, ApplicationControlFactory);
+            List<UIControl> controls = BaseLibraryServiceFactory.AppFormControlService.GetGlobalControls(LoggedInUser, AppForm, SmartPageState.GlobalControls, ApplicationControlFactory);
             return controls;
 
         }
@@ -233,7 +233,7 @@ namespace BaseLibrary.Configurations.PageHandlers
             {
                 if (skipControls.Any(c => c.Id == formControl.AppControl.Id)) continue;
                 if (formControl.GetIsGlobalControl()) continue;
-                smartForm.AddControl(ApplicationControlFactory.GetUIControl(organizationId, formControl.AppControl, formControl, null, null, false));
+                smartForm.AddControl(ApplicationControlFactory.GetUIControl(LoggedInUser, formControl.AppControl, formControl, null, null, false));
             }
 
             var headers = new List<GridHeader>();

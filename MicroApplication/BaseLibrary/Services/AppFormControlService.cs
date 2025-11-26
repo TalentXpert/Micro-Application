@@ -14,8 +14,7 @@ namespace BaseLibrary.Services
         AppFormControl? GetAnyFixedControl(Guid appControlId);
         AppFormControl GetAppFormControl(Guid id);
         void RemoveAllOrganizationConfiguredControls(AppFormResetRequestVM model, ApplicationUser loggedInUser);
-        List<UIControl> GetGlobalControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory);
-        List<UIControl> GetUIControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory);
+        List<UIControl> GetGlobalControls(ApplicationUser loggedInUser, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory);
         AppFormControl? GetLayoutControl(Guid formId);
     }
 
@@ -108,7 +107,7 @@ namespace BaseLibrary.Services
         {
             return RF.AppFormControlRepository.Get(id);
         }
-        public List<UIControl> GetGlobalControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControlVaues, UIControlBaseFactory factory)
+        public List<UIControl> GetGlobalControls(ApplicationUser? applicationUser, AppForm appForm, List<ControlValue> GlobalControlVaues, UIControlBaseFactory factory)
         {
             if (GlobalControlVaues == null)
                 GlobalControlVaues = new List<ControlValue>();
@@ -128,7 +127,7 @@ namespace BaseLibrary.Services
                 if (control.GetIsGlobalControl() == false)
                     continue;
                 var controlValues = ControlReader.GetControlValues(appControl, GlobalControlVaues);
-                smartControl = factory.GetUIControl(organizationId, appControl, control, controlValues, parentId, false);
+                smartControl = factory.GetUIControl(applicationUser, appControl, control, controlValues, parentId, false);
                 controls.Add(smartControl);
                 parentId = null;
                 if (Guid.TryParse(smartControl.Value, out Guid parentIdGuid)) { parentId = parentIdGuid; }
@@ -165,10 +164,6 @@ namespace BaseLibrary.Services
         {
             return RF.AppFormControlRepository.GetLayoutControl(formId);
         }
-
-        public List<UIControl> GetUIControls(Guid? organizationId, AppForm appForm, List<ControlValue> GlobalControls, UIControlBaseFactory factory)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

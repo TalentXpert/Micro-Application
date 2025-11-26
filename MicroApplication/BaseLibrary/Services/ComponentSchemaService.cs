@@ -1,17 +1,14 @@
-﻿using BaseLibrary.Domain;
-using BaseLibrary.Domain.ComponentSchemas;
-using System.Collections.Generic;
-using System.Data;
-
+﻿
 namespace BaseLibrary.Services
 {
     public interface IComponentSchemaService
     {
-        ComponentSchema? GetComponent(Guid id);
         List<ComponentSchema> GetComponents(ComponentTypes dashboard, ApplicationUser loggedInUser);
         void SaveUpdateChartSchema(ChartSchema vm, Guid? organizationId, Guid? loggedInUserId);
         DashboardSchema SaveUpdateDashboardSchema(DashboardSchema vm, Guid? organizationId, Guid? loggedInUserId);
         List<MicroSqlQueryParameter> GetMicroSqlQueryParameters(DashboardSchema dashboard);
+        DashboardSchema GetDashboardSchema(Guid id);
+        ChartSchema GetChartSchema(Guid id);
     }
 
     public class ComponentSchemaService : ServiceLibraryBase, IComponentSchemaService
@@ -20,25 +17,36 @@ namespace BaseLibrary.Services
         {
 
         }
-
-        public ComponentSchema? GetComponent(Guid id)
+        public DashboardSchema GetDashboardSchema(Guid id)
         {
-            var component = GetFromComponentInMemoryList(id);
-            if (component is not null)
-                return component;
-            return RF.ComponentSchemaRepository.Get(id);
-        }
-        private ComponentSchema? GetFromComponentInMemoryList(Guid id)
-        {
-            var chartSchema = SF.MicroAppContract.GetBaseChart().GetCharts().FirstOrDefault(c => c.Id == id);
-            if (chartSchema is not null)
+            var dashboards = SF.MicroAppContract.GetApplicationDashboards();
+            var dashboard = dashboards.FirstOrDefault(d => d.Id == id);
+            if (dashboard is null)
             {
-                var data = NewtonsoftJsonAdapter.SerializeObject(chartSchema);
-                var componentSchema = ComponentSchema.Create(chartSchema.Id, ComponentTypes.Chart, chartSchema.Name, chartSchema.Description, data, null, null);
-                return componentSchema;
+                var ds = RF.ComponentSchemaRepository.Get(id);
+                if (ds is not null)
+                    dashboard = ds.GetDashboardSchema();
             }
-            return null;
+            if (dashboard is not null)
+                return dashboard;
+            throw new ValidationException($"No Dashboard with id-{id} exits.");
         }
+
+        public ChartSchema GetChartSchema(Guid id)
+        {
+            var chart = SF.MicroAppContract.GetBaseChart().GetCharts().FirstOrDefault(c => c.Id == id);
+            if (chart is null)
+            {
+                var cs = RF.ComponentSchemaRepository.Get(id);
+                if (cs is not null)
+                    chart = cs.GetChartSchema();
+            }
+            if (chart is not null)
+                return chart;
+            throw new ValidationException($"No Chart with id-{id} exits.");
+        }
+
+        
 
         public List<ComponentSchema> GetComponents(ComponentTypes dashboard, ApplicationUser loggedInUser)
         {
@@ -52,7 +60,7 @@ namespace BaseLibrary.Services
             else
                 vm.Id = IdentityGenerator.NewSequentialGuid();
             var data = NewtonsoftJsonAdapter.SerializeObject(vm);
-            if (dc == null)
+            if (dc is null)
             {
                 dc = ComponentSchema.Create(vm.Id, ComponentTypes.Dashboard, vm.Name, vm.Description, data, organizationId, loggedInUserId);
                 RF.ComponentSchemaRepository.Add(dc);
@@ -70,7 +78,7 @@ namespace BaseLibrary.Services
             var data = NewtonsoftJsonAdapter.SerializeObject(vm);
             if (vm.Id.HasValue)
                 dc = RF.ComponentSchemaRepository.Get(vm.Id.Value);
-            if (dc == null)
+            if (dc is null)
             {
 
                 dc = ComponentSchema.Create(vm.Id, ComponentTypes.Chart, vm.Name, vm.Description, data, organizationId, loggedInUserId);
@@ -84,14 +92,20 @@ namespace BaseLibrary.Services
 
         public List<MicroSqlQueryParameter> GetMicroSqlQueryParameters(DashboardSchema dashboard)
         {
+            var result = new List<MicroSqlQueryParameter>();
             foreach (var row in dashboard.Rows)
             {
                 foreach (var panel in row.Panels)
                 {
-                    return GetMicroSqlQueryParameters(panel);
+                    var parameters = GetMicroSqlQueryParameters(panel);
+                    foreach (var parameter in parameters)
+                    {
+                        if (!result.Any(p => p.Name == parameter.Name))
+                            result.Add(parameter);
+                    }
                 }
             }
-            return new List<MicroSqlQueryParameter>();
+            return result;
         }
 
         private List<MicroSqlQueryParameter> GetMicroSqlQueryParameters(DashboardPanel panel)
@@ -106,7 +120,7 @@ namespace BaseLibrary.Services
                     var dataSource = SF.SqlDataSourceService.GetDataSource(dataSourceId.Value);
                     var query = dataSource.GetSqlQuery();
                     if (query is not null)
-                        return query.Parameters;
+                        return query.GetAllQueryParameters();
                 }
             }
             return new List<MicroSqlQueryParameter>();

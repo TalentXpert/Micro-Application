@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace BaseLibrary.Utilities
@@ -67,7 +65,7 @@ namespace BaseLibrary.Utilities
 
         public List<string> GetAllWordStartWith(string inputText,string startWith="@")
         {
-            string pattern = @$"\b{startWith}\w+";
+            string pattern = @$"{startWith}\w+";
 
             // Create a Regex object
             Regex regex = new Regex(pattern);

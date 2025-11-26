@@ -314,7 +314,7 @@
                 var emptyEntry = true;
                 if (appControl.IsGlobalControl || appFormControl.IsMandatory)
                     emptyEntry = false;
-                var control = factory.GetUIControl(LoggedInUser.OrganizationId, appControl, appFormControl, null, parentId, emptyEntry);
+                var control = factory.GetUIControl(LoggedInUser, appControl, appFormControl, null, parentId, emptyEntry);
                 List<SmartControlOption> options = new List<SmartControlOption>();
                 if (control != null)
                     options = control.Options;

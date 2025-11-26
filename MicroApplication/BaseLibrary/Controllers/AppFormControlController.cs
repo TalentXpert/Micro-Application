@@ -62,7 +62,7 @@
             try
             {
                 var form = BSF.AppFormService.GetForm(formId);
-                var controls = BSF.AppFormControlService.GetGlobalControls(LoggedInUser.OrganizationId, form, null, BaseLibraryServiceFactory.ApplicationControlBaseFactory);
+                var controls = BSF.AppFormControlService.GetGlobalControls(LoggedInUser, form, null, BaseLibraryServiceFactory.ApplicationControlBaseFactory);
                 return Ok(controls);
             }
             catch (Exception exception)

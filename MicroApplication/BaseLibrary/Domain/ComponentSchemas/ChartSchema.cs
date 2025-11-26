@@ -1,6 +1,9 @@
 ﻿
 namespace BaseLibrary.Domain.ComponentSchemas
 {
+    /// <summary>
+    /// This class represent chart schema which mainlly has data source and columns info
+    /// </summary>
     public class ChartSchema
     {
         public Guid? Id { get; set; }
@@ -13,6 +16,9 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public List<ChartColumnSchema> Columns { get; set; }=new List<ChartColumnSchema>();
     }
 
+    /// <summary>
+    /// This class represent chart column schema that help to define chart columns info which is used to prepare data series from actual data source
+    /// </summary>
     public class ChartColumnSchema
     {
         /// <summary>

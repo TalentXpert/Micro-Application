@@ -85,8 +85,6 @@ namespace BaseLibrary.Controls.Forms
             var form = BaseLibraryServiceFactory.AppFormService.GetForm(Form.Id);
             if (IsNull(form))
                 throw new ValidationException($"No form found for given form id {Form.Id}");
-            
-            applicationControlFactory.LoggedInUser = LoggedInUser;
 
             Guid? layoutControlValue = null;
             if (IsNotNull(LayoutControl))
@@ -115,7 +113,7 @@ namespace BaseLibrary.Controls.Forms
                 else
                 {
                     
-                    smartForm.AddControl(applicationControlFactory.GetUIControl(LoggedInUser?.OrganizationId, appcontrol, formControl, formControl.GetFormControlValue(controlValues), parentId, true));
+                    smartForm.AddControl(applicationControlFactory.GetUIControl(LoggedInUser, appcontrol, formControl, formControl.GetFormControlValue(controlValues), parentId, true));
                 }
             }
             return smartForm;
@@ -146,7 +144,7 @@ namespace BaseLibrary.Controls.Forms
                 var appcontrol = formControl.AppControl;
                 var controlValue = globalControls.GetControlFirstValueAsGuid(appcontrol.ControlIdentifier);
                 var parentId = globalControls.GetControlFirstValueAsGuid(appcontrol.ParentControlIdentifier);
-                var control = applicationControlFactory.GetUIControl(LoggedInUser.OrganizationId, appcontrol, formControl, null, parentId, false);
+                var control = applicationControlFactory.GetUIControl(LoggedInUser, appcontrol, formControl, null, parentId, false);
                 header = new ImportExcelHeader(formControl.GetDisplayLabel(), formControl.IsMandatory);
                 if (ControlTypes.IsOptionNeeded(control) && HasChildren(control.Options))
                 {

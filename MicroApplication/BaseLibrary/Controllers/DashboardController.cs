@@ -22,25 +22,19 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var dashboards = BSF.MicroAppContract.GetApplicationDashboards();
-                var dashboard = dashboards.FirstOrDefault(d => d.Id == id);
-                if (dashboard is null)
-                {
-                    var ds = BSF.ComponentSchemaService.GetComponent(id);
-                    if (ds is null)
-                        throw new ValidationException("No Dashboard with given id exits.");
-                    dashboard = ds.GetDashboardSchema();
-                }
-
+                var dashboard = BSF.ComponentSchemaService.GetDashboardSchema(id);
                 var parameters = BSF.ComponentSchemaService.GetMicroSqlQueryParameters(dashboard);
                 var factory = BaseLibraryServiceFactory.ApplicationControlBaseFactory;
-
+                
+                // Generating filter controls based on parameters
                 foreach (var parameter in parameters)
                 {
                     var appControl = BSF.MicroAppContract.GetBaseControl().GetAppControlByParameter(parameter.Name);
                     if (appControl is null)
                         continue;
-                    var smartControl = factory.GetFilterUIControl(LoggedInUser.OrganizationId, appControl, null, null, parameter.IsMandatory);
+                    var smartControl = factory.GetFilterUIControl(LoggedInUser, appControl, null, null, parameter.IsMandatory);
+                    if(smartControl != null)
+                        dashboard.Filters.Add(smartControl);
                 }
 
                 return Ok(dashboard);
@@ -121,11 +115,13 @@ namespace BaseLibrary.Controllers
         /// <returns></returns>
         /// <exception cref="ValidationException"></exception>
         [HttpGet("GetDashboardChart/{chartId}/{studyId}")]
-        public IActionResult GetDashboardChart(Guid chartId, Guid? studyId)
+        public IActionResult GetDashboardChart(Guid chartId, string studyId)
         {
             try
             {
-                var model = new GetDashboardChartInputVM { ChartId = chartId, FilterValues = new List<ControlValue>() };
+                var filter = new ControlValue(Guid.Parse("BD16339F-88DD-49E3-9CEB-09D65AAE38DA"), "Study",studyId);
+                
+                var model = new GetDashboardChartInputVM { ChartId = chartId, FilterValues = new List<ControlValue>() { filter } };
                 var chart = BSF.ChartService.GetChart(model, LoggedInUser);
                 if (chart != null && chart.SeriesData.Count != 0)
                     return Ok(chart);

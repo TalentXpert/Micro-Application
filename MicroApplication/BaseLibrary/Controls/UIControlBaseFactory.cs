@@ -8,7 +8,7 @@ namespace BaseLibrary.Controls
     {
         IBaseLibraryServiceFactory SF { get; }
       
-        public ApplicationUser LoggedInUser { get; set; }
+        //public ApplicationUser LoggedInUser { get; set; }
 
         public UIControlBaseFactory(IBaseLibraryServiceFactory serviceFactory)
         { 
@@ -18,8 +18,8 @@ namespace BaseLibrary.Controls
         /// <summary>
         /// Return a UIControl to be render on a form
         /// </summary>
-        public abstract UIControl GetUIControl(Guid? organizationId, AppControl appControl, AppFormControl appFormControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
-        public abstract UIControl GetFilterUIControl(Guid? organizationId, AppControl appControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
+        public abstract UIControl GetUIControl(ApplicationUser? loggedInUser, AppControl appControl, AppFormControl appFormControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
+        public abstract UIControl GetFilterUIControl(ApplicationUser? loggedInUser, AppControl appControl, List<string>? values, Guid? parentId, bool addEmptyEntry);
         public abstract UIControl GetComplexUIControl(AppControl appControl, AppFormControl appFormControl,Guid dataKey);
 
         /// <summary>
