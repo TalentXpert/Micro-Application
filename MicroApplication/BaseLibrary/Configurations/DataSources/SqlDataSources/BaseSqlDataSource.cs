@@ -135,9 +135,16 @@
 
         private static SqlParameter? GetStandardParameter(ApplicationUser? user, string parameter)
         {
-            if (user is not null && user.OrganizationId.HasValue && AreEqualsIgnoreCase(parameter, "@organizationid") || AreEqualsIgnoreCase(parameter, "@orgid"))
+            if (user is not null && user.OrganizationId.HasValue)
             {
-                return new SqlParameter("@organizationid", user.OrganizationId.Value);
+                var orgParamsList = new List<string>()
+                {
+                    "@orgid",
+                    "@organizationId",
+                    "@OrganisationId",
+                };
+                if (orgParamsList.Any(p=>AreEqualsIgnoreCase(parameter,p)))
+                    return new SqlParameter(parameter, user.OrganizationId.Value);
             }
             if (user is not null && AreEqualsIgnoreCase(parameter, "@userId"))
             {
