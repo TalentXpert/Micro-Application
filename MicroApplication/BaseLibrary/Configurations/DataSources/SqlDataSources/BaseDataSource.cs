@@ -16,7 +16,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         /// <param name="parameter"></param>
         /// <param name="filterValues"></param>
         /// <returns></returns>
-        protected abstract SqlParameter? GetParameter(BaseControl baseControl, string parameter, bool isMandatory, List<ControlValue> filterValues);
+        protected abstract SqlParameter? GetParameter(BaseControl baseControl, string parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
 
         /// <summary>
         /// Return all parameter list to display on dashboard builder to be used in data source query. These are the only parameters that can be used in data source queries.
@@ -81,7 +81,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
 
             foreach (var param in mandatoryParameters)
             {
-                var sqlParameter = GetParameter(filterValues, user, baseControl, param, true);
+                var sqlParameter = GetParameter(filterValues, globalFilterIds, user, baseControl, param, true);
                 if (sqlParameter == null)
                     throw new Exception($"Mandatory parameter {param} is missing for query.");
                 parameters.Add(sqlParameter);
@@ -93,7 +93,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                 var allParametersFound = true;
                 foreach (var param in optionalParameters)
                 {
-                    SqlParameter? sqlParameter = GetParameter(filterValues, user, baseControl, param,false);
+                    SqlParameter? sqlParameter = GetParameter(filterValues, globalFilterIds, user, baseControl, param,false);
                     if (sqlParameter != null)
                         parameters.Add(sqlParameter);
                     else
@@ -106,11 +106,11 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return parameters;
         }
 
-        private SqlParameter? GetParameter(List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, string param, bool isMandatory)
+        private SqlParameter? GetParameter(List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseControl baseControl, string param, bool isMandatory)
         {
             var sqlParameter = GetStandardParameter(user, param);
             if (sqlParameter is null)
-                sqlParameter = GetParameter(baseControl, param, isMandatory, filterValues);
+                sqlParameter = GetParameter(baseControl, param, isMandatory, filterValues, globalFilterIds);
             return sqlParameter;
         }
 
