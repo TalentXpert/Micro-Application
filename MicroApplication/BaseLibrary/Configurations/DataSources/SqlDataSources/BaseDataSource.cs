@@ -74,7 +74,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return title.Trim();
         }
         
-        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
+        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseControl baseControl, out string query)
         {
             var parameters = new List<SqlParameter>();
             var mandatoryParameters = microSqlQuery.GetAllParameters(microSqlQuery.QueryTextWithMandatoryParameters);
@@ -135,7 +135,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return null;
         }
 
-        internal DataTable GetCustomObjectList(MacroDataSource datasource, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
+        internal DataTable GetCustomObjectList(MacroDataSource datasource, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
             throw new NotImplementedException();
         }

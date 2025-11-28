@@ -10,7 +10,7 @@ namespace BaseLibrary.Services
     public interface IChartService
     {
         DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser);
-        DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues);
+        DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
     }
 
     public class ChartService : ServiceLibraryBase, IChartService
@@ -21,28 +21,35 @@ namespace BaseLibrary.Services
         public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
         {
             var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
-            return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.FilterValues);
+            return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues,model.GlobalFilterValues);
         }
-        public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
+        public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
-            var datasource = SF.MicroAppContract.GetBaseDataSource().GetAllDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId);
-            if (datasource is null)
-                throw new ValidationException($"Data source with id {chartSchema.DataSourceId} not found for chart {chartId}.");
-            if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.Sql))
-                return GetDashboardChartFromSqlDataSource(datasource.GetSqlDataSource(), chartId, chartSchema, loggedInUser, filterValues);
-            if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.CustomObjectList))
-                return GetDashboardChartFromCustomObjectList(datasource, chartId, chartSchema, loggedInUser, filterValues);
-            throw new ValidationException($"No datasource found for {chartId}.");
+            var model = new GetDashboardChartInputVM { ChartId = chartId, ControlFilterValues = filterValues, GlobalFilterValues = globalFilterIds };
+            return BuildChart(model, loggedInUser);
         }
 
-        private DashboardChart GetDashboardChartFromCustomObjectList(MacroDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
+        private DashboardChart BuildChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
         {
-            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(datasource, loggedInUser, filterValues);
+            var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
+            var datasource = SF.MicroAppContract.GetBaseDataSource().GetAllDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId);
+            if (datasource is null)
+                throw new ValidationException($"Data source with id {chartSchema.DataSourceId} not found for chart {model.ChartId}.");
+            if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.Sql))
+                return GetDashboardChartFromSqlDataSource(datasource.GetSqlDataSource(), model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues);
+            if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.CustomObjectList))
+                return GetDashboardChartFromCustomObjectList(datasource, model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues);
+            throw new ValidationException($"No datasource found for {model.ChartId}.");
+        }
+
+        private DashboardChart GetDashboardChartFromCustomObjectList(MacroDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
+        {
+            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(datasource, loggedInUser, filterValues, globalFilterIds);
             var chart = new DashboardChart(chartSchema, dataObjects);
             return chart;
         }
 
-        private DashboardChart GetDashboardChartFromSqlDataSource(MacroSqlDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
+        private DashboardChart GetDashboardChartFromSqlDataSource(MacroSqlDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
             var microSqlQuery = datasource.GetSqlQuery();
             if (microSqlQuery is null)
@@ -50,7 +57,7 @@ namespace BaseLibrary.Services
 
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, loggedInUser, SF.MicroAppContract.GetBaseControl(), out string query);
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser, SF.MicroAppContract.GetBaseControl(), out string query);
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);
                 return chart;

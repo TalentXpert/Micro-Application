@@ -104,7 +104,7 @@ namespace BaseLibrary.Controllers
                 var id = Guid.NewGuid();
                 if(vm.Id.HasValue)
                     id= vm.Id.Value;
-                BSF.ChartService.GetChartPreview(id,vm,  LoggedInUser,new List<ControlValue>());
+                BSF.ChartService.GetChartPreview(id,vm,  LoggedInUser,new List<ControlValue>(),new Dictionary<string, string>());
                 CommitTransaction();
                 return Ok(true);
             }

@@ -25,7 +25,7 @@ namespace BaseLibrary.Controllers
                 var dashboard = BSF.ComponentSchemaService.GetDashboardSchema(id);
                 var parameters = BSF.ComponentSchemaService.GetMicroSqlQueryParameters(dashboard);
                 var factory = BaseLibraryServiceFactory.ApplicationControlBaseFactory;
-                
+
                 // Generating filter controls based on parameters
                 foreach (var parameter in parameters)
                 {
@@ -33,7 +33,7 @@ namespace BaseLibrary.Controllers
                     if (appControl is null)
                         continue;
                     var smartControl = factory.GetFilterUIControl(LoggedInUser, appControl, null, null, parameter.IsMandatory);
-                    if(smartControl != null)
+                    if (smartControl != null)
                         dashboard.Filters.Add(smartControl);
                 }
 
@@ -119,9 +119,8 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var filter = new ControlValue(Guid.Parse("BD16339F-88DD-49E3-9CEB-09D65AAE38DA"), "Study",studyId);
-                
-                var model = new GetDashboardChartInputVM { ChartId = chartId, FilterValues = new List<ControlValue>() { filter } };
+                var filter = new ControlValue(Guid.Parse("BD16339F-88DD-49E3-9CEB-09D65AAE38DA"), "Study", studyId);
+                var model = new GetDashboardChartInputVM { ChartId = chartId, ControlFilterValues = new List<ControlValue>() { filter }, GlobalFilterValues = new Dictionary<string, string>() };
                 var chart = BSF.ChartService.GetChart(model, LoggedInUser);
                 if (chart != null && chart.SeriesData.Count != 0)
                     return Ok(chart);
@@ -152,7 +151,7 @@ namespace BaseLibrary.Controllers
     public class GetDashboardChartInputVM
     {
         public Guid ChartId { get; set; }
-        public string? GlobalFilterId { get; set; }
-        public List<ControlValue> FilterValues { get; set; } = [];
+        public Dictionary<string, string> GlobalFilterValues { get; set; } = new();
+        public List<ControlValue> ControlFilterValues { get; set; } = [];
     }
 }
