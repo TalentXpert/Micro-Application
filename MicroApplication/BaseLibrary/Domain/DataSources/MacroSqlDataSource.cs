@@ -66,27 +66,83 @@
         }
     }
 
-    public class SqlDataSource : Entity
+    public class MacroDataSourceType
+    {
+        private MacroDataSourceType() { }
+        public string Name { get; protected set; } = string.Empty;
+        public int Value { get; protected set; }
+        public static MacroDataSourceType Sql = new MacroDataSourceType() { Value = 1, Name = "SQL" };
+        public static MacroDataSourceType CustomObjectList = new MacroDataSourceType() { Value = 2, Name = "COL" };
+        public static bool AreEqual(string name, MacroDataSourceType dataSource)
+        {
+            return C.AreEqualsIgnoreCase(name, dataSource.Name);
+        }
+        public static bool AreEqual(int value, MacroDataSourceType dataSource)
+        {
+            return value == dataSource.Value;
+        }
+    }
+
+    public class MacroDataSource : Entity
     {
         public string Name { get; protected set; } = string.Empty;
-        public string Query { get; protected set; } = string.Empty;
-        public string DataSourceType { get; protected set; } = SqlDataSourceType.Chart.Name;
+        /// <summary>
+        /// MacroDataSourceType class defines type of data source like SQL, CustomObjectList etc.
+        /// </summary>
+        public int DataSourceType { get; protected set; }
+        public string TargetContentType { get; protected set; }= string.Empty;
+        public Guid? OrganizationId { get; protected set; }
+        public Guid? UserId { get; protected set; }
+        public string JSONData { get; protected set; } = string.Empty;
         public override IEnumerable<ValidationResult> ValidateEntity(ValidationContext validationContext)
         {
             return new List<ValidationResult>();
         }
-        protected SqlDataSource() { }
+        public MacroSqlDataSource GetSqlDataSource()
+        {
+            try
+            {
+                var d = NewtonsoftJsonAdapter.DeserializeObject<MacroSqlDataSource>(JSONData) ?? throw new ValidationException("Invalid Sql Data Source JSON data.");
+                return d;
+            }
+            catch
+            {
+                throw new ValidationException("Invalid Sql Data Source JSON data.");
+            }
+        }
+        public static MacroDataSource CreateSqlDataSource(MacroSqlDataSource sqlDataSource)
+        {
+            var dataSource = new MacroDataSource()
+            {
+                Name = sqlDataSource.Name,
+                DataSourceType = MacroDataSourceType.Sql.Value,
+                TargetContentType = sqlDataSource.DataSourceType,
+                JSONData = NewtonsoftJsonAdapter.SerializeObject(sqlDataSource),
+                CreatedOn = DateTime.UtcNow,
+                Id= sqlDataSource.Id,
+                UpdatedOn = DateTime.UtcNow
+            };
+            return dataSource;
+        }
+    }
 
-        public SqlDataSource(string id, string name, MicroSqlQuery query, SqlDataSourceType dataSourceType)
+    public class MacroSqlDataSource
+    {
+        public Guid Id { get; protected set; }
+        public string Name { get; protected set; } = string.Empty;
+        public string Query { get; protected set; } = string.Empty;
+        public string DataSourceType { get; protected set; } = SqlDataSourceType.Chart.Name;
+
+        protected MacroSqlDataSource() { }
+
+        public MacroSqlDataSource(string id, string name, MicroSqlQuery query, SqlDataSourceType dataSourceType)
         {
             Id = Guid.Parse(id);
             Name = name;
             Query = NewtonsoftJsonAdapter.SerializeObject(query);
             DataSourceType = dataSourceType.Name;
-            SetCreatedOn();
-            SetUpdatedOn();
         }
-        public SqlDataSource(string name, MicroSqlQuery query, SqlDataSourceType dataSourceType) : this(IdentityGenerator.NewSequentialGuid().ToString(),name,query, dataSourceType)
+        public MacroSqlDataSource(string name, MicroSqlQuery query, SqlDataSourceType dataSourceType) : this(IdentityGenerator.NewSequentialGuid().ToString(), name, query, dataSourceType)
         {
 
         }
@@ -104,10 +160,10 @@
             }
             catch
             {
-                if(string.IsNullOrWhiteSpace(Query)==false)
+                if (string.IsNullOrWhiteSpace(Query) == false)
                     return new MicroSqlQuery(Query);
             }
-            return null;    
+            return null;
         }
     }
 }

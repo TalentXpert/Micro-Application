@@ -15,7 +15,6 @@ namespace BaseLibrary.Repositories
         IAppPageRepository AppPageRepository { get; }
 
         IComponentSchemaRepository ComponentSchemaRepository { get; }
-        IsqlDataSourceRepository SqlDataSourceRepository { get; }
         IApplicationRoleRepository RoleRepository { get; }
         IUserRoleRepository UserRoleRepository { get; }
         IApplicationRolePermissionRepository ApplicationRolePermissionRepository { get; }
@@ -64,8 +63,6 @@ namespace BaseLibrary.Repositories
         IComponentSchemaRepository? componentSchemaRepository;
         public IComponentSchemaRepository ComponentSchemaRepository { get { return componentSchemaRepository ?? (componentSchemaRepository = new ComponentSchemaRepository(UnitOfWork, LoggerFactory)); } }
 
-        IsqlDataSourceRepository? sqlDataSourceRepository;
-        public IsqlDataSourceRepository SqlDataSourceRepository { get { return sqlDataSourceRepository ?? (sqlDataSourceRepository = new SqlDataSourceRepository(UnitOfWork, LoggerFactory)); } }
 
         IApplicationRoleRepository roleRepository;
         public IApplicationRoleRepository RoleRepository { get { return roleRepository ?? (roleRepository = new ApplicationRoleRepository(UnitOfWork, LoggerFactory)); } }

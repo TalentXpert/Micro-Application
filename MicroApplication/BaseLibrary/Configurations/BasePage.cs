@@ -20,7 +20,7 @@
         /// <summary>
         /// Implement this method to return your application pages
         /// </summary>
-        protected abstract List<AppPage> GetApplicationPages();
+        public abstract List<AppPage> GetApplicationPages();
 
         /// <summary>
         /// Override this method if you want to change base pages or their sequence. You can return empty list and return all pages from GetApplicationPages method.

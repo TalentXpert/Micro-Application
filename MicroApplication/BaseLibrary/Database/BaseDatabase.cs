@@ -16,7 +16,7 @@ namespace BaseLibrary.Database
         DbSet<AppFormControl> AppFormControls { get; }
         DbSet<ApplicationSetting> ApplicationSettings { get; }
         DbSet<ComponentSchema> ComponentSchemas { get; }
-        DbSet<SqlDataSource> SQLDataSources { get; }
+        DbSet<MacroSqlDataSource> SQLDataSources { get; }
         DbSet<ApplicationRole> Role { get; }
         DbSet<Permission> Permission { get; }
         DbSet<UserRole> UserRole { get; }
@@ -67,7 +67,7 @@ namespace BaseLibrary.Database
 
             modelBuilder.Entity<ApplicationSetting>().ToTable("ApplicationSetting").HasKey(x => x.Id);
             modelBuilder.Entity<ComponentSchema>().ToTable("ComponentSchema").HasKey(x => x.Id);
-            modelBuilder.Entity<SqlDataSource>().ToTable("SQLDataSource").HasKey(x => x.Id);
+            modelBuilder.Entity<MacroSqlDataSource>().ToTable("SQLDataSource").HasKey(x => x.Id);
             modelBuilder.Entity<Organization>().ToTable("Organization").HasKey(x => x.Id);
             modelBuilder.Entity<AuditLog>().ToTable("AuditLog").HasKey(x => x.Id);
             modelBuilder.Entity<PerformanceLog>().ToTable("PerformanceLog").HasKey(x => x.Id);
@@ -113,8 +113,8 @@ namespace BaseLibrary.Database
         DbSet<ComponentSchema>? componentSchemas;
         public DbSet<ComponentSchema> ComponentSchemas { get { return componentSchemas ?? (componentSchemas = Set<ComponentSchema>()); } }
         
-        DbSet<SqlDataSource>? sQLDataSources;
-        public DbSet<SqlDataSource> SQLDataSources { get { return sQLDataSources ?? (sQLDataSources = Set<SqlDataSource>()); } }
+        DbSet<MacroSqlDataSource>? sQLDataSources;
+        public DbSet<MacroSqlDataSource> SQLDataSources { get { return sQLDataSources ?? (sQLDataSources = Set<MacroSqlDataSource>()); } }
 
         DbSet<Organization>? organization;
         public DbSet<Organization> Organizations { get { return organization ?? (organization = Set<Organization>()); } }

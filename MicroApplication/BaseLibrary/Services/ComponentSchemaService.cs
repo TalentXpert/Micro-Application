@@ -19,7 +19,7 @@ namespace BaseLibrary.Services
         }
         public DashboardSchema GetDashboardSchema(Guid id)
         {
-            var dashboards = SF.MicroAppContract.GetApplicationDashboards();
+            var dashboards = SF.MicroAppContract.GetBaseDashboard().GetDashboards();
             var dashboard = dashboards.FirstOrDefault(d => d.Id == id);
             if (dashboard is null)
             {

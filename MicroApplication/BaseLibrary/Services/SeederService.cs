@@ -9,7 +9,7 @@ namespace BaseLibrary.Services
         void SeedApplicationForms(List<AppPage> pages, List<AppControl> controls, List<AppForm> forms);
         void SeedCharts(List<ChartSchema> chartSchemas);
         void SeedDashboards(List<DashboardSchema> dashboards);
-        void SeedDataSources(List<SqlDataSource> sqlDataSource);
+        void SeedDataSources(List<MacroSqlDataSource> sqlDataSource);
     }
     public class SeederService : ServiceLibraryBase, ISeederService
     {
@@ -110,7 +110,7 @@ namespace BaseLibrary.Services
             }
         }
 
-        public void SeedDataSources(List<SqlDataSource> sqlDataSources)
+        public void SeedDataSources(List<MacroSqlDataSource> sqlDataSources)
         {
             foreach(var datasource in sqlDataSources)
             {

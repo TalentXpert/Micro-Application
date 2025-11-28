@@ -9,9 +9,9 @@ namespace BaseLibrary.Services
     public interface ISqlDataSourceService
     {
         DataTable GetDataSourceColumns(Guid id);
-        List<SqlDataSource> GetDatasources(SqlDataSourceType chart);
-        void SaveUpdateDataSources(SqlDataSource datasource);
-        SqlDataSource GetDataSource(Guid id);
+        List<MacroSqlDataSource> GetDatasources(SqlDataSourceType chart);
+        void SaveUpdateDataSources(MacroSqlDataSource datasource);
+        MacroSqlDataSource GetDataSource(Guid id);
     }
 
     public class SqlDataSourceService : ServiceLibraryBase, ISqlDataSourceService
@@ -21,41 +21,42 @@ namespace BaseLibrary.Services
 
         }
 
-        public SqlDataSource GetDataSource(Guid id)
+        public MacroSqlDataSource GetDataSource(Guid id)
         {
             var source = SF.MicroAppContract.GetBaseSqlDataSource().GetSqlDataSources().FirstOrDefault(s=>s.Id==id);
             if(source is not null)
                 return source;
-            source = SF.RF.SqlDataSourceRepository.Get(id);
+           // source = SF.RF.SqlDataSourceRepository.Get(id);
             if(source is not null) return source;
             throw new ValidationException($"No data source found with given key-{id}");
         }
 
         public DataTable GetDataSourceColumns(Guid id)
         {
-            var ds = RF.SqlDataSourceRepository.Get(id);
-            var query = ds.Query;
-            var dt = new SqlCommandExecutor().GetDataTable(query);
-            return dt;
+            //var ds = RF.SqlDataSourceRepository.Get(id);
+            //var query = ds.Query;
+            //var dt = new SqlCommandExecutor().GetDataTable(query);
+            //return dt;
+            return new DataTable();
         }
 
-        public List<SqlDataSource> GetDatasources(SqlDataSourceType dataSourceType)
+        public List<MacroSqlDataSource> GetDatasources(SqlDataSourceType dataSourceType)
         {
-            return RF.SqlDataSourceRepository.GetFiltered(s => s.DataSourceType == dataSourceType.Name).ToList();
+            return SF.MicroAppContract.GetBaseSqlDataSource().GetSqlDataSources().Where(s => s.DataSourceType == dataSourceType.Name).ToList();
         }
 
-        public void SaveUpdateDataSources(SqlDataSource datasource)
+        public void SaveUpdateDataSources(MacroSqlDataSource datasource)
         {
-            SqlDataSource ds = RF.SqlDataSourceRepository.Get(datasource.Id);
-            var sqlQuery = new MicroSqlQuery(datasource.Query);
-            if (ds == null)
-            {
-                RF.SqlDataSourceRepository.Add(datasource);
-            }
-            else
-            {
-                ds.Update(datasource.Name, sqlQuery, datasource.DataSourceType);
-            }
+            //MacroSqlDataSource ds = RF.SqlDataSourceRepository.Get(datasource.Id);
+            //var sqlQuery = new MicroSqlQuery(datasource.Query);
+            //if (ds == null)
+            //{
+            //    RF.SqlDataSourceRepository.Add(datasource);
+            //}
+            //else
+            //{
+            //    ds.Update(datasource.Name, sqlQuery, datasource.DataSourceType);
+            //}
         }
     }
 }

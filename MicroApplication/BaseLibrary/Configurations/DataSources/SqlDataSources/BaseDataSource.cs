@@ -1,11 +1,13 @@
-﻿namespace BaseLibrary.Configurations.DataSources.SqlDataSources
+﻿
+namespace BaseLibrary.Configurations.DataSources.SqlDataSources
 {
-    public abstract class BaseSqlDataSource : CleanCode
+    public abstract class BaseDataSource : CleanCode
     {
+        
         /// <summary>
         /// Implement this method to return your application SqlDataSources
         /// </summary>
-        protected abstract List<SqlDataSource> GetApplicationSqlDataSources();
+        protected abstract List<MacroSqlDataSource> GetApplicationSqlDataSources();
 
         /// <summary>
         /// Implement this method to prepare SqlParameter from give parameter and filter values. 
@@ -25,22 +27,29 @@
         /// <summary>
         /// Override this method if you want to change base SqlDataSources or their sequence. You can return empty list and return all SqlDataSources from GetApplicationSqlDataSources method.
         /// </summary>
-        protected virtual List<SqlDataSource> GetBaseSqlDataSources()
+        protected virtual List<MacroSqlDataSource> GetBaseSqlDataSources()
         {
             var sqlQuery = new MicroSqlQuery("select Case When IsBlocked=1 then 'Blocked' Else 'Active' End as TX_Status, Count(*) NU_Users from ApplicationUser where organizationid=@organizationid group by IsBlocked");
-            return new List<SqlDataSource>()
+            return new List<MacroSqlDataSource>()
            {
-               new SqlDataSource("621225CA-CDE7-4756-9D0C-AA6CA350C3A3","User Active Status",sqlQuery,SqlDataSourceType.Chart)
+               new MacroSqlDataSource("621225CA-CDE7-4756-9D0C-AA6CA350C3A3","User Active Status",sqlQuery,SqlDataSourceType.Chart)
            };
         }
-        public List<SqlDataSource> GetSqlDataSources()
+        public List<MacroSqlDataSource> GetSqlDataSources()
         {
-            var sqlDataSources = new List<SqlDataSource>();
+            var sqlDataSources = new List<MacroSqlDataSource>();
             sqlDataSources.AddRange(GetApplicationSqlDataSources());
             sqlDataSources.AddRange(GetBaseSqlDataSources());
             return sqlDataSources;
         }
-
+        public List<MacroDataSource> GetAllDataSources()
+        {
+            var dataSources = new List<MacroDataSource>();
+            dataSources.AddRange(GetSqlDataSources().Select(s=>MacroDataSource.CreateSqlDataSource(s)));
+            //var sqlDataSources = GetSqlDataSources();
+            //dataSources.AddRange(sqlDataSources);
+            return dataSources;
+        }
         public virtual string GetChartColumnDataType(string name)
         {
             if (name.Contains("nu", StringComparison.InvariantCultureIgnoreCase))
@@ -64,35 +73,7 @@
             }
             return title.Trim();
         }
-
-        //public List<SqlParameter> GetQueryParameters(List<string> allQueryParameters, MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
-        //{
-        //    var parameters = new List<SqlParameter>();
-        //    foreach (var param in allQueryParameters)
-        //    {
-        //        if (microSqlQuery.QueryTextWithMandatoryParameters.Contains(param, StringComparison.CurrentCultureIgnoreCase))
-        //        {
-        //            var sqlParameter = GetStandardParameter(user, param);
-        //            if (sqlParameter is null)
-        //                GetParameter(baseControl, param, true, filterValues);
-        //            if (sqlParameter == null)
-        //                throw new Exception($"Mandatory parameter {param} is missing for query.");
-        //            parameters.Add(sqlParameter);
-        //            continue;
-        //        }
-        //        if (microSqlQuery.QueryTextWithMandatoryParameters.Contains(param, StringComparison.CurrentCultureIgnoreCase))
-        //        {
-        //            var sqlParameter = GetStandardParameter(user, param);
-        //            if (sqlParameter is null)
-        //                sqlParameter = GetParameter(baseControl, param, false, filterValues);
-        //            if (sqlParameter != null)
-        //                parameters.Add(sqlParameter);
-        //            continue;
-        //        }
-        //    }
-        //    query = BuildQuery(microSqlQuery, parameters);
-        //    return parameters;
-        //}
+        
         public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, ApplicationUser? user, BaseControl baseControl, out string query)
         {
             var parameters = new List<SqlParameter>();
@@ -152,6 +133,11 @@
             }
 
             return null;
+        }
+
+        internal DataTable GetCustomObjectList(MacroDataSource datasource, ApplicationUser? loggedInUser, List<ControlValue> filterValues)
+        {
+            throw new NotImplementedException();
         }
     }
 }

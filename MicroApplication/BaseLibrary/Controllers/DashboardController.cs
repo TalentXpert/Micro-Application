@@ -54,7 +54,7 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var dataSouces = BSF.MicroAppContract.GetDataSources();
+                var dataSouces = BSF.MicroAppContract.GetBaseDataSource().GetAllDataSources();
                 return Ok(dataSouces.Select(d => d.Name).ToList());
             }
             catch (Exception exception)
@@ -72,15 +72,15 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var ds = BSF.MicroAppContract.GetDataSources().FirstOrDefault(d => d.Name == dataSource);
+                var ds = BSF.MicroAppContract.GetBaseDataSource().GetAllDataSources().FirstOrDefault(d => d.Name == dataSource);
                 if (ds == null)
                     throw new ValidationException($"No data source found with this name {dataSource}.");
                 var controls = new List<AppControlVM>();
-                foreach (var form in ds.Forms)
-                {
-                    var formControls = BSF.AppFormControlService.GetFormControlsWithControl(form.Id, null, LoggedInUser.OrganizationId);
-                    controls.AddRange(formControls.Where(c => c.AppControl.DataType != ControlDataTypes.Guid).Select(c => new AppControlVM(c.AppControl)).ToList());
-                }
+                //foreach (var form in ds.Forms)
+                //{
+                //    var formControls = BSF.AppFormControlService.GetFormControlsWithControl(form.Id, null, LoggedInUser.OrganizationId);
+                //    controls.AddRange(formControls.Where(c => c.AppControl.DataType != ControlDataTypes.Guid).Select(c => new AppControlVM(c.AppControl)).ToList());
+                //}
                 return Ok(controls);
             }
             catch (Exception exception)

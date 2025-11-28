@@ -29,18 +29,18 @@
         }
         private void SeedApplicaitonData()
         {
-            var controls = BSF.MicroAppContract.GetApplicationControls();
-            var forms = BSF.MicroAppContract.GetApplicationFormsWithControls();
-            var pages = BSF.MicroAppContract.GetApplicationPages();
+            var controls = BSF.MicroAppContract.GetBaseControl().GetControls();
+            var forms = BSF.MicroAppContract.GetBaseForm().GetFormsWithControls();
+            var pages = BSF.MicroAppContract.GetBasePage().GetApplicationPages();
             BSF.SeederService.SeedApplicationForms(pages, controls, forms);
 
-            var dataSources = BSF.MicroAppContract.GetSqlDataSources();
+            var dataSources = BSF.MicroAppContract.GetBaseDataSource().GetSqlDataSources();
             BSF.SeederService.SeedDataSources(dataSources);
 
-            var charts = BSF.MicroAppContract.GetApplicationCharts();
+            var charts = BSF.MicroAppContract.GetBaseChart().GetCharts();
             BSF.SeederService.SeedCharts(charts);
 
-            var dashboards = BSF.MicroAppContract.GetApplicationDashboards();
+            var dashboards = BSF.MicroAppContract.GetBaseDashboard().GetDashboards();
             BSF.SeederService.SeedDashboards(dashboards);
         }
         #endregion
