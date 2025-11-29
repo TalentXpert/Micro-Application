@@ -90,7 +90,7 @@
         /// MacroDataSourceType class defines type of data source like SQL, CustomObjectList etc.
         /// </summary>
         public int DataSourceType { get; protected set; }
-        public string TargetContentType { get; protected set; }= string.Empty;
+        public string TargetContentType { get; protected set; } = string.Empty;
         public Guid? OrganizationId { get; protected set; }
         public Guid? UserId { get; protected set; }
         public string JSONData { get; protected set; } = string.Empty;
@@ -116,22 +116,62 @@
             {
                 Name = sqlDataSource.Name,
                 DataSourceType = MacroDataSourceType.Sql.Value,
-                TargetContentType = sqlDataSource.DataSourceType,
+                TargetContentType = sqlDataSource.TargetContentType,
                 JSONData = NewtonsoftJsonAdapter.SerializeObject(sqlDataSource),
                 CreatedOn = DateTime.UtcNow,
-                Id= sqlDataSource.Id,
+                Id = sqlDataSource.Id,
                 UpdatedOn = DateTime.UtcNow
             };
             return dataSource;
         }
+        public static MacroDataSource CreateCustomObjectDataSource(MacroCustomObjectDataSource customDataSource)
+        {
+            var dataSource = new MacroDataSource()
+            {
+                Name = customDataSource.Name,
+                DataSourceType = MacroDataSourceType.CustomObjectList.Value,
+                CreatedOn = DateTime.UtcNow,
+                Id = customDataSource.Id,
+                UpdatedOn = DateTime.UtcNow,
+                TargetContentType = customDataSource.TargetContentType,
+                JSONData = NewtonsoftJsonAdapter.SerializeObject(customDataSource)
+            };
+            return dataSource;
+        }
+        public MacroCustomObjectDataSource GetCustomObjectDataSource()
+        {
+            try
+            {
+                var d = NewtonsoftJsonAdapter.DeserializeObject<MacroCustomObjectDataSource>(JSONData) ?? throw new ValidationException("Invalid custom Data Source JSON data.");
+                return d;
+            }
+            catch
+            {
+                throw new ValidationException("Invalid custom Data Source JSON data.");
+            }
+        }
     }
-
+    public class MacroCustomObjectDataSource
+    {
+        public Guid Id { get;  set; }
+        public string Name { get;  set; } = string.Empty;
+        public string DataProvider { get;  set; } = string.Empty;
+        public string TargetContentType { get;  set; } = SqlDataSourceType.Chart.Name;
+        public MacroCustomObjectDataSource() { }
+        public MacroCustomObjectDataSource(string id, string name, string dataProvider, SqlDataSourceType dataSourceType)
+        {
+            Id = Guid.Parse(id);
+            Name = name;
+            DataProvider = dataProvider;
+            TargetContentType = dataSourceType.Name;
+        }
+    }
     public class MacroSqlDataSource
     {
         public Guid Id { get; protected set; }
         public string Name { get; protected set; } = string.Empty;
         public string Query { get; protected set; } = string.Empty;
-        public string DataSourceType { get; protected set; } = SqlDataSourceType.Chart.Name;
+        public string TargetContentType { get; protected set; } = SqlDataSourceType.Chart.Name;
 
         protected MacroSqlDataSource() { }
 
@@ -140,7 +180,7 @@
             Id = Guid.Parse(id);
             Name = name;
             Query = NewtonsoftJsonAdapter.SerializeObject(query);
-            DataSourceType = dataSourceType.Name;
+            TargetContentType = dataSourceType.Name;
         }
         public MacroSqlDataSource(string name, MicroSqlQuery query, SqlDataSourceType dataSourceType) : this(IdentityGenerator.NewSequentialGuid().ToString(), name, query, dataSourceType)
         {
@@ -150,7 +190,7 @@
         {
             Name = name;
             Query = NewtonsoftJsonAdapter.SerializeObject(query);
-            DataSourceType = dataSourceType;
+            TargetContentType = dataSourceType;
         }
         public MicroSqlQuery? GetSqlQuery()
         {

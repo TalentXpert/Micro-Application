@@ -2,6 +2,7 @@
 using BaseLibrary.Controls.Dashboard;
 using BaseLibrary.Domain;
 using System.Data;
+using System.Linq;
 
 namespace BaseLibrary.Controllers
 {
@@ -22,22 +23,26 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var dashboard = BSF.ComponentSchemaService.GetDashboardSchema(id);
-                var parameters = BSF.ComponentSchemaService.GetMicroSqlQueryParameters(dashboard);
+                var dashboard = BSF.ComponentSchemaService.GetDashboard(id);
                 var factory = BaseLibraryServiceFactory.ApplicationControlBaseFactory;
-
+                var parameters = dashboard.MacroDataSourceParameters;
                 // Generating filter controls based on parameters
                 foreach (var parameter in parameters)
                 {
-                    var appControl = BSF.MicroAppContract.GetBaseControl().GetAppControlByParameter(parameter.Name);
+                    var macroParameter = BSF.MicroAppContract.GetBaseDataSourceParameter().GetMacroDataSourceParameterById(parameter.MacroDataSourceParameterId);
+                    if (macroParameter.AppControlId is null)
+                        continue;
+                    if (macroParameter.AppControlId.HasValue == false)
+                        continue;
+                    var appControl = BSF.MicroAppContract.GetBaseControl().GetControls().FirstOrDefault(c => c.Id == macroParameter.AppControlId.Value);
                     if (appControl is null)
                         continue;
                     var smartControl = factory.GetFilterUIControl(LoggedInUser, appControl, null, null, parameter.IsMandatory);
                     if (smartControl != null)
-                        dashboard.Filters.Add(smartControl);
+                        dashboard.Dashboard.Filters.Add(smartControl);
                 }
 
-                return Ok(dashboard);
+                return Ok(dashboard.Dashboard);
             }
             catch (Exception exception)
             {

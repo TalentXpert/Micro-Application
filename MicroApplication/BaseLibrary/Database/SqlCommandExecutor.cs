@@ -1,7 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
-
-
+﻿
 namespace BaseLibrary.Database
 {
     public interface ISqlQueryExecutor

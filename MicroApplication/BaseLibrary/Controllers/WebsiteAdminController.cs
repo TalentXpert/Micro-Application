@@ -40,8 +40,8 @@
             var charts = BSF.MicroAppContract.GetBaseChart().GetCharts();
             BSF.SeederService.SeedCharts(charts);
 
-            var dashboards = BSF.MicroAppContract.GetBaseDashboard().GetDashboards();
-            BSF.SeederService.SeedDashboards(dashboards);
+            //var dashboards = BSF.MicroAppContract.GetBaseDashboard().GetDashboards();
+            //BSF.SeederService.SeedDashboards(dashboards);
         }
         #endregion
     }

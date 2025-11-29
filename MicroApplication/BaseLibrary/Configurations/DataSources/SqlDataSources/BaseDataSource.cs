@@ -8,6 +8,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         /// Implement this method to return your application SqlDataSources
         /// </summary>
         protected abstract List<MacroSqlDataSource> GetApplicationSqlDataSources();
+        protected abstract List<MacroCustomObjectDataSource> GetApplicationCustomObjectDataSources();
 
         /// <summary>
         /// Implement this method to prepare SqlParameter from give parameter and filter values. 
@@ -16,13 +17,12 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         /// <param name="parameter"></param>
         /// <param name="filterValues"></param>
         /// <returns></returns>
-        protected abstract SqlParameter? GetParameter(BaseControl baseControl, string parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
+        protected abstract SqlParameter? GetParameter(MacroDataSourceParameter parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
 
         /// <summary>
         /// Return all parameter list to display on dashboard builder to be used in data source query. These are the only parameters that can be used in data source queries.
         /// </summary>
         /// <returns></returns>
-        public abstract List<string> GetAllParameters();
 
         /// <summary>
         /// Override this method if you want to change base SqlDataSources or their sequence. You can return empty list and return all SqlDataSources from GetApplicationSqlDataSources method.
@@ -46,6 +46,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         {
             var dataSources = new List<MacroDataSource>();
             dataSources.AddRange(GetSqlDataSources().Select(s=>MacroDataSource.CreateSqlDataSource(s)));
+            dataSources.AddRange(GetApplicationCustomObjectDataSources().Select(s=>MacroDataSource.CreateCustomObjectDataSource(s)));
             //var sqlDataSources = GetSqlDataSources();
             //dataSources.AddRange(sqlDataSources);
             return dataSources;
@@ -74,14 +75,17 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return title.Trim();
         }
         
-        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseControl baseControl, out string query)
+        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseDataSourceParameter baseDataSourceParameter, out string query)
         {
             var parameters = new List<SqlParameter>();
             var mandatoryParameters = microSqlQuery.GetAllParameters(microSqlQuery.QueryTextWithMandatoryParameters);
 
             foreach (var param in mandatoryParameters)
             {
-                var sqlParameter = GetParameter(filterValues, globalFilterIds, user, baseControl, param, true);
+                var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
+                if(parameter == null)
+                    throw new Exception($"Parameter {param} is not defined in data source parameters.");
+                var sqlParameter = GetParameter(parameter, true, filterValues, globalFilterIds, user);
                 if (sqlParameter == null)
                     throw new Exception($"Mandatory parameter {param} is missing for query.");
                 parameters.Add(sqlParameter);
@@ -93,7 +97,10 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                 var allParametersFound = true;
                 foreach (var param in optionalParameters)
                 {
-                    SqlParameter? sqlParameter = GetParameter(filterValues, globalFilterIds, user, baseControl, param,false);
+                    var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
+                    if (parameter == null)
+                        throw new Exception($"Parameter {param} is not defined in data source parameters.");
+                    SqlParameter? sqlParameter = GetParameter(parameter,false,filterValues, globalFilterIds, user);
                     if (sqlParameter != null)
                         parameters.Add(sqlParameter);
                     else
@@ -106,16 +113,18 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return parameters;
         }
 
-        private SqlParameter? GetParameter(List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseControl baseControl, string param, bool isMandatory)
+        private SqlParameter? GetParameter(MacroDataSourceParameter parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user)
         {
-            var sqlParameter = GetStandardParameter(user, param);
+            var sqlParameter = GetStandardParameter(user, parameter.SqlParameterName);
             if (sqlParameter is null)
-                sqlParameter = GetParameter(baseControl, param, isMandatory, filterValues, globalFilterIds);
+                sqlParameter = GetParameter(parameter, isMandatory, filterValues, globalFilterIds);
             return sqlParameter;
         }
 
-        private static SqlParameter? GetStandardParameter(ApplicationUser? user, string parameter)
+        private static SqlParameter? GetStandardParameter(ApplicationUser? user, string? parameter)
         {
+            if(parameter is null)
+                return null;
             if (user is not null && user.OrganizationId.HasValue)
             {
                 var orgParamsList = new List<string>()
@@ -135,9 +144,6 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return null;
         }
 
-        internal DataTable GetCustomObjectList(MacroDataSource datasource, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract List<object> GetCustomObjectList(IBaseLibraryServiceFactory sF, MacroDataSource datasource, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
     }
 }

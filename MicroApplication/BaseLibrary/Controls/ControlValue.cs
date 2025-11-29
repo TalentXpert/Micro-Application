@@ -27,6 +27,10 @@
         {
             return ControlId == appControl.Id || ControlIdentifier == appControl.ControlIdentifier;
         }
+        public bool IsMatching(Guid controlId)
+        {
+            return ControlId == controlId ;
+        }
         public bool IsMatching(string controlIdentifier)
         {
             return ControlIdentifier == controlIdentifier;

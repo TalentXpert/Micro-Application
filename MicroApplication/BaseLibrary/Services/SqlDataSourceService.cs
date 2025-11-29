@@ -42,7 +42,7 @@ namespace BaseLibrary.Services
 
         public List<MacroSqlDataSource> GetDatasources(SqlDataSourceType dataSourceType)
         {
-            return SF.MicroAppContract.GetBaseSqlDataSource().GetSqlDataSources().Where(s => s.DataSourceType == dataSourceType.Name).ToList();
+            return SF.MicroAppContract.GetBaseSqlDataSource().GetSqlDataSources().Where(s => s.TargetContentType == dataSourceType.Name).ToList();
         }
 
         public void SaveUpdateDataSources(MacroSqlDataSource datasource)

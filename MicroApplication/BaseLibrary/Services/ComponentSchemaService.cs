@@ -1,4 +1,6 @@
 ﻿
+using BaseLibrary.Configurations.Dashboards;
+
 namespace BaseLibrary.Services
 {
     public interface IComponentSchemaService
@@ -7,7 +9,7 @@ namespace BaseLibrary.Services
         void SaveUpdateChartSchema(ChartSchema vm, Guid? organizationId, Guid? loggedInUserId);
         DashboardSchema SaveUpdateDashboardSchema(DashboardSchema vm, Guid? organizationId, Guid? loggedInUserId);
         List<MicroSqlQueryParameter> GetMicroSqlQueryParameters(DashboardSchema dashboard);
-        DashboardSchema GetDashboardSchema(Guid id);
+        IMacroDashboard GetDashboard(Guid id);
         ChartSchema GetChartSchema(Guid id);
     }
 
@@ -17,16 +19,16 @@ namespace BaseLibrary.Services
         {
 
         }
-        public DashboardSchema GetDashboardSchema(Guid id)
+        public IMacroDashboard GetDashboard(Guid id)
         {
             var dashboards = SF.MicroAppContract.GetBaseDashboard().GetDashboards();
             var dashboard = dashboards.FirstOrDefault(d => d.Id == id);
-            if (dashboard is null)
-            {
-                var ds = RF.ComponentSchemaRepository.Get(id);
-                if (ds is not null)
-                    dashboard = ds.GetDashboardSchema();
-            }
+            //if (dashboard is null)
+            //{
+            //    var ds = RF.ComponentSchemaRepository.Get(id);
+            //    if (ds is not null)
+            //        dashboard = ds.GetDashboardSchema();
+            //}
             if (dashboard is not null)
                 return dashboard;
             throw new ValidationException($"No Dashboard with id-{id} exits.");

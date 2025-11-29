@@ -9,8 +9,8 @@ namespace BaseLibrary.Services
 {
     public interface IChartService
     {
-        DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser);
-        DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
+        DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser loggedInUser);
+        DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
     }
 
     public class ChartService : ServiceLibraryBase, IChartService
@@ -18,18 +18,18 @@ namespace BaseLibrary.Services
         public ChartService(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ChartService>())
         {
         }
-        public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
+        public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser loggedInUser)
         {
             var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
             return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues,model.GlobalFilterValues);
         }
-        public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
+        public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
             var model = new GetDashboardChartInputVM { ChartId = chartId, ControlFilterValues = filterValues, GlobalFilterValues = globalFilterIds };
             return BuildChart(model, loggedInUser);
         }
 
-        private DashboardChart BuildChart(GetDashboardChartInputVM model, ApplicationUser? loggedInUser)
+        private DashboardChart BuildChart(GetDashboardChartInputVM model, ApplicationUser loggedInUser)
         {
             var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
             var datasource = SF.MicroAppContract.GetBaseDataSource().GetAllDataSources().FirstOrDefault(ds => ds.Id == chartSchema.DataSourceId);
@@ -42,9 +42,9 @@ namespace BaseLibrary.Services
             throw new ValidationException($"No datasource found for {model.ChartId}.");
         }
 
-        private DashboardChart GetDashboardChartFromCustomObjectList(MacroDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
+        private DashboardChart GetDashboardChartFromCustomObjectList(MacroDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
-            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(datasource, loggedInUser, filterValues, globalFilterIds);
+            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(SF,datasource, loggedInUser, filterValues, globalFilterIds);
             var chart = new DashboardChart(chartSchema, dataObjects);
             return chart;
         }
@@ -57,7 +57,7 @@ namespace BaseLibrary.Services
 
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser, SF.MicroAppContract.GetBaseControl(), out string query);
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser,SF.MicroAppContract.GetBaseDataSourceParameter(), out string query);
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);
                 return chart;

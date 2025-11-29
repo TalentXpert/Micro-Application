@@ -79,7 +79,7 @@ namespace BaseLibrary.Controllers
         {
             try
             {
-                var ds = BSF.ComponentSchemaService.GetDashboardSchema(id);
+                var ds = BSF.ComponentSchemaService.GetDashboard(id);
                 if (ds == null)
                     throw new ValidationException($"No dashboard found with given id {id}.");
                 return Ok(ds);

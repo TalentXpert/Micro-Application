@@ -61,6 +61,7 @@
 
   <ItemGroup>
     <Folder Include="Components\DataViews\" />
+    <Folder Include="Configurations\Charts\" />
   </ItemGroup>
 
 </Project>
