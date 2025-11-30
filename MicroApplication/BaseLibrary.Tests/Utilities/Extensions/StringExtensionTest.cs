@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BaseLibrary.DTOs;
+using BaseLibrary.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +14,8 @@ namespace BaseLibrary.Tests.Utilities.Extensions
         [TestMethod]
         public void Test()
         {
-            var strExt = new BaseLibrary.Utilities.StringExtension();
-            var result = strExt.GetAllWordStartWith("FormCount FROM [dbo].[StudyForms] where studyId=@studyId");
-            Assert.AreEqual("@studyId", result.First());
+            var fields = ReflectionExtension.GetAllPublicStaticFields<DatabaseOption>();
+            Assert.AreEqual(1, fields.Count());
         }
     }
 }

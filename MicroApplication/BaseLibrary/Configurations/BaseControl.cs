@@ -42,9 +42,10 @@
         /// </summary>
         protected virtual List<AppControl> GetBaseControls()
         {
-            var controls = new List<AppControl>() {Name,Description,Email,ContactNumber,LoginId,Country,State,City,Tag,Quantity,ControlIdentifier,ControlDataTypes,ControlType,
-                DisplayLabel,Options,PermissionSelection,Role,Aadhar,Password,Username,Website,Organization,UploadFile
-            };
+            //var controls = new List<AppControl>() {Name,Description,Email,ContactNumber,LoginId,Country,State,City,Tag,Quantity,ControlIdentifier,ControlDataTypes,ControlType,
+            //    DisplayLabel,Options,PermissionSelection,Role,Aadhar,Password,Username,Website,Organization,UploadFile
+            //};
+            var controls = ReflectionExtension.GetAllPublicStaticFieldsAndProperties<BaseControl, AppControl>();
             return controls;
         }
         
