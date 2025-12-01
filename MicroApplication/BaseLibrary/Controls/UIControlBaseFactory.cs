@@ -46,8 +46,13 @@ namespace BaseLibrary.Controls
                     smartControl.SetValue(GetRightOptionValue(options, values));
                 }
             }
+            else
+            {
+                smartControl.SetValue(values?.FirstOrDefault());
+            }
 
-            return smartControl;
+
+                return smartControl;
         }
         protected UIControl BuildFilterUIControl(AppControl appControl, List<string>? values, List<SmartControlOption> options, bool addEmptyEntry)
         {
