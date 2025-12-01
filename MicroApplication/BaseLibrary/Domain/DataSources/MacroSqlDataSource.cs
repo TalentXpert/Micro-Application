@@ -168,10 +168,10 @@
     }
     public class MacroSqlDataSource
     {
-        public Guid Id { get; protected set; }
-        public string Name { get; protected set; } = string.Empty;
-        public string Query { get; protected set; } = string.Empty;
-        public string TargetContentType { get; protected set; } = SqlDataSourceType.Chart.Name;
+        public Guid Id { get;  set; }
+        public string Name { get;  set; } = string.Empty;
+        public string Query { get;  set; } = string.Empty;
+        public string TargetContentType { get;  set; } = SqlDataSourceType.Chart.Name;
 
         protected MacroSqlDataSource() { }
 

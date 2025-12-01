@@ -66,14 +66,14 @@ namespace BaseLibrary.Domain.ComponentSchemas
                 var d = new List<string>();
                 foreach (var c in schema.Columns)
                 {
-
+                    string? seriesData = null;
                     if (propertyInfo.TryGetValue(c.DatabaseColumnName, out PropertyInfo pi))
                     {
                         object? propertyValue = pi.GetValue(o,null);
-                        var seriesData = propertyValue?.ToString()?.Trim();
-                        if (seriesData != null)
-                            d.Add(seriesData);
+                        seriesData = propertyValue?.ToString()?.Trim();
                     }
+                    if(string.IsNullOrWhiteSpace(seriesData)==false)
+                        d.Add(seriesData);
                     else
                         d.Add(GetEmptyData(c.DataType));
                 }

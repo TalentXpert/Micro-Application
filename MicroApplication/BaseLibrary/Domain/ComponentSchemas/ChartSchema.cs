@@ -13,7 +13,7 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public string ChartType { get; set; } = "";
         public int MinWidth { get; set; }
         public int MinHeight { get; set; }
-        public List<ChartColumnSchema> Columns { get; set; }=new List<ChartColumnSchema>();
+        public List<ChartColumnSchema> Columns { get; set; } = new List<ChartColumnSchema>();
     }
 
     /// <summary>
@@ -30,20 +30,25 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public bool IsMandatory { get; set; }
         public string Color { set; get; } = string.Empty;
         public ChartColumnSchema() { }
-        public void UpdateWith(DataColumn column, IMicroAppContract microApp) 
+        public void UpdateWith(DataColumn column, IMicroAppContract microApp)
         {
             DatabaseColumnName = column.ColumnName;
             DataType = microApp.GetBaseSqlDataSource().GetChartColumnDataType(column.ColumnName);
             IsMandatory = DataType == "string";
-            if(string.IsNullOrWhiteSpace(Title))
+            if (string.IsNullOrWhiteSpace(Title))
                 Title = microApp.GetBaseSqlDataSource().GetChartColumnTitle(column.ColumnName);
         }
-        public ChartColumnSchema(string dbcolumnName,string title,string dataType,bool isMandatory)
+        public ChartColumnSchema(string dbcolumnName, string title, string dataType, bool isMandatory, string color = "")
         {
             DatabaseColumnName = dbcolumnName;
             Title = title;
             DataType = dataType;
             IsMandatory = isMandatory;
+            Color = color;
+        }
+        public void SetColor(string color)
+        {
+            Color = color;
         }
     }
 }
