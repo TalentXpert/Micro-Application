@@ -42,15 +42,20 @@ namespace BaseLibrary.Services
             if (roles.Any(r => AreEqualsIgnoreCase(r.Name, role)))
                 throw new ValidationException($"Role with the {role} name already exists.");
         }
-        
+
         public ApplicationRole Delete(Guid roleId, Guid organizationId)
         {
             ApplicationRole? role = RF.RoleRepository.Get(roleId);
-            if (role != null && role.OrganizationId==organizationId)
+
+            if (role is not null && role.OrganizationId == organizationId)
             {
+                if (AreEqualsIgnoreCase(role.Name, "Organization Admin"))
+                    throw new ValidationException("Cannot delete Organization Admin role.");
                 RF.RoleRepository.Remove(role);
+                return role;
             }
-            return role;
+            throw new ValidationException("Role not found.");
+
         }
     }
 }
