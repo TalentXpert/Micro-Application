@@ -46,7 +46,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),new {Id=id});
             }
         }
 
@@ -90,7 +90,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { DataSource = dataSource });
             }
         }
 
@@ -108,7 +108,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), vm);
             }
         }
 
@@ -119,37 +119,40 @@ namespace BaseLibrary.Controllers
         /// <param name="studyId"></param>
         /// <returns></returns>
         /// <exception cref="ValidationException"></exception>
-        [HttpGet("GetDashboardChart/{chartId}/{studyId}")]
-        public IActionResult GetDashboardChart(Guid chartId, string studyId)
-        {
-            try
-            {
-                var filter = new ControlValue(Guid.Parse("BD16339F-88DD-49E3-9CEB-09D65AAE38DA"), "Study", studyId);
-                var model = new GetDashboardChartInputVM { ChartId = chartId, ControlFilterValues = new List<ControlValue>() { filter }, GlobalFilterValues = new Dictionary<string, string>() };
-                var chart = BSF.ChartService.GetChart(model, LoggedInUser);
-                if (chart != null && chart.SeriesData.Count != 0)
-                    return Ok(chart);
-                throw new ValidationException("No Chart with given id exits.");
-            }
-            catch (Exception exception)
-            {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
-            }
-        }
+        //[HttpGet("GetDashboardChart/{chartId}/{studyId}")]
+        //public IActionResult GetDashboardChart(Guid chartId, string studyId)
+        //{
+        //    try
+        //    {
+        //        var filter = new ControlValue(Guid.Parse("BD16339F-88DD-49E3-9CEB-09D65AAE38DA"), "Study", studyId);
+        //        var model = new GetDashboardChartInputVM { ChartId = chartId, ControlFilterValues = new List<ControlValue>() { filter }, GlobalFilterValues = new Dictionary<string, string>() };
+        //        var chart = BSF.ChartService.GetChart(model, LoggedInUser);
+        //        if (chart != null && chart.SeriesData.Count != 0)
+        //            return Ok(chart);
+        //        throw new ValidationException("No Chart with given id exits.");
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        return HandleException(exception, CodeHelper.CallingMethodInfo());
+        //    }
+        //}
 
+        /// <summary>
+        /// This method will be used by dashboard render to get information needed to render a chart.
+        /// </summary>
         [HttpPost("GetDashboardChart")]
         public IActionResult GetDashboardChart([FromBody] GetDashboardChartInputVM model)
         {
             try
             {
                 var chart = BSF.ChartService.GetChart(model, LoggedInUser);
-                if (chart != null && chart.SeriesData.Count != 0)
+                if (chart != null)
                     return Ok(chart);
                 throw new ValidationException("No Chart with given id exits.");
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo());
+                return HandleException(exception, CodeHelper.CallingMethodInfo(),model);
             }
         }
     }
