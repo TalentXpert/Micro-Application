@@ -5,7 +5,7 @@
         public Guid ControlId { get; set; }= Guid.Empty;
         public string ControlIdentifier { get; set; } = string.Empty;
         public List<string> Values { get; set; } = new List<string>(); //Date YYYY-MM-DD
-        public string JsonValues { get; set; } //this is for complex control where value is being sent in json. 
+        public string? JsonValues { get; set; } //this is for complex control where value is being sent in json. 
         public ControlValue() { Values = new List<string>(); }
         public ControlValue(Guid controlId, string controlIdentifier, string? value) 
         {

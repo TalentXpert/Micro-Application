@@ -46,7 +46,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),new {Id=id});
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { Id = id });
             }
         }
 
@@ -145,6 +145,8 @@ namespace BaseLibrary.Controllers
         {
             try
             {
+                if (model is null)
+                    throw new ValidationException("Input model is null.");
                 var chart = BSF.ChartService.GetChart(model, LoggedInUser);
                 if (chart != null)
                     return Ok(chart);
@@ -152,7 +154,7 @@ namespace BaseLibrary.Controllers
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(),model);
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), model);
             }
         }
     }
