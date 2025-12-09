@@ -1,5 +1,4 @@
-﻿using BaseLibrary.Configurations;
-
+﻿
 namespace BaseLibrary.Domain
 {
     public class ApplicationUser : FormStoreBase
