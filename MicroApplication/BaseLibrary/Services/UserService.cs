@@ -1,6 +1,8 @@
 ﻿
 using BaseLibrary.Configurations;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace BaseLibrary.Services
 {
@@ -9,7 +11,6 @@ namespace BaseLibrary.Services
         void ChangePasswordToHash(ApplicationUser user, int salt);
         ApplicationUser? GetUser(Guid key);
         ApplicationUser? GetUserByLoginId(string LoginId);
-        void ChangePassword(ApplicationUser user, string newPassword, int salt);
         void UpdateLastLogin(ApplicationUser user);
         void UpdatPasswordResetCode(string emailID, string passwordResetCode);
         List<List<GridCell>> GetRows(List<ControlFilter> filters, List<GridHeader> headers, ApplicationUser loggedInUser);
@@ -74,17 +75,6 @@ namespace BaseLibrary.Services
         {
             return $" where Id='{key}'";
         }
-        public void ChangePassword(ApplicationUser user, string newPassword, int salt)
-        {
-            using (var db = new SqlCommandExecutor())
-            {
-                user.Password = newPassword;
-                var hash = user.GetPasswordHash(salt);
-                var query = $"Update ApplicationUser SET Password='{hash}',Salt={salt} {GetWhereClause(user.Id)}";
-
-                db.ExecuteQuery(query);
-            }
-        }
 
         public List<List<GridCell>> GetRows(List<ControlFilter> filters, List<GridHeader> headers, ApplicationUser loggedInUser)
         {
@@ -94,29 +84,38 @@ namespace BaseLibrary.Services
         public ApplicationUser? SaveUpdate(SmartFormTemplateRequest model, ApplicationUser loggedInUser)
         {
 
-            ApplicationUser user;
+            ApplicationUser? user;
 
             if (model.DataKey.IsNullOrEmpty())
             {
-                string loginId = ControlReader.GetControlFirstValue(BaseControls.LoginId, model.ControlValues);
-                string emailId = ControlReader.GetControlFirstValue(BaseControls.Email, model.ControlValues);
+                string loginId = ControlReader.GetControlFirstValue(BaseControls.LoginId, model.ControlValues)??"";
+                string emailId = ControlReader.GetControlFirstValue(BaseControls.Email, model.ControlValues) ?? "";
+                var name = ControlReader.GetControlFirstValue(BaseControls.Name, model.ControlValues) ?? "";
+                var contactNumber = ControlReader.GetControlFirstValue(BaseControls.ContactNumber, model.ControlValues) ?? "";
+                if (string.IsNullOrWhiteSpace(emailId))
+                    throw new ValidationException("Email ID cannot be empty. Please provide a valid Email ID.");
+                if (string.IsNullOrWhiteSpace(loginId))
+                    loginId = emailId;
 
                 user = RF.UserRepository.GetByLoginId(loginId);
-                if (user != null)
+                if (user is not null)
                     throw new ValidationException("A user account with this login ID already exists. Please provide a unique login ID.");
-                
+
                 user = RF.UserRepository.GetUserByEmail(emailId);
-                if (user != null)
+                if (user is not null)
                     throw new ValidationException("This email address has already been associated with an existing account.");
 
-                user = new ApplicationUser(loggedInUser);
+                user = ApplicationUser.CreateUserWithLoginId(loggedInUser, name, emailId, contactNumber, loginId);
+                var password = user.SetDefaultPassword();
                 RF.UserRepository.Add(user);
+                SF.EmailApplicationService.SendActivationEmail(user, password);
             }
             else
             {
                 user = RF.UserRepository.Get(model.DataKey.Value);
-            }           
-
+            }
+            if(user is null)
+                throw new ValidationException("User not found to update.");
             user.Update(model);
             return user;
 
@@ -157,17 +156,19 @@ namespace BaseLibrary.Services
 
         public ApplicationUser SaveUpdateOrganizationAdmin(SmartFormTemplateRequest model, ApplicationUser loggedInUser)
         {
-            ApplicationUser user;
+            ApplicationUser? user = null;
 
             if (model.DataKey.HasValue is false)
             {
-                user = new ApplicationUser(loggedInUser);
+                user = ApplicationUser.CreateUser(loggedInUser);
                 RF.UserRepository.Add(user);
             }
             else
             {
                 user = RF.UserRepository.Get(model.DataKey.Value);
             }
+            if (user is null)
+                throw new ValidationException("User not found to update.");
             user.Update(model);
             user.UpdateOrganization(model);
             if (user.OrganizationId.HasValue is false)
@@ -190,10 +191,10 @@ namespace BaseLibrary.Services
 
         public void UpdateUserDefaultStudy(Guid userId, Guid studyId)
         {
-            ApplicationUser applicationUser = RF.UserRepository.Get(userId);
-            if (applicationUser != null)
+            ApplicationUser applicationUser = RF.UserRepository.Find(userId);
+            if (applicationUser is not null)
             {
-                applicationUser.DefaultStudyId= studyId;
+                applicationUser.SetDefaultStudyId(studyId);
                 applicationUser.SetUpdatedOn();
             }
         }
@@ -207,6 +208,5 @@ namespace BaseLibrary.Services
             return RF.UserRepository.GetAll().ToList();
         }
 
-        
     }
 }

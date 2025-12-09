@@ -6,7 +6,7 @@ namespace BaseLibrary.Configurations.FormHandlers
 
     public class OrganizationAdminFormHandler : FormHandlerBase
     {
-        public OrganizationAdminFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
+        public OrganizationAdminFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.ManageOrganizationAdminForm, null, null, true)
         {
 
@@ -15,7 +15,9 @@ namespace BaseLibrary.Configurations.FormHandlers
         public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
             var user = BaseLibraryServiceFactory.UserService.SaveUpdateOrganizationAdmin(model, LoggedInUser);
-            user.IsOrgAdmin = true;
+            user.MakeAdmin();
+            var password = user.SetDefaultPassword();
+            BaseLibraryServiceFactory.EmailApplicationService.SendActivationEmail(user, password);
             return user.Id.ToString();
         }
 
@@ -29,5 +31,6 @@ namespace BaseLibrary.Configurations.FormHandlers
             //var asset = ServiceFactory.RepositoryFactory.AssetRepository.Get(id);
             //ServiceFactory.RepositoryFactory.AssetRepository.Remove(asset);
         }
+        
     }
 }

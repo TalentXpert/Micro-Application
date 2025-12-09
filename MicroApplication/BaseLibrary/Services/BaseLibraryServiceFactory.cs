@@ -1,4 +1,5 @@
 ﻿using BaseLibrary.Repositories;
+using BaseLibrary.Utilities.Emails;
 
 namespace BaseLibrary.Services
 {
@@ -31,6 +32,7 @@ namespace BaseLibrary.Services
         IOrganizationService OrganizationService { get; }
         ApplicationUser? LoggedInUser { get; set; }
         IAuditEventBaseService AuditEventBaseService { get; }
+        IEmailApplicationService EmailApplicationService { get; }
     }
     public class BaseLibraryServiceFactory : IBaseLibraryServiceFactory
     {
@@ -114,7 +116,9 @@ namespace BaseLibrary.Services
 
         public IAuditEventBaseService? auditEventBaseService;
         public IAuditEventBaseService AuditEventBaseService { get { return auditEventBaseService ??= new AuditEventBaseService(this, LoggerFactory.CreateLogger<AuditEventBaseService>()); } }
-
+        
+        IEmailApplicationService emailApplicationService;
+        public IEmailApplicationService EmailApplicationService { get { return emailApplicationService ??= new EmailApplicationService(new EmailSender()); } }
         public ApplicationUser? LoggedInUser { get; set; }
     }
 }

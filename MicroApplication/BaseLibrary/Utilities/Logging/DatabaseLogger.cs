@@ -1,6 +1,4 @@
 ﻿using System.Data.SqlClient;
-using System.Data;
-using Microsoft.Data.SqlClient;
 using SqlCommand = Microsoft.Data.SqlClient.SqlCommand;
 using SqlParameter = Microsoft.Data.SqlClient.SqlParameter;
 using SqlDataAdapter = Microsoft.Data.SqlClient.SqlDataAdapter;
@@ -9,8 +7,8 @@ namespace BaseLibrary.Utilities
 {
     public interface IDatabaseLogger
     {
-        void LogError(Exception exception, string method, Guid? userId, object dataVM = null, bool isValidationException = false);
-        void LogError(string message, string stackTrace, string detail, string method, Guid? userId, object dataVM = null, bool isValidationException = false);
+        void LogError(Exception exception, string method, Guid? userId, object? dataVM = null, bool isValidationException = false);
+        void LogError(string message, string stackTrace, string detail, string method, Guid? userId, object? dataVM = null, bool isValidationException = false);
         List<DatabaseErrorVM> GetErrors(string methodInfo);
     }
 
@@ -43,7 +41,7 @@ namespace BaseLibrary.Utilities
             }
         }
 
-        public static DatabaseLogger GetDatabaseLogger(string connectionString,string logFileFolderPath = null)
+        public static DatabaseLogger GetDatabaseLogger(string connectionString, string logFileFolderPath = null)
         {
             LogFileFolderPath = logFileFolderPath;
             if (_databaseLogger == null)
@@ -88,10 +86,10 @@ namespace BaseLibrary.Utilities
                         SqlCommand sqlCommand = new SqlCommand(InsertExceptionQuery(), SqlConnection);
                         sqlCommand.Parameters.Add(new SqlParameter("@id", IdentityGenerator.NewSequentialGuid()));
                         sqlCommand.Parameters.Add(new SqlParameter("@message", message));
-                        if(stackTrace==null)
+                        if (stackTrace == null)
                             stackTrace = string.Empty;
                         sqlCommand.Parameters.Add(new SqlParameter("@stackTrace", stackTrace));
-                        if (userId.HasValue ==false)
+                        if (userId.HasValue == false)
                             sqlCommand.Parameters.Add(new SqlParameter("@userId", Guid.Empty));
                         else
                             sqlCommand.Parameters.Add(new SqlParameter("@userId", userId));
@@ -147,21 +145,25 @@ namespace BaseLibrary.Utilities
 
             lock (lockObject)
             {
-                SqlDataAdapter da = new SqlDataAdapter(query, SqlConnection);
-                DataTable dt = new DataTable();
+                SqlDataAdapter da = new(query, SqlConnection);
+                DataTable dt = new();
                 da.Fill(dt);
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var errrorVM = new DatabaseErrorVM((string)dr["UserId"])
+                    string userId = "";
+                    if (dr.IsNull("UserId") is false)
+                        userId = dr["UserId"]?.ToString() ?? string.Empty;
+
+                    var errrorVM = new DatabaseErrorVM(userId)
                     {
                         Id = (Guid)dr["Id"],
-                        Message = dr["Message"].ToString(),
-                        UserId = (string)dr["UserId"],
-                        StackTrace = dr["StackTrace"].ToString(),
+                        Message = dr["Message"]?.ToString() ?? string.Empty,
+                        UserId = dr["UserId"]?.ToString() ?? string.Empty,
+                        StackTrace = dr["StackTrace"]?.ToString() ?? string.Empty,
                         DateTime = (DateTime)dr["DateTime"],
-                        ExceptionDump = dr["ExceptionDump"].ToString(),
-                        MethodInfo = dr["MethodInfo"].ToString(),
+                        ExceptionDump = dr["ExceptionDump"]?.ToString() ?? string.Empty,
+                        MethodInfo = dr["MethodInfo"]?.ToString() ?? string.Empty,
                     };
                     result.Add(errrorVM);
                 }
@@ -171,24 +173,15 @@ namespace BaseLibrary.Utilities
 
     }
 
-
-
-
-
-    public class DatabaseErrorVM
+    public class DatabaseErrorVM(string userId)
     {
-        public DatabaseErrorVM(string userId)
-        {
-            UserId = userId;
-        }
         public Guid Id { get; set; }
-
-        public string UserId { get; set; }
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
-        public DateTime DateTime { get; set; }
-        public string ExceptionDump { get; set; }
-        public String MethodInfo { get; set; }
-        public String MethodParams { get; set; }
+        public string UserId { get; set; } = userId;
+        public string Message { get; set; } = string.Empty;
+        public string StackTrace { get; set; } = string.Empty;
+        public DateTime DateTime { get; set; } = DateTime.UtcNow;
+        public string ExceptionDump { get; set; } = string.Empty;
+        public String MethodInfo { get; set; } = string.Empty;
+        public String MethodParams { get; set; } = string.Empty;
     }
 }

@@ -93,10 +93,10 @@ namespace BaseLibrary.Controllers
 
                 ApplicationUser user = BSF.LoginService.GetUserAfterValidatingUserCredential(jwtTokenRequestVM.LoginId, jwtTokenRequestVM.Password);
 
-                if (user != null)
+                if (user is not null)
                 {
                     BSF.MicroAppContract?.TrackActivity(ActivityTypeBase.UserLoggedIn, string.Empty, user);
-                    user.SessionId = Guid.NewGuid();
+                    user.SetSessionId(Guid.NewGuid());
                     BSF.UserService.UpdateLastLogin(user);
                     var jwt = JwtTokenGenerator.GenerateJwtToken(user.Id, "en", user.SessionId.ToString(), AuthOptions.SecureKey, AuthOptions.Issuer, AuthOptions.Audience);
                     var permissions = BSF.UserRoleService.GetUserAllPermissions(user);

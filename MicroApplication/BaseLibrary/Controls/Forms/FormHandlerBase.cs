@@ -44,7 +44,9 @@ namespace BaseLibrary.Controls.Forms
         {
             return BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);
         }
-
+        public virtual void PostProcessFormSaveRequest(object entitySaved)
+        {
+        }
         public virtual string ProcessFormSaveRequestAndReturnDataKey(SmartFormTemplateRequest model)
         {
             return BaseLibraryServiceFactory.PageDataStoreService.SaveFormDatum(model, ValidateAndParentId(model), LoggedInUser);

@@ -2,7 +2,7 @@
 {
     public class UserManagementFormHandler : FormHandlerBase
     {
-        public UserManagementFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
+        public UserManagementFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.UserManagement, null, null, true)
         {
 
@@ -10,7 +10,10 @@
 
         public override string ProcessFormSaveRequest(SmartFormTemplateRequest model)
         {
-            return BaseLibraryServiceFactory.UserService.SaveUpdate(model, LoggedInUser).Id.ToString();
+            var user = BaseLibraryServiceFactory.UserService.SaveUpdate(model, LoggedInUser);
+            if(user is not null)
+                return user.Id.ToString();
+            return string.Empty;
         }
 
         public override FormStoreBase? GetStoreObject(Guid id)
