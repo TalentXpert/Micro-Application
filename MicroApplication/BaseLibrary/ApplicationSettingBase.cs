@@ -14,8 +14,9 @@ namespace BaseLibrary
         public static bool EnableSsl { get; set; } = false;
         public static string FromEmailAddress { get; set; } = string.Empty;
         public static string FromEmailPassword { get; set; } = string.Empty;
+        public static string ApplicationUrl { get; set; } = string.Empty;
+        public static string ApplicationName { get; set; } = string.Empty;
 
-        
     }
 
 }

@@ -1,11 +1,6 @@
 ﻿using BaseLibrary.Utilities.Emails;
 using BaseLibrary.Utilities.Files;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BaseLibrary.Services
 {
@@ -32,7 +27,8 @@ namespace BaseLibrary.Services
 
         public void SendActivationEmail(ApplicationUser user, string newPassword)
         {
-            var body = EmailMessageTemplate.WelcomeEmailForNewUser(user, newPassword);
+            
+            var body = EmailMessageTemplate.WelcomeEmailForNewUser(user, newPassword, ApplicationSettingBase.ApplicationUrl, ApplicationSettingBase.ApplicationName);
             body = PrepareEmailBody(user.Name, body);
             emailSender.Send(null, user.Email, "BioMeta AI Registration", body);
         }
@@ -45,7 +41,7 @@ namespace BaseLibrary.Services
 
         public void SendEmailToNewlyAddedUserInApplication(string title, ApplicationUser loggedInUser, ApplicationUser user, string newPassword)
         {
-            var body = EmailMessageTemplate.AddedToAnApplication(loggedInUser.Name, title, user, newPassword);
+            var body = EmailMessageTemplate.AddedToAnApplication(loggedInUser.Name, title, user, newPassword , ApplicationSettingBase.ApplicationUrl, ApplicationSettingBase.ApplicationName);
             body = PrepareEmailBody(user.Name, body);
             emailSender.Send(null, user.Email, $"Invitation to join {title} team", body);
         }
@@ -65,20 +61,27 @@ namespace BaseLibrary.Services
 
         public void SendEmailAddedUserInApplication(string title, ApplicationUser loggedInUser, ApplicationUser applicationUser)
         {
-            var body = EmailMessageTemplate.ExistingUserAddedToAnApplication(loggedInUser.Name, title, applicationUser);
+            var body = EmailMessageTemplate.ExistingUserAddedToAnApplication(loggedInUser.Name, title, applicationUser, ApplicationSettingBase.ApplicationUrl, ApplicationSettingBase.ApplicationName);
             body = PrepareEmailBody(applicationUser.Name, body);
             emailSender.Send(null, applicationUser.Email, $"Invitation to join {title} team", body);
         }
     }
     public class EmailMessageTemplate
     {
-        public static string WelcomeEmailForNewUser(ApplicationUser user, string newPassword)
+        public static string WelcomeEmailForNewUser(ApplicationUser user, string newPassword, string appUrl, string appName)
         {
             string body;
             body = "Thank you for signing up and joining  BioMeta AI — Redefining Protocol-to-Database Intelligence application network.<br/>";
             body += "We have finished setting up your new account which you can now login with below information.<br/><br/>";
             body += "\t Your login Id: <b> Your Registered Email Id </b><br/>";
             body += "\t Your Password: <b>" + newPassword + "</b><br/><br/>";
+            if (string.IsNullOrWhiteSpace(appUrl) == false)
+            {
+                if (string.IsNullOrWhiteSpace(appName))
+                    appName = appUrl;
+                var link = PrepareLink(appUrl, appName);
+                body += $"\t Application Url: {link} <br/><br/>";
+            }
             body += "Please change your temporary password after first login for security reasons. <br/>";
             body += "<br/><br/>";
             return body;
@@ -96,25 +99,38 @@ namespace BaseLibrary.Services
             return body;
         }
 
-        public static string AddedToAnApplication(string sendBy, string study, ApplicationUser user, string newPassword)
+        public static string AddedToAnApplication(string sendBy, string study, ApplicationUser user, string newPassword, string appUrl, string appName)
         {
             string body;
             body = $"{sendBy}, invite you to join {study} team on BioMeta AI — Redefining Protocol-to-Database Intelligence application.<br/>";
             body += "We have finished setting up your new account which you can now login with below information.<br/><br/>";
             body += "\t Your login Id: <b> Your Registered Email Id </b><br/>";
             body += "\t Your Password: <b>" + newPassword + "</b><br/><br/>";
+            if (string.IsNullOrWhiteSpace(appUrl) == false)
+            {
+                if (string.IsNullOrWhiteSpace(appName))
+                    appName = appUrl;
+                var link = PrepareLink(appUrl, appName);
+                body += $"\t Application Url: {link} <br/><br/>";
+            }
             body += "Please change your temporary password after first login for security reasons. <br/>";
             body += "<br/><br/>";
             return body;
         }
 
-        public static string ExistingUserAddedToAnApplication(string sendBy, string study, ApplicationUser user)
+        public static string ExistingUserAddedToAnApplication(string sendBy, string study, ApplicationUser user, string appUrl, string appName)
         {
             string body;
             body = $"{sendBy}, invite you to join {study} team on BioMeta AI — Redefining Protocol-to-Database Intelligence application.<br/>";
             body += "We have finished setting up your new subscription which you can now login with below login.<br/><br/>";
             body += "\t Your login Id: <b> Your Registered Email Id </b><br/>";
-
+            if (string.IsNullOrWhiteSpace(appUrl) == false)
+            {
+                if (string.IsNullOrWhiteSpace(appName))
+                    appName = appUrl;
+                var link = PrepareLink(appUrl, appName);
+                body += $"\t Application Url: {link} <br/><br/>";
+            }
             body += "In case you forgot your password Please use forgot password option to get new password.<br/>";
             body += "<br/><br/>";
             return body;

@@ -28,6 +28,7 @@
     <None Remove="DatabaseMigrations\Scripts\Tables\FormDataStoreTable.txt" />
     <None Remove="DatabaseMigrations\Scripts\Tables\SQLDataSourceTable.txt" />
     <None Remove="DatabaseMigrations\Scripts\Tables\UserRoleTable.txt" />
+    <None Remove="EmailTemplate.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +47,7 @@
     <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\FormDataStoreTable.txt" />
     <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\SQLDataSourceTable.txt" />
     <EmbeddedResource Include="DatabaseMigrations\Scripts\Tables\UserRoleTable.txt" />
+    <EmbeddedResource Include="EmailTemplate.txt" />
   </ItemGroup>
 
   <ItemGroup>

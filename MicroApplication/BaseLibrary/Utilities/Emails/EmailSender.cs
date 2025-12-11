@@ -24,7 +24,7 @@ namespace BaseLibrary.Utilities.Emails
                     Timeout = 100000,
                     //_client.UseDefaultCredentials = false;
                     DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-                    PickupDirectoryLocation = @"C:\Test_Manager\Emails\"
+                    PickupDirectoryLocation = @"C:\Emails\BioMeta\"
                 };
                 _from = "support@txsas.com";
             }

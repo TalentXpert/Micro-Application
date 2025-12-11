@@ -26,6 +26,7 @@ namespace BaseLibrary.Domain
         protected ApplicationUser(ApplicationUser loggedInUser) : base(loggedInUser)
         {
             SessionId= Guid.NewGuid();
+            LastLogin = DateTime.UtcNow;
             SetCreatedOn();
         }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -39,6 +40,7 @@ namespace BaseLibrary.Domain
                 Email = email,
                 LoginId = email,
                 ContactNumber = contactNumber,
+                LastLogin=DateTime.UtcNow
             };
             user.SetDefaultPassword();
             return user;

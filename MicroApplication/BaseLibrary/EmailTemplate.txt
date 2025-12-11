@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>ALMXPERT</title>
+	<style type="text/css">
+		body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
+		table td {border-collapse: collapse;}
+
+		p {
+			margin:0;
+			color:#555;
+			font-family:Helvetica, Arial, sans-serif;
+			font-size:16px;
+			line-height:160%;
+		}
+		a{
+			text-decoration:none;
+			font-family:Helvetica, Arial, sans-serif;
+			font-size:16px;
+			color:#fff;
+			border-radius:4px;
+		}
+		h2{
+			color:#181818;
+			font-family:Helvetica, Arial, sans-serif;
+			font-size:22px;
+			font-weight: normal;
+		}
+
+	</style>
+</head>
+<body>
+	<table cellpadding="0" width="100%" cellspacing="0" border="0" style="background:#ffffff;">
+		<tr>
+			<td>
+				<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%" style="border-collapse:collapse;">
+					<tr>
+						<td>
+							<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%" style="border-collapse:collapse;">
+								<tr>
+									<td style="color:#fff; background: #02669a;">
+										<table cellpadding="0" style="border-collapse:collapse;" cellspacing="0" border="0" align="center" width="100%">
+											<tr>
+												<td width="200" style="vertical-align:bottom;">
+													<div style="padding:10px;">
+														<h2 style="color: #FFFFFF !important; margin: 10px !important;">BioMeta AI</h2>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+								<tr>
+									<td width="100%"  style="padding-bottom:10px;padding-top:25px;padding-left:20px; ">
+										<h2 >Hi [{(UserName)}],</h2>
+									</td>
+								</tr>
+								<tr>
+                                    <td width="100%" style="padding-bottom:5px; padding-left:20px; line-height:25px;">
+                                        [{(UserMessage)}]
+                                    </td>
+								</tr>
+							</table>
+							<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+								<tr>
+									<td width="100%" style="padding-bottom:5px; padding-left:20px; line-height:25px;">
+										 	<p>Thank You</p>
+										 	<p>BioMetaAI Team</p>
+									</td>
+								</tr>
+							</table>
+							<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+								<tr>
+									<td width="100%" colspan="2" style="padding-top:65px;">
+										<hr style="height:1px;border:none;color:#333;background-color:#ddd;" />
+									</td>
+								</tr>
+								<tr>
+									<td width="100%" height="70" valign="top" style="padding-bottom:20px;padding-left: 20px;">
+											<span style="font-size:14px;color:#181818;font-family:Helvetica, Arial, sans-serif;line-height:200%;">Copyright © TalentXpert Services Pvt Ltd</span>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<!-- END BODY -->
+			</td>
+		</tr>
+	</table>
+	<!-- End of wrapper table -->
+</body>
+</html>

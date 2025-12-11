@@ -1,4 +1,6 @@
-﻿namespace BaseLibrary.Utilities
+﻿using System.Globalization;
+
+namespace BaseLibrary.Utilities
 {
     public class DateTimeHelper
     {
@@ -29,11 +31,25 @@
             return date.ToString(format);
         }
 
-        public static DateTime GetDateBasedOnFormat(string date, string format)
+        private static DateTime GetDateBasedOnFormatWithCustomLogic(string date, string format)
         {
             date = date.Trim();
             format = format.Trim();
             return new DateFormatHanlder(format, date).GetDate();
+        }
+        public static DateTime GetDateBasedOnFormat(string dateString, string format="yyyy-MM-dd")
+        {
+            //string dateString = "10/12/2025";
+            //string format = "dd/MM/yyyy";
+            DateTime dateTime;
+            if (DateTime.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+            {
+                return dateTime;
+            }
+            else
+            {
+               return GetDateBasedOnFormatWithCustomLogic(dateString, format);
+            }
         }
 
         public static string GetMonthName(int month, bool isShortName = true)
