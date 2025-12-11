@@ -1,15 +1,10 @@
-﻿
-
-using BaseLibrary.Configurations;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System.Data;
-
-namespace UserManagement.Services.Repositories
+﻿namespace UserManagement.Services.Repositories
 {
     public interface IOrganizationRepository : IRepository<Organization>
     {
         List<Organization> GetOrganizations(ApplicationUser loggedInUser, GridRequestVM model);
         List<SmartControlOption> GetSearchResult(string searchTerm);
+        Organization GetOrganization(string organizationName);
     }
     public class OrganizationRepository : Repository<Organization>, IOrganizationRepository
     {
@@ -19,6 +14,13 @@ namespace UserManagement.Services.Repositories
             : base(unitOfWork, loggerFactory.CreateLogger<ApplicationRolePermissionRepository>())
         {
             this.unitOfWork = unitOfWork;
+        }
+
+        public Organization GetOrganization(string organizationName)
+        {
+            var query = unitOfWork.Organizations.AsQueryable();
+            query = query.Where(a => a.Name == organizationName);
+            return query.FirstOrDefault();
         }
 
         public List<Organization> GetOrganizations(ApplicationUser loggedInUser, GridRequestVM model)
