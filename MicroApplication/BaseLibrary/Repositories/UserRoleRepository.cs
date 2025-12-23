@@ -5,6 +5,8 @@
         List<Organization> GetOrganizations(ApplicationUser loggedInUser, GridRequestVM model);
         List<SmartControlOption> GetSearchResult(string searchTerm);
         Organization GetOrganization(string organizationName);
+
+        List<Organization> GetOrganizations();
     }
     public class OrganizationRepository : Repository<Organization>, IOrganizationRepository
     {
@@ -37,6 +39,13 @@
 
             return query.ToList();
         }
+
+        public List<Organization> GetOrganizations()
+        {
+            var query = unitOfWork.Organizations.AsQueryable();  
+            return query.ToList();
+        }
+
         public List<SmartControlOption> GetSearchResult(string searchTerm)
         {
             List<SmartControlOption> options = new List<SmartControlOption>();

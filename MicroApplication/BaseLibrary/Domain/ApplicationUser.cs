@@ -174,6 +174,13 @@ namespace BaseLibrary.Domain
         {
             SessionId= sessionId;
         }
+
+        public void UpdateUserProfile(string name, string email, Guid? organizationId)
+        {
+            Name = name;
+            Email = email;
+            OrganizationId = organizationId;
+        }
     }
 
     public class UserFilterVM
