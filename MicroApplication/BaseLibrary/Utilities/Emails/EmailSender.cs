@@ -68,6 +68,8 @@ namespace BaseLibrary.Utilities.Emails
         {
             try
             {
+                if (ApplicationSettingBase.IsEmailEnabled == false)
+                    return true;
                 message.SubjectEncoding = Encoding.UTF8;
                 message.IsBodyHtml = true;
                 message.Priority = MailPriority.High;

@@ -31,7 +31,6 @@ namespace BaseLibrary.DatabaseMigrations.Migrations
             CreateTable("ApplicationRoleTable.txt");
             CreateTable("ApplicationRolePermissionTable.txt");
             CreateTable("UserRoleTable.txt");
-            CreateTable("AuditLog.txt");
         }
         private void CreatePageAndForms()
         {
