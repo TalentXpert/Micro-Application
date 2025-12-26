@@ -8,6 +8,9 @@ CREATE TABLE [dbo].[AppPage](
 	[Position] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
+	[EditPermission] [nvarchar](64) NULL,
+	[DeletePermission] [nvarchar](64) NULL,
+	[ViewPermission] [nvarchar](64) NULL,
  CONSTRAINT [PK_AppPage] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

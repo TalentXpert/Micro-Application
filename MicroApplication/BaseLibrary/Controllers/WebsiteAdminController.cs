@@ -31,7 +31,7 @@
         {
             var controls = BSF.MicroAppContract.GetBaseControl().GetControls();
             var forms = BSF.MicroAppContract.GetBaseForm().GetFormsWithControls();
-            var pages = BSF.MicroAppContract.GetBasePage().GetApplicationPages();
+            var pages = BSF.MicroAppContract.GetBasePage().GetPages();
             BSF.SeederService.SeedApplicationForms(pages, controls, forms);
 
             var dataSources = BSF.MicroAppContract.GetBaseDataSource().GetSqlDataSources();

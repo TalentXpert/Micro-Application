@@ -12,7 +12,7 @@ namespace BaseLibrary.Configurations.PageHandlers
         public override List<List<GridCell>> GetRows(GridRequestVM model, out int totalRows)
         {
             var result = new List<List<GridCell>>();
-            if (LoggedInUser != null && LoggedInUser.OrganizationId.HasValue)
+            if (LoggedInUser is not null)
             {
                 var organizations = BaseLibraryServiceFactory.OrganizationService.GetOrganizations(LoggedInUser, model);
                 foreach (var organization in organizations)

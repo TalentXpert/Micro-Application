@@ -18,8 +18,12 @@ CREATE TABLE [dbo].[ApplicationUser](
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
 	[Data] [nvarchar](max) NULL,
-	[TimeZone] [nvarchar](64) NULL,
 	[AddedByUserId] [uniqueidentifier] NULL,
+	[Role] [nvarchar](max) NULL,
+	[PasswordResetCode] [nvarchar](6) NULL,
+	[PasswordResetCodeTimeStamp] [datetime] NULL,
+	[DefaultStudyId] [uniqueidentifier] NULL,
+	[TimeZone] [nvarchar](64) NULL,
  CONSTRAINT [PK_ApplicationUser] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

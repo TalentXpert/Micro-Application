@@ -1,6 +1,7 @@
 ﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'AppForm')
 BEGIN
 
+
 CREATE TABLE [dbo].[AppForm](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](32) NOT NULL,
@@ -9,6 +10,9 @@ CREATE TABLE [dbo].[AppForm](
 	[IsCustomizable] [bit] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
+	[EditPermission] [nvarchar](64) NULL,
+	[DeletePermission] [nvarchar](64) NULL,
+	[ViewPermission] [nvarchar](64) NULL,
  CONSTRAINT [PK_AppForm] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -1,14 +1,15 @@
-﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ApplicationRole')
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ApplicationPermission')
 BEGIN
 
-CREATE TABLE [dbo].[ApplicationRole](
+CREATE TABLE [dbo].[ApplicationPermission](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](64) NOT NULL,
+	[Description] [nvarchar](500) NULL,
+	[Type] [bit] NOT NULL,
 	[OrganizationId] [uniqueidentifier] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
-	[Description] [nvarchar](500) NULL,
- CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_ApplicationPermission] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]

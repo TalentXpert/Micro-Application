@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-
+﻿
 namespace BaseLibrary.Domain
 {
     public class AppPage : Entity
@@ -15,7 +14,10 @@ namespace BaseLibrary.Domain
             var validationResults = new List<ValidationResult>();
             return validationResults;
         }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         protected AppPage() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         public static AppPage Create(string id, string name, Guid menuId, int position, Permission permission)
         {
             return Create(id, name, menuId, position, permission, permission, permission);

@@ -1,0 +1,18 @@
+﻿IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ApplicationMenu')
+BEGIN
+
+CREATE TABLE [dbo].[ApplicationMenu](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](200) NOT NULL,
+	[Link] [nvarchar](max) NOT NULL,
+	[ParentMenuId] [uniqueidentifier] NULL,
+	[Position] [int] NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+ CONSTRAINT [PK_ApplicationMenu] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+END

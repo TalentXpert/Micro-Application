@@ -45,7 +45,20 @@ namespace BaseLibrary.Domain
             user.SetDefaultPassword();
             return user;
         }
-
+        public static ApplicationUser CreateWebsiteAdmin(string name, string email, string password)
+        {
+            var user = new ApplicationUser
+            {
+                Id = IdentityGenerator.NewSequentialGuid(),
+                Name = name,
+                Email = email,
+                LoginId = email,
+                ContactNumber = "9876543210",
+                LastLogin = DateTime.UtcNow
+            };
+            user.SetPassword(password);
+            return user;
+        }
         public string SetDefaultPassword()
         {
             var password = "12345";

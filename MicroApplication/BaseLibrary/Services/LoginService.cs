@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Extensions.Logging;
 
 namespace BaseLibrary.Services
 {
@@ -17,6 +19,8 @@ namespace BaseLibrary.Services
         public ApplicationUser GetUserAfterValidatingUserCredential(string login, string password)
         {
             var applicationUser = SF.UserService.GetUserByLoginId(login);
+            if (applicationUser is null && AreEqualsIgnoreCase(login, ApplicationSettingBase.WebsiteAdminLoginId))
+                return GetAdminUser(login, password);
             if (applicationUser is null)
                 throw new ValidationException("Either login or password is wrong. Please try with right login and password.");
             return GetUserAfterValidatingUserCredential(applicationUser, login, password);
@@ -35,10 +39,10 @@ namespace BaseLibrary.Services
             if (user.IsBlocked)
                 throw new ValidationException($"Your account has been blocked. Please contact support team for more information. Message from blocking - {user.BlockReason}");
 
-            if (user.Salt ==null && user.IsPasswordMatching(password))
+            if (user.Salt == null && user.IsPasswordMatching(password))
             {
                 var salt = BaseLibrary.Utilities.PasswordHasher.CreateRandomSalt();
-                SF.UserService.ChangePasswordToHash(user,salt);
+                SF.UserService.ChangePasswordToHash(user, salt);
                 return user;
             }
             if (!user.IsPasswordHashMatching(password))
@@ -48,6 +52,16 @@ namespace BaseLibrary.Services
             //    throw new ValidationException($"Your organization has been blocked because of - {user.Organization.BlockingReason}");
 
             return user;
+        }
+        private ApplicationUser GetAdminUser(string login, string password)
+        {
+            var adminUser = SF.UserService.GetUserByLoginId(login);
+            if (adminUser is null)
+            {
+                adminUser = ApplicationUser.CreateWebsiteAdmin("Admin", login, password);
+                RF.UserRepository.Add(adminUser);
+            }
+            return adminUser;
         }
     }
 }

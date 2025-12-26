@@ -15,6 +15,7 @@ CREATE TABLE [dbo].[AppControl](
 	[OrganisationId] [uniqueidentifier] NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
+	[OptionFormId] [uniqueidentifier] NULL,
  CONSTRAINT [PK_AppControl] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
