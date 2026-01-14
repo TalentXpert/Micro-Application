@@ -28,15 +28,25 @@
         }
         public static bool ContainsIgnoreCase(string content, string input)
         {
-            return content.Contains(input,StringComparison.InvariantCultureIgnoreCase);
+            return content.Contains(input, StringComparison.InvariantCultureIgnoreCase);
         }
         public static bool AreEqualsIgnoreCase(string? left, string? right)
         {
+            left = left?.Trim();
+            right = right?.Trim();
+            if(left == "" && right == "") 
+                return true;
             return string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase);
+        }
+        public static string ConvertNullToEmptyString(string? left)
+        {
+            if(string.IsNullOrWhiteSpace(left))
+                return string.Empty;
+            return left;
         }
         public static bool AreNotEqualsIgnoreCase(string? left, string? right)
         {
-            return string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase)==false;
+            return !AreEqualsIgnoreCase(left,right) ;
         }
         public static bool IsMoreThanZero(int? number)
         {
@@ -108,9 +118,9 @@
         {
             if (user is null)
                 throw new ValidationException($"You must login to perform this operation.");
-            if(user.OrganizationId.HasValue==false)
+            if (user.OrganizationId.HasValue == false)
                 throw new ValidationException($"You must be part of an organization to perform this operation.");
-            return user.OrganizationId.Value;   
+            return user.OrganizationId.Value;
         }
         public static ApplicationUser GetLoggedInUser(ApplicationUser? user)
         {
