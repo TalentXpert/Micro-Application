@@ -30,7 +30,13 @@ namespace BaseLibrary.Database
         public SqlCommandExecutor()
         {
             this.sqlConnection = new SqlConnection(ApplicationSettingBase.DatabaseConnectionString);
-            
+
+            this.sqlConnection.Open();
+        }
+        public SqlCommandExecutor(string databaseConnectionString)
+        {
+            this.sqlConnection = new SqlConnection(databaseConnectionString);
+
             this.sqlConnection.Open();
         }
 

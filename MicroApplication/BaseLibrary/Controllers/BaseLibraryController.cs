@@ -93,6 +93,8 @@ namespace BaseLibrary.Controllers
             {
                 if (C.IsNull(_currentUser))
                 {
+                    if(SignInUserId == Guid.Empty)
+                        throw new ValidationException("Login session has expired. Please login again.");
                     _currentUser = UserService.GetUser(SignInUserId);
                     if (_currentUser is not null && _currentUser.IsBlocked)
                         throw new ValidationException($"Your account has been disabled. Please contact support team for more information. Message from disabler - {_currentUser.BlockReason}");
