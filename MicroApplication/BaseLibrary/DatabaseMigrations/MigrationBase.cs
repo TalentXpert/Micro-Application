@@ -42,7 +42,7 @@ namespace BaseLibrary.DatabaseMigrations
         public Assembly Assembly { get; }
         private DbScriptReader DbScriptReader { get; }
         public IBaseDatabase UnitOfWork { get; }
-        public MigrationBase(ISqlQueryExecutor sqlCommandExecutor, IBaseDatabase unitOfWork , Assembly assembly)
+        public MigrationBase(ISqlQueryExecutor sqlCommandExecutor, IBaseDatabase unitOfWork, Assembly assembly)
         {
             SqlCommandExecutor = sqlCommandExecutor;
             Assembly = assembly;
@@ -127,7 +127,7 @@ namespace BaseLibrary.DatabaseMigrations
 
         public void DeleteColumn(string table, string column)
         {
-            if (HasColumn(table, column)) 
+            if (HasColumn(table, column))
             {
                 var query = $@"ALTER TABLE {table} DROP COLUMN {column};";
                 ExecuteQuery(query);
@@ -168,27 +168,65 @@ namespace BaseLibrary.DatabaseMigrations
             }
         }
 
-        protected void CreateIntColumnWithDefaultValueZero(string table, string column)
+        protected bool CreateIntColumnWithDefaultValueZero(string table, string column)
         {
-            AddColumn(table, column, "int", true);
-            ExecuteQuery($"Update {table} Set {column}=0 where {column} is null");
-            ChangeColumnDataType(table, column, "int", false);
+            if (HasColumn(table, column) is false)
+            {
+                AddColumn(table, column, "int", true);
+                ExecuteQuery($"Update {table} Set {column}=0 where {column} is null");
+                ChangeColumnDataType(table, column, "int", false);
+                return true;
+            }
+            return false;
         }
 
-        protected void CreateBooleanColumnWithDefaultValue(string table, string column, bool defaultValue)
+        protected bool CreateBooleanColumnWithDefaultValue(string table, string column, bool defaultValue)
         {
-            AddColumn(table, column, DBTypes.Bit, true);
-            if (defaultValue)
-                ExecuteQuery($"Update {table} Set {column}=1 where {column} is null");
-            else
-                ExecuteQuery($"Update {table} Set {column}=0 where {column} is null");
-            ChangeColumnDataType(table, column, DBTypes.Bit, false);
+            if (HasColumn(table, column) is false)
+            {
+                AddColumn(table, column, DBTypes.Bit, true);
+                if (defaultValue)
+                    ExecuteQuery($"Update {table} Set {column}=1 where {column} is null");
+                else
+                    ExecuteQuery($"Update {table} Set {column}=0 where {column} is null");
+                ChangeColumnDataType(table, column, DBTypes.Bit, false);
+                return true;
+            }
+            return false;
         }
-        protected void CreateGuidColumnWithDefaultValue(string table, string column, Guid defaultValue)
+        protected bool CreateGuidColumnWithDefaultValue(string table, string column, Guid defaultValue)
+        {
+            if (HasColumn(table, column) is false)
+            {
+                AddColumn(table, column, DBTypes.Uniqueidentifier, true);
+                ExecuteQuery($"Update {table} Set {column}='{defaultValue}' where {column} is null");
+                ChangeColumnDataType(table, column, DBTypes.Uniqueidentifier, false);
+                return true;
+            }
+            return false;
+        }
+
+        protected void CreateNullableGuidColumn(string table, string column)
         {
             AddColumn(table, column, DBTypes.Uniqueidentifier, true);
-            ExecuteQuery($"Update {table} Set {column}='{defaultValue}' where {column} is null");
-            ChangeColumnDataType(table, column, DBTypes.Uniqueidentifier, false);
+        }
+
+        protected bool CreateTextColumnWithDefaultValue(string table, string column, int length, string defaultValue)
+        {
+            if (HasColumn(table, column) is false)
+            {
+                var datatype = $"nvarchar({length})";
+                AddColumn(table, column, datatype, true);
+                ExecuteQuery($"Update {table} Set {column}='{defaultValue}' where {column} is null");
+                ChangeColumnDataType(table, column, datatype, false);
+                return true;
+            }
+            return false;
+        }
+        protected void CreateNullableTextColumn(string table, string column, int length)
+        {
+            var datatype = $"nvarchar({length})";
+            AddColumn(table, column, datatype, true);
         }
 
         protected void CreateTable(string fileName)

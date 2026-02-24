@@ -536,6 +536,9 @@
         {
             try
             {
+                var loggedInUser = GetSafeCurrentUser();
+                if(loggedInUser is null)
+                    throw new ValidationException("User is not authenticated");
                 var pages = BSF.RF.AppPageRepository.GetAll().ToList();
                 var permissions = BSF.UserRoleService.GetUserAllPermissions(LoggedInUser);
                 var result = BSF.MicroAppContract.GetApplicationMenu().GetMenus(pages, permissions);
