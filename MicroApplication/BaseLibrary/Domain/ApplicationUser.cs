@@ -25,7 +25,7 @@ namespace BaseLibrary.Domain
 
         protected ApplicationUser(ApplicationUser loggedInUser) : base(loggedInUser)
         {
-            SessionId= Guid.NewGuid();
+            SessionId = Guid.NewGuid();
             LastLogin = DateTime.UtcNow;
             SetCreatedOn();
         }
@@ -40,7 +40,7 @@ namespace BaseLibrary.Domain
                 Email = email,
                 LoginId = email,
                 ContactNumber = contactNumber,
-                LastLogin=DateTime.UtcNow
+                LastLogin = DateTime.UtcNow
             };
             user.SetDefaultPassword();
             return user;
@@ -68,7 +68,7 @@ namespace BaseLibrary.Domain
             return password;
         }
 
-        public static ApplicationUser CreateUserWithLoginId(ApplicationUser loggedInUser, string name, string email, string contactNumber,string loginId)
+        public static ApplicationUser CreateUserWithLoginId(ApplicationUser loggedInUser, string name, string email, string contactNumber, string loginId)
         {
             var user = new ApplicationUser(loggedInUser)
             {
@@ -185,14 +185,15 @@ namespace BaseLibrary.Domain
 
         public void SetSessionId(Guid sessionId)
         {
-            SessionId= sessionId;
+            SessionId = sessionId;
         }
 
-        public void UpdateUserProfile(string name, string email, Guid? organizationId)
+        public void UpdateUserProfile(string name, string email, string contactNumber, Guid? organizationId)
         {
             Name = name;
             Email = email;
             OrganizationId = organizationId;
+            ContactNumber = contactNumber;
         }
     }
 
