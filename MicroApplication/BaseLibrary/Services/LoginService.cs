@@ -1,8 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Extensions.Logging;
-
-namespace BaseLibrary.Services
+﻿namespace BaseLibrary.Services
 {
     public interface ILoginService
     {
@@ -22,7 +18,7 @@ namespace BaseLibrary.Services
             if (applicationUser is null && AreEqualsIgnoreCase(login, ApplicationSettingBase.WebsiteAdminLoginId))
                 return GetAdminUser(login, password);
             if (applicationUser is null)
-                throw new ValidationException("Either login or password is wrong. Please try with right login and password.");
+                throw new ValidationException($"Login Id – {login} doesn’t exists. Please use correct login id.");
             return GetUserAfterValidatingUserCredential(applicationUser, login, password);
         }
 
@@ -33,8 +29,8 @@ namespace BaseLibrary.Services
 
         private ApplicationUser GetUserAfterValidatingUserCredential(ApplicationUser user, string loginId, string password)
         {
-            if (user == null)
-                throw new ValidationException("Either login or password is wrong. Please try with right login and password.");
+            if (user is null)
+                throw new ValidationException($"Login Id – {loginId} doesn’t exists. Please use correct login id.");
 
             if (user.IsBlocked)
                 throw new ValidationException($"Your account has been blocked. Please contact support team for more information. Message from blocking - {user.BlockReason}");
