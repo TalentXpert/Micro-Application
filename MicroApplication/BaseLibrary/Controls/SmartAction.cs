@@ -12,7 +12,8 @@
         public static SmartActionFormMode Add = new SmartActionFormMode("Add");
         public static SmartActionFormMode Edit = new SmartActionFormMode("Edit");
         public static SmartActionFormMode View = new SmartActionFormMode("View");
-        public static SmartActionFormMode Delete = new SmartActionFormMode("Delete"); 
+        public static SmartActionFormMode Delete = new SmartActionFormMode("Delete");
+        public static SmartActionFormMode PageAction = new SmartActionFormMode("PageAction");
     }
 
     public class FormTypes 

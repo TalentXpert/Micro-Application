@@ -222,6 +222,10 @@ namespace BaseLibrary.Controls.Forms
             }
             BaseLibraryServiceFactory.PageDataStoreService.DeleteData(id, LoggedInUser);
         }
+        public virtual string PageAction(Guid formId, Guid id, string param, string actionIdentifier)
+        {
+            return "This action is not implemented for this page. please implement it.";
+        }
         public virtual List<SmartControlOption> GetControlOptions(Guid? organizationId, Guid? parentId, string searchTerm)
         {
             if (HasPrivateDataStore)

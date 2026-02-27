@@ -72,8 +72,35 @@ namespace BaseLibrary.Configurations.PageHandlers
                 var data = rowData.GetValue(h.HeaderIdentifier)?.ToString();
                 if (Guid.TryParse(data, out var id))
                 {
-                    data = ApplicationControlFactory.GetTextFromId(h.HeaderIdentifier ,id);
+                    data = ApplicationControlFactory.GetTextFromId(h.HeaderIdentifier, id);
                 }
+                else if (Guid.TryParse(data, out var number))
+                {
+                    data = ApplicationControlFactory.GetTextFromId(h.HeaderIdentifier, id);
+                }
+                cell = new GridCell { T = data };
+                cells.Add(cell);
+            }
+            rows.Add(cells);
+        }
+        protected void BuildAndAddGridRow(GridRequestVM model, FormStoreBase rowData, List<List<GridCell>> rows, Func<string?,string, string> convertToString)
+        {
+            var cells = new List<GridCell>();
+            if (CheckIfFiltered(model, rowData))
+                return;
+
+            foreach (var h in Grid.Headers)
+            {
+                GridCell cell;
+                if (h.HeaderIdentifier == "Id")
+                {
+                    cell = new GridCell { T = rowData.Id.ToString() };
+                    cells.Add(cell);
+                    continue;
+                }
+
+                var data = rowData.GetValue(h.HeaderIdentifier)?.ToString();
+                data = convertToString(data, h.HeaderIdentifier);
                 cell = new GridCell { T = data };
                 cells.Add(cell);
             }

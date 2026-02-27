@@ -1,4 +1,6 @@
-﻿namespace BaseLibrary.Controllers
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+
+namespace BaseLibrary.Controllers
 {
     /// <summary>
     /// 
@@ -428,7 +430,22 @@
                 return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
             }
         }
-
+        
+        [HttpPatch("Patch/{formId}/{id}/{param}/{actionIdentifier}")]
+        public IActionResult Patch(Guid formId, Guid id,string param, string actionIdentifier)
+        {
+            try
+            {
+                var pageHandler = GetFormHandler(formId);
+                var userMessage = pageHandler.PageAction(formId,id, param, actionIdentifier);
+                CommitTransaction();
+                return Ok(userMessage);
+            }
+            catch (Exception exception)
+            {
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
+            }
+        }
 
         [HttpPost("UploadFile")]
         public ActionResult<bool> UploadFile([FromForm] FileUploadViewModel fileUploadViewModel)
