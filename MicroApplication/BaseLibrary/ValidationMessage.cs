@@ -8,6 +8,6 @@ namespace BaseLibrary
 {
     public class ValidationMessage
     {
-        public static string Relogin = "Your previous session has expired. Please login again to continue.";
+        public static string Relogin = "Your session has expired. Please login again to continue.";
     }
 }
