@@ -125,6 +125,13 @@ namespace BaseLibrary.Controllers
                 throw new ValidationException($"Your account has been blocked. Please contact support team for more information. Message from disabler - {_currentUser.BlockReason}");
         }
 
+        protected void HasActiveUserSession()
+        {
+            var loggedInUser = GetSafeCurrentUser();
+            if (loggedInUser is null)
+                throw new ValidationException(ValidationMessage.Relogin);
+        }
+
         protected static JsonSerializerSettings DefaultJsonSettings
         {
             get

@@ -287,7 +287,7 @@
                 if (C.IsNotNullOrEmpty(parentId))
                     parentControlValue = parentId;
                 var appControl = BSF.AppControlService.GetAppControl(controlId);
-                if (appControl == null)
+                if (appControl is null)
                     throw new ValidationException($"Control with {controlId} is not found.");
                 if (appControl.OptionFormId == null)
                     throw new ValidationException("OptionFormId cannot be null for this control.");
@@ -340,7 +340,7 @@
             try
             {
                 if (BSF.MicroAppContract is not null)
-                    BSF.MicroAppContract.TrackActivity(ActivityTypeBase.FormGenerate, NewtonsoftJsonAdapter.SerializeObject(model),LoggedInUser);
+                    BSF.MicroAppContract.TrackActivity(ActivityTypeBase.FormGenerate, NewtonsoftJsonAdapter.SerializeObject(model), LoggedInUser);
                 var factory = BSF.ApplicationControlBaseFactory;
                 GaurdForNullInputModel(model);
                 var pageHandler = GetFormHandler(model.FormId);
@@ -366,13 +366,13 @@
 
                 var pageHandler = GetFormHandler(model.FormId);
                 var id = pageHandler.ProcessFormSaveRequest(model);
-                if(Guid.TryParse(id,out Guid uniqueKey))
+                if (Guid.TryParse(id, out Guid uniqueKey))
                 {
                     model.DataKey = uniqueKey;
-                    if(BSF.MicroAppContract is not null)
+                    if (BSF.MicroAppContract is not null)
                         BSF.MicroAppContract.TrackActivity(ActivityTypeBase.ProcessForm, NewtonsoftJsonAdapter.SerializeObject(model), LoggedInUser);
                 }
-                
+
                 CommitTransaction();
                 return Ok();
             }
@@ -536,9 +536,7 @@
         {
             try
             {
-                var loggedInUser = GetSafeCurrentUser();
-                if(loggedInUser is null)
-                    throw new ValidationException("User is not authenticated");
+                HasActiveUserSession();
                 var pages = BSF.RF.AppPageRepository.GetAll().ToList();
                 var permissions = BSF.UserRoleService.GetUserAllPermissions(LoggedInUser);
                 var result = BSF.MicroAppContract.GetApplicationMenu().GetMenus(pages, permissions);

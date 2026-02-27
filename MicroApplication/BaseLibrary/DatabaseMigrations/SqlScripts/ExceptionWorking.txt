@@ -1,0 +1,9 @@
+﻿declare @method nvarchar(max)
+set @method ='D:\SourceCode\Micro-Application\MicroApplication\BaseLibrary\Controllers\JWTController.cs-Post'
+select count(*) from exceptionlog where MethodInfo=@method
+--delete from ExceptionLog where MethodInfo=@method
+select top 20 * from exceptionlog where MethodInfo=@method order by datetime desc
+
+--select count(*) from exceptionlog where Message='OptionFormId cannot be null for this control.'
+--select top 20 * from exceptionlog where Message='OptionFormId cannot be null for this control.'
+--delete from ExceptionLog where Message='OptionFormId cannot be null for this control.'
