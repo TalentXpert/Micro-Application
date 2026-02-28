@@ -1,1 +1,84 @@
 ﻿select top 5 * from AppControl where id='fc080040-a163-433b-b55e-6ef2e10d2138'
+
+/// Update  exportvarname from medrio excel data present in BioMetaDevOld..Excel_AbstractVariable_tbl
+UPDATE MV
+SET 
+    MV.exportvarname = LEFT(AV.ExportVarName, 8),
+    MV.[Length] = TRY_CONVERT(INT, AV.[Length]),
+    MV.Units = AV.Unit,
+    MV.[Min] = AV.[Min],
+    MV.[Max] = AV.[Max],
+    MV.[RecommendedMinimum] = AV.[SoftMin],
+    MV.[RecommendedMaximum] = AV.[SoftMax],
+    MV.[ErrorMessage] = AV.[ValidationErrorMessage],
+    MV.[WarningMessage] = AV.[ValidationWarningMessage],
+    MV.[MissingDataErrorMessage] = AV.[MissingDataMessage]
+FROM MasterVariable MV
+JOIN BioMetaDevOld..Excel_AbstractVariable_tbl AV
+    ON MV.Id = AV.GlobalVariable_ID
+WHERE MV.TemplateId = 'A9F03D50-5D67-4E0A-8758-1F122CBE78E3';
+
+CREATE FUNCTION dbo.GetExportVarName (@text NVARCHAR(500))
+RETURNS NVARCHAR(8)
+AS
+BEGIN
+    DECLARE @result NVARCHAR(100) = ''
+    DECLARE @i INT = 1
+    DECLARE @char NCHAR(1)
+
+    -- Case 1: If text contains space → take first letter of each word
+    IF CHARINDEX(' ', @text) > 0
+    BEGIN
+        SELECT @result = STRING_AGG(UPPER(LEFT(value,1)), '')
+        FROM STRING_SPLIT(@text, ' ')
+        WHERE value <> ''
+    END
+    ELSE
+    BEGIN
+        -- Case 2: CamelCase → extract uppercase letters
+        WHILE @i <= LEN(@text)
+        BEGIN
+            SET @char = SUBSTRING(@text, @i, 1)
+
+            IF @char LIKE '[A-Z]'
+                SET @result = @result + @char
+
+            SET @i = @i + 1
+        END
+
+        -- Case 3: Single normal word (no CamelCase)
+        IF @result = ''
+            SET @result = @text
+    END
+
+    -- Ensure max 8 characters
+    RETURN LEFT(@result, 8)
+END
+
+UPDATE MasterVariable
+SET ExportVarName = VariableOID
+WHERE ExportVarName IS NULL
+  AND LEN(VariableOID) <= 8;
+
+UPDATE MasterVariable
+SET ExportVarName = dbo.GetExportVarName(VariableText)
+WHERE ExportVarName IS NULL
+  AND LEN(VariableOID) > 8;
+
+
+  --- delete 12 ECG
+  -- Delete VV
+Delete from MasterVariableValue where variableid in (
+select id from [dbo].[MasterVariable] where formid ='2A66EE50-82E4-42AD-81E6-A1B79F99AA4C')
+
+-- Delete V
+Delete from [dbo].[MasterVariable] where formid ='2A66EE50-82E4-42AD-81E6-A1B79F99AA4C'
+-- Delete V
+Delete from [dbo].[MasterTemplateForm] where masterformid ='2A66EE50-82E4-42AD-81E6-A1B79F99AA4C'
+
+Delete  from MasterForm where id='2A66EE50-82E4-42AD-81E6-A1B79F99AA4C'
+
+
+update MasterForm 
+set Aliases ='12-Lead Electrocardiogram, ECG Full Lead, Full ECG Panel, Lead ECG, Twelve Lead ECG, Multi-lead ECG, ECG Cardiac Assessment, 12L ECG, Complete ECG, ECG with Leads, Full Heart Rhythm Test,12-ECG,12 ECG,12-lead'
+where Id ='C3A6BDE9-C8D2-43AB-92F8-F2415EBF5B53'
