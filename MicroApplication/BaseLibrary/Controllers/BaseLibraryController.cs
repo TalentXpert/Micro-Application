@@ -94,18 +94,18 @@ namespace BaseLibrary.Controllers
                 if (C.IsNull(_currentUser))
                 {
                     if(SignInUserId == Guid.Empty)
-                        throw new ValidationException("Login session has expired. Please login again.");
+                        throw new ValidationException(ValidationMessage.Relogin);
                     _currentUser = UserService.GetUser(SignInUserId);
                     if (_currentUser is not null && _currentUser.IsBlocked)
-                        throw new ValidationException($"Your account has been disabled. Please contact support team for more information. Message from disabler - {_currentUser.BlockReason}");
+                        throw new ValidationException(ValidationMessage.BlockedAccount(_currentUser.BlockReason));
                 }
 
                 if (_currentUser is null)
-                    throw new ValidationException("Login session has expired. Please login again.");
+                    throw new ValidationException(ValidationMessage.Relogin);
 
                 var releaseDate = ApplicationConstants.ReleaseDate;
                 if (TokenIssueTime.HasValue && TokenIssueTime < releaseDate)
-                    throw new ValidationException("Login session has expired. Please login again.");
+                    throw new ValidationException(ValidationMessage.Relogin);
                
                 return _currentUser;
             }
@@ -120,9 +120,9 @@ namespace BaseLibrary.Controllers
         protected void GaurdForDisableUser()
         {
             if (C.IsNull(LoggedInUser))
-                throw new ValidationException("Login session has expired. Please login again.");
+                throw new ValidationException(ValidationMessage.Relogin);
             if (LoggedInUser.IsBlocked)
-                throw new ValidationException($"Your account has been blocked. Please contact support team for more information. Message from disabler - {_currentUser.BlockReason}");
+                throw new ValidationException(ValidationMessage.BlockedAccount(LoggedInUser.BlockReason));
         }
 
         protected void HasActiveUserSession()
@@ -212,7 +212,7 @@ namespace BaseLibrary.Controllers
             if (C.IsNull(LoggedInUser)) throw new AuthenticationException($"To perform this operation {operation} you need to login in to system.");
             if (HasOperationPermission(code))
                 return;
-            throw new ValidationException($"You do not have permission to perform this operation {operation}.");
+            throw new ValidationException($"You do not have permission to perform this operation - {operation}.");
         }
         private bool HasOperationPermission(string code)
         {
