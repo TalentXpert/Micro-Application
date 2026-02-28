@@ -9,5 +9,6 @@ namespace BaseLibrary
     public class ValidationMessage
     {
         public static string Relogin = "Your session has expired. Please login again to continue.";
+        public static string UserWithLoginIdNotFound = "No account exists with this login details.";
     }
 }
