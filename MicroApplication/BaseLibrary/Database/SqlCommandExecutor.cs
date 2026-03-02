@@ -169,6 +169,21 @@ namespace BaseLibrary.Database
                 throw new ValidationException("Database doesn't exist. Please contact administrator.");
             }
         }
+        public void GaurdForNonExistingDatabase(string databaseConnectionString)
+        {
+            try
+            {
+                if (ApplicationSettingBase.IsDatabaseExist) return;
+                var sqlConnection = new SqlConnection(databaseConnectionString);
+                sqlConnection.Open();
+                ApplicationSettingBase.IsDatabaseExist = true;
+                sqlConnection.Close();
+            }
+            catch
+            {
+                throw new ValidationException("Database doesn't exist. Please contact administrator.");
+            }
+        }
 
         public bool IsDatabaseTablesExits(string tableName)
         {
