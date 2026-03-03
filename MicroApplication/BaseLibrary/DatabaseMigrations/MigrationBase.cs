@@ -228,6 +228,11 @@ namespace BaseLibrary.DatabaseMigrations
             var datatype = $"nvarchar({length})";
             AddColumn(table, column, datatype, true);
         }
+        protected void CreateNullableMaxTextColumn(string table, string column)
+        {
+            var datatype = $"nvarchar(max)";
+            AddColumn(table, column, datatype, true);
+        }
 
         protected void CreateTable(string fileName)
         {
