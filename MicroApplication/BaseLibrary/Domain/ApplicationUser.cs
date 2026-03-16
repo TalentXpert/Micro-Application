@@ -103,7 +103,7 @@ namespace BaseLibrary.Domain
         }
         public void SetDefaultStudyId(Guid studyId)
         {
-            DefaultStudyId = studyId;
+            //DefaultStudyId = studyId;
         }
         public bool IsPasswordHashMatching(string password)
         {

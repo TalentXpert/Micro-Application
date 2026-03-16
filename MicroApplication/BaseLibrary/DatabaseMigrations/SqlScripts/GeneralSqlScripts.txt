@@ -1,0 +1,12 @@
+﻿--Find All Table having given column
+SELECT
+    TABLE_SCHEMA,
+    TABLE_NAME,
+    COLUMN_NAME
+FROM
+    INFORMATION_SCHEMA.COLUMNS
+WHERE
+    COLUMN_NAME LIKE '%StudyId%'
+ORDER BY
+    TABLE_SCHEMA,
+    TABLE_NAME;

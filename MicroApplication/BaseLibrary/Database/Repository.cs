@@ -229,6 +229,22 @@ namespace BaseLibrary.Database
             }
             return where;
         }
+        protected string PrepareWhereClauseWithOperator(List<ControlFilter> filters, string controlIdentifer, string where, string dbColumnName, SqlDbType sqlDbType, List<SqlParameter> sqlParameters,string dataOperator,string paramName)
+        {
+            var filter = filters.FirstOrDefault(f => f.ControlIdentifier == controlIdentifer);
+            if (filter != null && string.IsNullOrWhiteSpace(filter.Value) == false)
+            {
+                var param = $"@{paramName}";
+                if (string.IsNullOrWhiteSpace(where))
+                    where = $"{dbColumnName} {dataOperator} {param}";
+                else
+                    where += $" and {dbColumnName} {dataOperator} {param}";
+                var aqlParameter = new SqlParameter(param, sqlDbType);
+                aqlParameter.Value = filter.Value;
+                sqlParameters.Add(aqlParameter);
+            }
+            return where;
+        }
 
         protected string ReadText(DataRow dr, string column)
         {

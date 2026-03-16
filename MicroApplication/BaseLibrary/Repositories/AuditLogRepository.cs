@@ -44,24 +44,39 @@ namespace BaseLibrary.Repositories
         private DataTable GetAppControls(List<ControlFilter> filters, ApplicationUser loggedInUser)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            var query = $"select top 200 * from auditlog where (organizationId='{loggedInUser.OrganizationId}') order by CreatedOn desc";
-          // var where = "";
-            //if (filters.Any())
-            //{
-            //    where = PrepareWhereClause(filters, "ControlIdentifier", where, "ControlIdentifier", SqlDbType.NVarChar, sqlParameters);
-            //    where = PrepareWhereClause(filters, "DisplayLabel", where, "DisplayLabel", SqlDbType.NVarChar, sqlParameters);
-            //    where = PrepareWhereClause(filters, "ControlType", where, "ControlType", SqlDbType.NVarChar, sqlParameters);
-            //    where = PrepareWhereClause(filters, "DataType", where, "DataType", SqlDbType.NVarChar, sqlParameters);
-            //    where = PrepareWhereClause(filters, "Options", where, "Options", SqlDbType.NVarChar, sqlParameters);
-            //    if (!string.IsNullOrEmpty(where))
-            //    {
-            //        query += " and " + where;
-            //    }
+            var query = $"select top 200 * from auditlog where (organizationId='{loggedInUser.OrganizationId}') ";
+            var where = "";
+            if (filters.Any())
+            {
+                where = PrepareWhereClause(filters, "Event", where, "Event", SqlDbType.NVarChar, sqlParameters);
+                where = PrepareWhereClauseWithOperator(filters, "From", where, "CreatedOn", SqlDbType.NVarChar, sqlParameters, ">=","from");
+                where = PrepareWhereClauseWithOperator(filters, "To", where, "CreatedOn", SqlDbType.NVarChar, sqlParameters, "<=","to");
+                if (!string.IsNullOrEmpty(where))
+                {
+                    query += " and " + where;
+                }
 
-            //}
+            }
+
+            query = query + " order by CreatedOn desc";
+
             var dt = new SqlCommandExecutor().GetDataTable(query, sqlParameters);
             return dt;
         }
 
     }
 }
+/*
+ * if (filters.Any())
+            {
+                where = PrepareWhereClause(filters, "Name", where, "Name", SqlDbType.NVarChar, sqlParameters);
+                where = PrepareWhereClause(filters, "Email", where, "Email", SqlDbType.NVarChar, sqlParameters);
+                where = PrepareWhereClause(filters, "ContactNumber", where, "ContactNumber", SqlDbType.NVarChar, sqlParameters);
+                where = PrepareWhereClause(filters, "LoginId", where, "LoginId", SqlDbType.NVarChar, sqlParameters);
+                if(!string.IsNullOrEmpty( where))
+                {
+                    query += " and " + where;
+                }
+                
+            }
+ */
