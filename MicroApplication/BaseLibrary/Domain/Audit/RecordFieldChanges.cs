@@ -9,7 +9,7 @@
             EventChanges = new List<EventChange>();
         }
 
-        public void Add(string field, string newValue, string oldValue = "")
+        public void Add(string field, string? newValue, string? oldValue = "")
         {
             if (string.IsNullOrWhiteSpace(field)) return;
             if (string.IsNullOrWhiteSpace(newValue)) newValue = "";

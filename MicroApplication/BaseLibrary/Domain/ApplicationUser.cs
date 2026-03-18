@@ -17,6 +17,7 @@ namespace BaseLibrary.Domain
         public string? PasswordResetCode { get; protected set; }
         public DateTime? PasswordResetCodeTimeStamp { get; protected set; }
         public string? Role { get; protected set; }
+        //do not use this as its absolute now
         public Guid? DefaultStudyId { get; protected set; }
         public string? TimeZone { get; protected set; }
 

@@ -28,7 +28,7 @@
             }
             else
             {
-                organization = RF.OrganizationRepository.Get(model.DataKey.Value);
+                organization = RF.OrganizationRepository.Find(model.DataKey.Value);
                 organization.Update(model);
             }
             return organization.Id;

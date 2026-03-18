@@ -123,7 +123,18 @@ namespace BaseLibrary.Database
             }
             throw new ValidationException($"Entity not found with given id-{id}");
         }
-
+        public virtual TEntity Find(Guid id,string entityType)
+        {
+            if (id != Guid.Empty)
+            {
+                var entity = GetSet().Find(id);
+                if (entity is not null)
+                    return entity;
+            }
+            throw new ValidationException($"{entityType} not found with given id-{id}");
+        }
+        
+        //throw new ValidationException($"Form for this grid not found with id-{formGridVM.FormId}.");
         public virtual IEnumerable<TEntity> GetAll()
         {
             return GetSet().AsEnumerable();

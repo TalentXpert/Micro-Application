@@ -58,6 +58,7 @@ namespace BaseLibrary.Database
         TEntity? Get(Guid id);
 
         TEntity Find(Guid id);
+        TEntity Find(Guid id, string entityType);
 
         /// <summary>
         /// Get all elements of type {T} in repository
