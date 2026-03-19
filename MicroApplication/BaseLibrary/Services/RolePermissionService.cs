@@ -7,6 +7,7 @@ namespace BaseLibrary.Services
         void SaveUpdateRolePermissions(ApplicationRolePermissions model);
         ApplicationRolePermission Delete(Guid id);
         void SaveUpdateRolePermissions(Guid roleId, List<Guid?> permissions);
+        void SaveUpdateRolePermissions(Guid roleId, List<Permission> permissions);
     }
     public class RolePermissionService : ServiceLibraryBase, IRolePermissionService
     {
@@ -72,6 +73,26 @@ namespace BaseLibrary.Services
                 if (rolePermissions.Any(p => p.PermissionId == permission))
                     continue;
                 var newPermission = ApplicationRolePermission.Create(roleId, permission.Value);
+                RF.ApplicationRolePermissionRepository.Add(newPermission);
+            }
+        }
+        public void SaveUpdateRolePermissions(Guid roleId, List<Permission> permissions)
+        {
+            var rolePermissions = RF.ApplicationRolePermissionRepository.GetRolePermissions(roleId);
+            var existingPermissions = rolePermissions.ToList();
+            foreach (var existingPermission in existingPermissions)
+            {
+                if (permissions.Any(p => p.Id == existingPermission.PermissionId))
+                    continue;
+                RF.ApplicationRolePermissionRepository.Remove(existingPermission);
+                rolePermissions.Remove(existingPermission);
+            }
+
+            foreach (var permission in permissions)
+            {
+                if (rolePermissions.Any(p => p.PermissionId == permission.Id))
+                    continue;
+                var newPermission = ApplicationRolePermission.Create(roleId, permission.Id);
                 RF.ApplicationRolePermissionRepository.Add(newPermission);
             }
         }

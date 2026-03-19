@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using BaseLibrary.Domain;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace BaseLibrary.Controllers
 {
@@ -13,7 +14,7 @@ namespace BaseLibrary.Controllers
 
         public ApplicationPageController(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory) : base(serviceFactory, loggerFactory.CreateLogger<ApplicationPageController>())
         {
-            _studyDocumentsPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("FileUploadSettings")["StudyDocumentsPath"];
+            _studyDocumentsPath = ApplicationSettingBase.StudyDocumentsPath;
         }
 
         /// <summary>

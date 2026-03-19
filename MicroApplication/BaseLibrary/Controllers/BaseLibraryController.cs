@@ -74,7 +74,7 @@ namespace BaseLibrary.Controllers
 
         private Guid _signInUserId;
 
-        private Guid SignInUserId
+        public Guid SignInUserId
         {
             get
             {

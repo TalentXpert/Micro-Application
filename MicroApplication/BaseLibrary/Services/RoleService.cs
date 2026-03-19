@@ -20,13 +20,19 @@ namespace BaseLibrary.Services
             ApplicationRole? role = null;
             if (model.Id.HasValue)
                 role = RF.RoleRepository.Get(model.Id.Value);
-            if (role == null)
+            if (role is null)
             {
                 GaurdForDuplicateRoleName(model.Name, loggedInUser.GetOrganizationId());
                 role = ApplicationRole.Create(model, loggedInUser.GetOrganizationId());
                 RF.RoleRepository.Add(role);
             }
-            role.Update(model);
+            else
+            {
+                if (AreEqualsIgnoreCase(role.Name, ApplicationRoles.OrganizationAdminRole))
+                    throw new ValidationException("Cannot update Organization Admin role.");
+                role.Update(model);
+            }
+                
             return role;
         }
 
@@ -49,7 +55,7 @@ namespace BaseLibrary.Services
 
             if (role is not null && role.OrganizationId == organizationId)
             {
-                if (AreEqualsIgnoreCase(role.Name, "Organization Admin"))
+                if (AreEqualsIgnoreCase(role.Name, ApplicationRoles.OrganizationAdminRole))
                     throw new ValidationException("Cannot delete Organization Admin role.");
                 RF.RoleRepository.Remove(role);
                 return role;

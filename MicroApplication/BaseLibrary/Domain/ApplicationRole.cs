@@ -8,8 +8,6 @@ namespace BaseLibrary.Domain
     }
     public class ApplicationRole : Entity
     {
-        public static ApplicationRole WebsiteAdminRole = new ApplicationRole("9066BFC1-184C-4BE4-AD12-F3AC944AE378","WebsiteAdmin");
-        public static ApplicationRole OrganizationAdminRole = new ApplicationRole("604901E8-96D0-469B-88D3-325F8570177D", "OrganizationAdmin");
         public Guid OrganizationId { get; set; } 
         public string Name { get; set; } = string.Empty;
 

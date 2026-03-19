@@ -1,10 +1,4 @@
-﻿
-using BaseLibrary.Configurations;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.AspNetCore.Identity.Data;
-
-namespace BaseLibrary.Services
+﻿namespace BaseLibrary.Services
 {
     public interface IUserService
     {

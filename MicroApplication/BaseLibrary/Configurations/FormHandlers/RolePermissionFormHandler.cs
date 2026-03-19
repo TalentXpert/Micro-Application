@@ -19,7 +19,6 @@ namespace BaseLibrary.Configurations.FormHandlers
                 throw new ValidationException("Role Id can not be null.");
 
             var permissions = ControlReader.GetControlValues(BaseControl.PermissionSelection, model.ControlValues).Select(c => Convertor.ToGuid(c)).ToList();
-
             BaseLibraryServiceFactory.RolePermissionService.SaveUpdateRolePermissions(roleId.Value, permissions);
             return roleId.Value.ToString();
         }

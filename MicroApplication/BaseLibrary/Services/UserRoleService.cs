@@ -136,7 +136,10 @@ namespace BaseLibrary.Services
         {
             if (loggedInUser.IsOrgAdmin)
                 return true;
-            return IsInRole(ApplicationRole.OrganizationAdminRole, loggedInUser);
+            var organizationAdminRole = RF.RoleRepository.GetRole(loggedInUser.OrganizationId, ApplicationRoles.OrganizationAdminRole);
+            if(organizationAdminRole is not null)
+                return  IsInRole(organizationAdminRole, loggedInUser);
+            return false;
         }
     }
 }

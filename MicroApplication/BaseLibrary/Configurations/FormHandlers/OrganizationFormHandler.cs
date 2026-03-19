@@ -3,7 +3,7 @@ namespace BaseLibrary.Configurations.FormHandlers
 {
     public class OrganizationFormHandler : FormHandlerBase
     {
-        public OrganizationFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser? loggedInUser)
+        public OrganizationFormHandler(IBaseLibraryServiceFactory serviceFactory, ApplicationUser loggedInUser)
             : base(serviceFactory, loggedInUser, BaseForm.ManageOrganizationForm, null, null, true)
         {
 

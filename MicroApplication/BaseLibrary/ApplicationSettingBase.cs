@@ -17,6 +17,7 @@ namespace BaseLibrary
         public static string FromEmailPassword { get; set; } = string.Empty;
         public static string ApplicationUrl { get; set; } = string.Empty;
         public static string ApplicationName { get; set; } = string.Empty;
+        public static string StudyDocumentsPath { get; set; } = string.Empty;
 
     }
 
