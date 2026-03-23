@@ -86,5 +86,16 @@ namespace BaseLibrary.Utilities
             }
             return foundStrings;
         }
+
+        public string RemoveSpecialCharacters(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // Removes newline (\n), carriage return (\r), tab (\t), and other control characters
+            return input.Replace("\r", " ")
+                     .Replace("\t", " ")
+                     .Trim();
+        }
     }
 }
