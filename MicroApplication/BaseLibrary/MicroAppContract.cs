@@ -11,6 +11,7 @@ namespace BaseLibrary
     {
         FormHandlerFactory GetFormHandlerFactory();
         BasePermission GetApplicationPermission();
+        BaseAuditEvent GetApplicatinAuditEvents();
         BaseSearch GetApplicationSearch();
         BaseMenu GetApplicationMenu();
         BaseHandlerFactory GetHandlerFactory();

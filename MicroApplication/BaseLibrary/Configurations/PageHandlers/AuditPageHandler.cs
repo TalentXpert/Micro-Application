@@ -27,6 +27,8 @@ namespace BaseLibrary.Configurations.PageHandlers
 
         public override List<UIControl> GetFilters(SmartGridConfigurationVM vm)
         {
+            BSF.MicroAppContract.GetApplicatinAuditEvents().GetAuditEvents();
+            var eventFilters = AppControl.CreateSystemControl("F93F34C9-53FC-CB09-1958-08D9065B2081", "Events", "Events", ControlDataType.String, ControlTypes.Dropdown);
             var eventFilter = AppControl.CreateSystemControl("F93F34C9-53FC-CB09-1958-08D9065B2081", "Event", "Event", ControlDataType.String, ControlTypes.TextBox);
             var eventStartDate = AppControl.CreateSystemControl("B9CAFA4F-F8B1-C91F-CE83-08DDC87CD15E", "From", "From", ControlDataType.Date, ControlTypes.DatePicker); 
             var eventEndDate = AppControl.CreateSystemControl("13BAD6B3-49B5-C20F-6288-08DDC9C2F00F", "To", "To", ControlDataType.Date, ControlTypes.DatePicker);
