@@ -31,8 +31,6 @@ namespace BaseLibrary.Controllers
     [Route("api/[controller]")]
     public class JWTController : BaseLibraryController
     {
-        private TimeSpan TokenExpiration;
-        private SigningCredentials SigningCredentials;
 
         #region Static Members
         private const string PrivateKey = "private_key_1234567890";
@@ -46,8 +44,6 @@ namespace BaseLibrary.Controllers
         public JWTController(IBaseLibraryServiceFactory serviceFactory, ILoggerFactory loggerFactory)
           : base(serviceFactory, loggerFactory.CreateLogger<JWTController>())
         {
-            TokenExpiration = TimeSpan.FromMinutes(10000);
-            SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
             this.AuthOptions = BSF.MicroAppContract.GetAuthOptions();
         }
 
