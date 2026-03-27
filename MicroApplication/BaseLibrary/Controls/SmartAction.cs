@@ -20,6 +20,7 @@
     {
         public static string DynamicForm = "DynamicForm";
         public static string SelectFromListForm = "SelectFromListForm";
+        public static string CustomForm = "CustomForm";
     }
 
     public class SmartAction

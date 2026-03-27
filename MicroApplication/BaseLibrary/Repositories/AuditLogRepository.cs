@@ -48,7 +48,7 @@ namespace BaseLibrary.Repositories
             var where = "";
             if (filters.Any())
             {
-                where = PrepareWhereClause(filters, "Event", where, "Event", SqlDbType.NVarChar, sqlParameters);
+                where = PrepareWhereClause(filters, "Events", where, "EventId", SqlDbType.Int, sqlParameters);
                 where = PrepareWhereClauseWithOperator(filters, "From", where, "CreatedOn", SqlDbType.NVarChar, sqlParameters, ">=","from");
                 where = PrepareWhereClauseWithOperator(filters, "To", where, "CreatedOn", SqlDbType.NVarChar, sqlParameters, "<=","to");
                 if (!string.IsNullOrEmpty(where))
