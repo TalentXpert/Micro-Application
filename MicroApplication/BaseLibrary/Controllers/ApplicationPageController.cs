@@ -431,20 +431,20 @@ namespace BaseLibrary.Controllers
                 return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
             }
         }
-        
-        [HttpPatch("Patch/{formId}/{id}/{param}/{actionIdentifier}")]
-        public IActionResult Patch(Guid formId, Guid id,string param, string actionIdentifier)
+
+        [HttpPatch("Patch/{pageId}/{id}/{param}/{actionIdentifier}")]
+        public IActionResult Patch(Guid pageId, Guid id, string param, string actionIdentifier)
         {
             try
             {
-                var pageHandler = GetFormHandler(formId);
-                var userMessage = pageHandler.PageAction(formId,id, param, actionIdentifier);
+                var pageHandler = GetSmartPageHandler(pageId);
+                var userMessage = pageHandler.PageAction(pageId, id, param, actionIdentifier);
                 CommitTransaction();
                 return Ok(userMessage);
             }
             catch (Exception exception)
             {
-                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { formId });
+                return HandleException(exception, CodeHelper.CallingMethodInfo(), new { PageId = pageId, Id = id, Param = param, ActionIdentifier = actionIdentifier });
             }
         }
 

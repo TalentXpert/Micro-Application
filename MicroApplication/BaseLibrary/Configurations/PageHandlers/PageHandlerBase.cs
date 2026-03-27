@@ -297,6 +297,11 @@ namespace BaseLibrary.Configurations.PageHandlers
             return Grid;
         }
         public abstract List<List<GridCell>> GetRow(Guid datakey);
+
+        public virtual string PageAction(Guid pageId, Guid id, string param, string actionIdentifier)
+        {
+            throw new ValidationException("This action is not implemented for this page. please implement it.");
+        }
         #endregion
     }
 }
