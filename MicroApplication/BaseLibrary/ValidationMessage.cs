@@ -9,7 +9,7 @@ namespace BaseLibrary
     public class ValidationMessage
     {
         public static string Relogin = "Your session has expired. Please login again to continue.";
-        public static string UserWithLoginIdNotFound = "User with this login id not found. Please try with valid login id.";
+        public static string UserWithLoginIdNotFound = "Entered email id or login id not found. Please try with a valid email id or login id.";
 
         public static string BlockedAccount(string? blockReason)
         {
