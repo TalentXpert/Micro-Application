@@ -155,7 +155,7 @@ namespace BaseLibrary.Repositories
         {
             if (!string.IsNullOrWhiteSpace(email))
                 email = email.ToLower().Trim();
-            return this.unitOfWork.ApplicationUsers.Where(j => j.Email.ToLower() == email).ToList();
+            return this.unitOfWork.ApplicationUsers.Where(j => j.Email.ToLower() == email || j.LoginId.ToLower() == email).ToList();
         }
     }
 }
