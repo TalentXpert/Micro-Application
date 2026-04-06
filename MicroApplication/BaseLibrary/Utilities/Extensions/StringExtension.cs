@@ -97,5 +97,24 @@ namespace BaseLibrary.Utilities
                      .Replace("\t", " ")
                      .Trim();
         }
+        public bool IsEndWithNumber(string input)
+        {
+            bool endsWithNumber = Regex.IsMatch(input, @"\d+$");
+            return endsWithNumber;
+
+
+        }
+        public string RemoveEndNumber(string input)
+        {
+            //string input = "SampleText123";
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            string result = input.TrimEnd(digits); // Result: "SampleText"
+            return result;
+        }
+        public string RemoveEveryThingBetweenParanthesis(string input)
+        {
+            string result = Regex.Replace(input, @"\([^)]*\)", "");
+            return result.Trim();
+        }
     }
 }

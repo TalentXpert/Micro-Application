@@ -15,7 +15,7 @@ namespace BaseLibrary.Utilities
             try
             {
                 var cleaned = new string(input
-                        .Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                        .Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c=='/')
                         .ToArray());
                 return Regex.Replace(cleaned, @"\s+", " ").Trim();
             }
@@ -24,5 +24,6 @@ namespace BaseLibrary.Utilities
                 return input;
             }
         }
+        
     }
 }
