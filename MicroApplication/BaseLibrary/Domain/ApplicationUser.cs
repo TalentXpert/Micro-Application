@@ -137,6 +137,10 @@ namespace BaseLibrary.Domain
         public override IEnumerable<ValidationResult> ValidateEntity(ValidationContext validationContext)
         {
             var validationResults = new List<ValidationResult>();
+            X.Validator.GuidValidator.CheckForEmpltyOrDefaulValue(Id, "Id", validationResults);
+            X.Validator.StringValidator.CheckForNullOrEmpty(Name, "Name", validationResults);
+            X.Validator.StringValidator.CheckForNullOrEmpty(Email, "Email", validationResults);
+            X.Validator.StringValidator.CheckForNullOrEmpty(LoginId, "LoginId", validationResults);
             return validationResults;
         }
         public void MakeAdmin()

@@ -102,7 +102,7 @@
                 user = ApplicationUser.CreateUserWithLoginId(loggedInUser, name, emailId, contactNumber, loginId);
                 var password = user.SetDefaultPassword();
                 RF.UserRepository.Add(user);
-                SF.EmailApplicationService.SendActivationEmail(user, password);
+                SF.EmailApplicationService.SendActivationEmail(user, loggedInUser, password);
             }
             else
             {

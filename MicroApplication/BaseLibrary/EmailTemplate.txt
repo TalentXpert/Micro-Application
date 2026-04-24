@@ -13,20 +13,20 @@
 			margin:0;
 			color:#555;
 			font-family:Helvetica, Arial, sans-serif;
-			font-size:16px;
+			font-size:14px;
 			line-height:160%;
 		}
 		a{
 			text-decoration:none;
 			font-family:Helvetica, Arial, sans-serif;
-			font-size:16px;
+			font-size:14px;
 			color:#fff;
 			border-radius:4px;
 		}
 		h2{
 			color:#181818;
 			font-family:Helvetica, Arial, sans-serif;
-			font-size:22px;
+			font-size:14px;
 			font-weight: normal;
 		}
 
@@ -67,10 +67,11 @@
 								</tr>
 							</table>
 							<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+								<tr><td> </td></tr>
 								<tr>
 									<td width="100%" style="padding-bottom:5px; padding-left:20px; line-height:25px;">
-										 	<p>Thank You</p>
-										 	<p>BioMetaAI Team</p>
+										 	<p>Thanks</p>
+										 	<p>BioMeta AI Team</p>
 									</td>
 								</tr>
 							</table>
@@ -78,11 +79,6 @@
 								<tr>
 									<td width="100%" colspan="2" style="padding-top:65px;">
 										<hr style="height:1px;border:none;color:#333;background-color:#ddd;" />
-									</td>
-								</tr>
-								<tr>
-									<td width="100%" height="70" valign="top" style="padding-bottom:20px;padding-left: 20px;">
-											<span style="font-size:14px;color:#181818;font-family:Helvetica, Arial, sans-serif;line-height:200%;">Copyright © TalentXpert Services Pvt Ltd</span>
 									</td>
 								</tr>
 							</table>

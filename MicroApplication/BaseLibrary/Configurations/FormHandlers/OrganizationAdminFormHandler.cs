@@ -17,7 +17,7 @@ namespace BaseLibrary.Configurations.FormHandlers
             var user = BaseLibraryServiceFactory.UserService.SaveUpdateOrganizationAdmin(model, LoggedInUser);
             user.MakeAdmin();
             var password = user.SetDefaultPassword();
-            BaseLibraryServiceFactory.EmailApplicationService.SendActivationEmail(user, password);
+            BaseLibraryServiceFactory.EmailApplicationService.SendActivationEmail(user, LoggedInUser, password);
             return user.Id.ToString();
         }
 

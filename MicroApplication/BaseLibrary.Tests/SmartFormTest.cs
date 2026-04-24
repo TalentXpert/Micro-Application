@@ -1,8 +1,43 @@
 ﻿
 using BaseLibrary.Controls;
+using BaseLibrary.Utilities.Emails;
 
 namespace BaseLibrary.Tests
 {
+    [TestClass]
+    public class EmailSenderTest
+    {
+        [TestMethod]
+        public void PasswordHash()
+        {
+            var sender = new EmailSender();
+        }
+
+        [TestMethod]
+        public void TestGmailServerEmail()
+        {
+            ApplicationSettingBase.IsEmailEnabled = true;
+            ApplicationSettingBase.EmailHost = "smtp.gmail.com";
+            ApplicationSettingBase.EmailHostPort = "587";
+            ApplicationSettingBase.FromEmailAddress = "hire.support@talentxpert.com";
+            ApplicationSettingBase.FromEmailPassword = "@123";
+            ApplicationSettingBase.EnableSsl = true;
+            var emailSender = new EmailSender();
+            emailSender.Send("", "pkumar@talentxpert.com", "Hi", "Test is welcome email from txsas email server,. hi 06 ssl.");
+        }
+        [TestMethod]
+        public void TestHostingerServerEmail()
+        {
+            ApplicationSettingBase.IsEmailEnabled = true;
+            ApplicationSettingBase.EmailHost = "smtp.hostinger.com";
+            ApplicationSettingBase.EmailHostPort = "587";
+            ApplicationSettingBase.FromEmailAddress = "noreply@biometa.ai";
+            ApplicationSettingBase.FromEmailPassword = "Qa@talentX2";
+            ApplicationSettingBase.EnableSsl = true;
+            var emailSender = new EmailSender();
+            emailSender.Send("", "pkumar@talentxpert.com", "Hi", "Test is welcome email from txsas email server,. hi 06 ssl.");
+        }
+    }
     /*
     public class SmartFormTest
     {
