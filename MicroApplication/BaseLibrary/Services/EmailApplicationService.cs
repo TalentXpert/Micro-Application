@@ -18,7 +18,7 @@ namespace BaseLibrary.Services
     {
         private readonly IEmailSender emailSender = emailSender;
         private readonly string emailTemplate = new AssemblyEmbededFileReader().GetScript(Assembly.GetExecutingAssembly(), "EmailTemplate.txt");
-        private string testemail = "pkumar@talentxpert.com";
+        private string testemail = "";
         private string PrepareEmailBody(string username, string message)
         {
             var upatedTemplate = this.emailTemplate.Replace("[{(UserName)}]", username);

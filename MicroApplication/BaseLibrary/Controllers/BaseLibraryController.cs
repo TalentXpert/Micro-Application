@@ -1,5 +1,4 @@
-﻿using BaseLibrary.Configurations;
-
+﻿
 namespace BaseLibrary.Controllers
 {
     public class BaseLibraryController : Controller
@@ -93,7 +92,7 @@ namespace BaseLibrary.Controllers
             {
                 if (C.IsNull(_currentUser))
                 {
-                    if(SignInUserId == Guid.Empty)
+                    if (SignInUserId == Guid.Empty)
                         throw new ValidationException("Login session has expired. Please login again.");
                     _currentUser = UserService.GetUser(SignInUserId);
                     if (_currentUser is not null && _currentUser.IsBlocked)
@@ -106,7 +105,7 @@ namespace BaseLibrary.Controllers
                 var releaseDate = ApplicationConstants.ReleaseDate;
                 if (TokenIssueTime.HasValue && TokenIssueTime < releaseDate)
                     throw new ValidationException("Login session has expired. Please login again.");
-               
+
                 return _currentUser;
             }
         }
@@ -210,27 +209,20 @@ namespace BaseLibrary.Controllers
             if (C.IsNullOrEmpty(code)) throw new ValidationException("Operation code can not be null");
             if (C.IsNullOrEmpty(operation)) throw new ValidationException("Operation can not be null");
             if (C.IsNull(LoggedInUser)) throw new AuthenticationException($"To perform this operation {operation} you need to login in to system.");
-            if (HasOperationPermission(code))
+            var permission = BSF.MicroAppContract.GetApplicationPermission().GetPermissions().FirstOrDefault(x => x.Code == code);
+            if (permission is not null && HasOperationPermission(permission))
                 return;
+            if(permission is not null)
+                throw new ValidationException($"You do not have '{permission.Name}' permission to perform this operation '{operation}'.");
             throw new ValidationException($"You do not have permission to perform this operation {operation}.");
         }
-        private bool HasOperationPermission(string code)
+        private bool HasOperationPermission(Permission permission)
         {
-            var permission = BSF.MicroAppContract.GetApplicationPermission().GetPermissions().FirstOrDefault(x => x.Code == code);
             if (BSF.UserRoleService.IsOperationAllowed(LoggedInUser, permission))
                 return true;
             return false;
         }
-        //protected void IsInRole(ApplicationRole role, string operation)
-        //{
-        //    if (LoggedInUser == null)
-        //        throw new ValidationException($"Login is required to perform this {operation}.");
-        //    if (LoggedInUser.OrganizationId.HasValue == false)
-        //        throw new ValidationException($"Organization is required to perform this {operation}.");
-        //    if (BSF.UserRoleService.IsInRole(role, LoggedInUser))
-        //        return;
-        //    throw new ValidationException($"You must have {role.Name} to perform this operation {operation}.");
-        //}
+
         protected void IsInOrganizationAdminRole(string operation)
         {
             if (LoggedInUser.IsOrgAdmin)
