@@ -125,6 +125,20 @@ namespace BaseLibrary.DatabaseMigrations
             ExecuteQuery(query);
         }
 
+        protected void AddUniqueKey(string table, string columns,string constraintName)
+        {
+            if (HasUniqueKey(table, constraintName))
+                return;
+            var query = $"ALTER TABLE {table} ADD CONSTRAINT {constraintName} UNIQUE ({columns});";
+            ExecuteQuery(query);
+        }
+
+        private bool HasUniqueKey(string table, string constraintName)
+        {
+            var query = $"SELECT name, type_desc FROM sys.key_constraints WHERE parent_object_id = OBJECT_ID('{table}') AND type = 'UQ' AND name='{constraintName}';";
+            return SqlCommandExecutor.ExecuteScalar(query) > 0;
+        }
+
         public void DeleteColumn(string table, string column)
         {
             if (HasColumn(table, column))
