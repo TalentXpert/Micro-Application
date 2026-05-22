@@ -3,7 +3,7 @@ namespace BaseLibrary.Services
 {
     public interface IRoleService
     {
-        ApplicationRole SaveUpdate(RoleVM model, ApplicationUser loggedInUser);
+        ApplicationRole SaveUpdate(RoleVM model, Guid? organizationId);
         List<ApplicationRole> GetOrganizationRoles(Guid OrganizationId);
         ApplicationRole Delete(Guid roleId, Guid OrganizationId);
     }
@@ -15,15 +15,17 @@ namespace BaseLibrary.Services
 
         }
 
-        public ApplicationRole SaveUpdate(RoleVM model, ApplicationUser loggedInUser)
+        public ApplicationRole SaveUpdate(RoleVM model, Guid? organizationId)
         {
             ApplicationRole? role = null;
+            if (organizationId == null)
+                throw new ValidationException("Organization can not be null.");
             if (model.Id.HasValue)
                 role = RF.RoleRepository.Get(model.Id.Value);
             if (role is null)
             {
-                GaurdForDuplicateRoleName(model.Name, loggedInUser.GetOrganizationId());
-                role = ApplicationRole.Create(model, loggedInUser.GetOrganizationId());
+                GaurdForDuplicateRoleName(model.Name, organizationId.Value);
+                role = ApplicationRole.Create(model, organizationId.Value);
                 RF.RoleRepository.Add(role);
             }
             else

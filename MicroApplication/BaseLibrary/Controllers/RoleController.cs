@@ -33,7 +33,7 @@ namespace BaseLibrary.Controllers
             try
             {
                 IsInOrganizationAdminRole("View Roles");
-                var role = BSF.RoleService.SaveUpdate(model, LoggedInUser);
+                var role = BSF.RoleService.SaveUpdate(model, LoggedInUser.OrganizationId);
                 CommitTransaction();
                 return Ok(new RoleVM(role));
             }

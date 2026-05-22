@@ -155,6 +155,7 @@
             if (model.DataKey.HasValue is false)
             {
                 user = ApplicationUser.CreateUser(loggedInUser);
+                user.Update(model);
                 RF.UserRepository.Add(user);
             }
             else
