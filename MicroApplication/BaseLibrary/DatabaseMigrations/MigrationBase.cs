@@ -285,7 +285,11 @@ namespace BaseLibrary.DatabaseMigrations
         {
             SqlCommandExecutor.ExecuteQuery(query);
         }
-
+        protected bool HasData(string table)
+        {
+            string query = $@"SELECT count(*) FROM {table})";
+            return SqlCommandExecutor.ExecuteScalar(query) > 0;
+        }
         protected string GetScript(string fileName)
         {
             return DbScriptReader.GetScript(fileName, Assembly);
