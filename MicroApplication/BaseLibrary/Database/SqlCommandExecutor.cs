@@ -233,4 +233,42 @@ namespace BaseLibrary.Database
             command.ExecuteNonQuery();
         }
     }
+
+    public class SqlHelper
+    {
+        public static DataTable GetDataTable(string query)
+        {
+            var sqlConnection = new SqlConnection(ApplicationSettingBase.DatabaseConnectionString);
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+        public static DataTable GetDataTable(string query, List<SqlParameter> sqlParameters)
+        {
+            var sqlConnection = new SqlConnection(ApplicationSettingBase.DatabaseConnectionString);
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.AddRange(sqlParameters.ToArray());
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            var dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+        public static List<int> GetIntListFromDataTable(string query, List<SqlParameter> sqlParameters)
+        {
+            var sqlConnection = new SqlConnection(ApplicationSettingBase.DatabaseConnectionString);
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.AddRange(sqlParameters.ToArray());
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            var dt = new DataTable();
+            da.Fill(dt);
+            var list = new List<int>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                list.Add((int)dr[0]);
+            }
+            return list;
+        }
+    }
 }
