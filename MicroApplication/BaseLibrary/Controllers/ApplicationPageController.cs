@@ -377,7 +377,7 @@ namespace BaseLibrary.Controllers
                 }
 
                 CommitTransaction();
-                return Ok();
+                return Ok(id);
             }
             catch (InvalidOperationException ex)
             {
