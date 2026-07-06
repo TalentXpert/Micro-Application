@@ -212,6 +212,10 @@ namespace BaseLibrary.Controllers
             var permission = BSF.MicroAppContract.GetApplicationPermission().GetPermissions().FirstOrDefault(x => x.Code == code);
             if (permission is not null && HasOperationPermission(permission))
                 return;
+
+            if (LoggedInUser.IsOrgAdmin)
+                return; 
+
             if(permission is not null)
                 throw new ValidationException($"You do not have '{permission.Name}' permission to perform this operation '{operation}'.");
             throw new ValidationException($"You do not have permission to perform this operation {operation}.");

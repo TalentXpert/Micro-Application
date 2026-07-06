@@ -112,11 +112,8 @@
         {
             if (permission == null)
                 return false;
-            var query = from r in _currentUnitOfWork.UserRole
-                        join p in _currentUnitOfWork.RolePermission on r.RoleId equals p.RoleId
-                        where p.PermissionId == permission.Id
-                        select p;
-            return query.Any();
+            var permissions = GetUserPermissions(loggedInUser.Id);
+            return permissions.Any(p=>p.PermissionId==permission.Id);
         }
         public List<ApplicationRolePermission> GetUserPermissions(Guid userId)
         {
