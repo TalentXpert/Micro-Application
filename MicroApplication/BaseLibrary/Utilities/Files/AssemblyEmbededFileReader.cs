@@ -15,7 +15,6 @@ namespace BaseLibrary.Utilities.Files
             return script;
         }
     }
-
     public class AssemblyTextFileReader
     {
         public string ReadFile(Assembly assembly, string fileName)

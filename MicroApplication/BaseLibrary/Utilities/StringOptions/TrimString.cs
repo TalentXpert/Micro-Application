@@ -2,6 +2,7 @@
 
 namespace BaseLibrary.Utilities
 {
+
     public class TrimString
     {
         public static string Trim(string? input)

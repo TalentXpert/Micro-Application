@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BaseLibrary.Tests.Utilities.Extensions
 {
-    [TestClass]
+        [TestClass]
     public class StringExtensionTest
     {
         [TestMethod]

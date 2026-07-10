@@ -118,12 +118,12 @@ namespace BaseLibrary.Database
             if (id != Guid.Empty)
             {
                 var entity = GetSet().Find(id);
-                if(entity is not null)
+                if (entity is not null)
                     return entity;
             }
             throw new ValidationException($"Entity not found with given id-{id}");
         }
-        public virtual TEntity Find(Guid id,string entityType)
+        public virtual TEntity Find(Guid id, string entityType)
         {
             if (id != Guid.Empty)
             {
@@ -133,7 +133,7 @@ namespace BaseLibrary.Database
             }
             throw new ValidationException($"{entityType} not found with given id-{id}");
         }
-        
+
         //throw new ValidationException($"Form for this grid not found with id-{formGridVM.FormId}.");
         public virtual IEnumerable<TEntity> GetAll()
         {
@@ -240,7 +240,7 @@ namespace BaseLibrary.Database
             }
             return where;
         }
-        protected string PrepareWhereClauseWithOperator(List<ControlFilter> filters, string controlIdentifer, string where, string dbColumnName, SqlDbType sqlDbType, List<SqlParameter> sqlParameters,string dataOperator,string paramName)
+        protected string PrepareWhereClauseWithOperator(List<ControlFilter> filters, string controlIdentifer, string where, string dbColumnName, SqlDbType sqlDbType, List<SqlParameter> sqlParameters, string dataOperator, string paramName)
         {
             var filter = filters.FirstOrDefault(f => f.ControlIdentifier == controlIdentifer);
             if (filter != null && string.IsNullOrWhiteSpace(filter.Value) == false)
@@ -261,9 +261,13 @@ namespace BaseLibrary.Database
         {
             try
             {
-                if (dr.IsNull(column))
-                    return string.Empty;
-                return dr[column].ToString();
+                if (dr.IsNull(column) == false)
+                {
+                    var val = dr[columnName: column].ToString();
+                    if (val is not null)
+                        return val;
+                }
+                return string.Empty;
             }
             catch { return string.Empty; }
         }

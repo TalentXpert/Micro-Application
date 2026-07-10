@@ -21,8 +21,9 @@ namespace BaseLibrary.Utilities
         ContactNumberExtension _contactNumber;
         public ContactNumberExtension ContactNumber { get { return _contactNumber ?? (_contactNumber = new ContactNumberExtension()); } }
 
+        RegExExtension _regEx;
+        public RegExExtension RegEx { get { return _regEx ?? (_regEx = new RegExExtension()); } }
 
-       
     }
 
    
