@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Xml;
 
 namespace BaseLibrary.Utilities.Files
 {
@@ -118,12 +120,66 @@ namespace BaseLibrary.Utilities.Files
             }
             catch (Exception exception)
             {
-                if(X.Logger is not null)
+                if (X.Logger is not null)
                     X.Logger.LogError(exception, CodeHelper.CallingMethodInfo(), null, new { Path = path });
             }
 
             var fileText = text.ToString();
             return fileText;
+        }
+
+        public static bool ReplaceTags(string templatePath, string destinationPath, Dictionary<string, string> tags)
+        {
+            string fileName = Path.GetFileName(templatePath);
+            using WordprocessingDocument doc = WordprocessingDocument.Open(templatePath, true);
+
+            var body = doc.MainDocumentPart?.Document.Body;
+
+            var paraElems = body?.Elements<Paragraph>();
+
+            if (paraElems is null)
+                throw new ValidationException("Document doesn't contain any valid paragraphs.");
+
+            foreach (var paraElem in paraElems)
+            {
+                foreach (var runElem in paraElem.Elements<Run>())
+                {
+                    string allText = string.Empty;
+                    foreach (var textElem in runElem.Elements<Text>())
+                    {
+                        allText += textElem.Text;
+                        textElem.Remove();
+                    }
+
+                    var matchedTags = GetTags(allText, tags);
+                    foreach (var tag in matchedTags)
+                    {
+                        allText = allText.Replace(tag, tags[tag]);
+                    }
+
+                    var newText = new Text()
+                    {
+                        Text = allText
+                    };
+
+                    runElem.Append(newText);
+                }
+            }
+
+            string documentPath = Path.Combine(destinationPath, fileName);
+            doc.SaveAs(documentPath);
+            return true;
+        }
+
+        private static List<string> GetTags(string allText, Dictionary<string, string> tags)
+        {
+            var result = new List<string>();
+            foreach (var tag in tags.Keys)
+            {
+                if (allText.Contains(tag))
+                    result.Add(tag);
+            }
+            return result;
         }
     }
 }
