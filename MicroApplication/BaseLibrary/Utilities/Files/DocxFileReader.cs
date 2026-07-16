@@ -128,11 +128,18 @@ namespace BaseLibrary.Utilities.Files
             return fileText;
         }
 
-        public static bool ReplaceTags(string templatePath, string destinationPath, Dictionary<string, string> tags)
+        // https://stackoverflow.com/questions/77054239/replace-text-in-docx-document
+        public static bool ReplaceTags(string templatePath, string destinationPath, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
         {
             string fileName = Path.GetFileName(templatePath);
             using WordprocessingDocument doc = WordprocessingDocument.Open(templatePath, true);
-
+            ReplaceTagsInDocument(doc, tags, tabPrefix, tagPostfix);
+            string documentPath = Path.Combine(destinationPath, fileName);
+            doc.SaveAs(documentPath);
+            return true;
+        }
+        public static void ReplaceTagsInDocument(WordprocessingDocument doc, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
+        {
             var body = doc.MainDocumentPart?.Document.Body;
 
             var paraElems = body?.Elements<Paragraph>();
@@ -151,10 +158,10 @@ namespace BaseLibrary.Utilities.Files
                         textElem.Remove();
                     }
 
-                    var matchedTags = GetTags(allText, tags);
-                    foreach (var tag in matchedTags)
+                    var matchedTags = GetTags(allText, tags, tabPrefix, tagPostfix);
+                    foreach (var tag in matchedTags.Keys)
                     {
-                        allText = allText.Replace(tag, tags[tag]);
+                        allText = allText.Replace(tag, matchedTags[tag]);
                     }
 
                     var newText = new Text()
@@ -165,19 +172,18 @@ namespace BaseLibrary.Utilities.Files
                     runElem.Append(newText);
                 }
             }
-
-            string documentPath = Path.Combine(destinationPath, fileName);
-            doc.SaveAs(documentPath);
-            return true;
         }
-
-        private static List<string> GetTags(string allText, Dictionary<string, string> tags)
+        private static Dictionary<string, string> GetTags(string allText, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
         {
-            var result = new List<string>();
+            var result = new Dictionary<string, string>();
+            if (allText.Contains(tabPrefix) == false)
+                return result;
+            
             foreach (var tag in tags.Keys)
             {
-                if (allText.Contains(tag))
-                    result.Add(tag);
+                string placeholder = $"<<BIOMETA: {tag}>>";
+                if (allText.Contains(placeholder))
+                    result.Add(placeholder, tags[tag]);
             }
             return result;
         }

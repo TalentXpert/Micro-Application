@@ -32,7 +32,7 @@ namespace BaseLibrary.Tests.Utilities.Extensions
         {
             var data = GetData();
             var r = new RegExExtension();
-            var result = DocxFileReader.ReplaceTags(@"D:\BioMeta_Intelligent_DMP_Master_Template_v1.0.docx", @"D:\StudyDocuments", data);
+            var result = DocxFileReader.ReplaceTags(@"D:\BioMeta_Intelligent_DMP_Master_Template_v1.0.docx", @"D:\StudyDocuments", data,"", "");
             Assert.IsTrue(result);
         }
 
