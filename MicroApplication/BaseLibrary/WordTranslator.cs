@@ -1,5 +1,17 @@
-﻿namespace BaseLibrary
+﻿using BaseLibrary.DTOs;
+
+namespace BaseLibrary
 {
+    public class SettingLevel : NumberOption
+    {
+        public static SettingLevel Global = new SettingLevel("Global", 1);
+        public static SettingLevel Organization = new SettingLevel("Organization", 2);
+        public static SettingLevel Study = new SettingLevel("Study", 3);
+
+        protected SettingLevel(string text, int value) : base(text, value)
+        {
+        }
+    }
     public class WordTranslator
     {
         static WordTranslator()
