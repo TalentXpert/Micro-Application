@@ -149,14 +149,17 @@ namespace BaseLibrary.Utilities.Files
 
             foreach (var paraElem in paraElems)
             {
+                string allText = string.Empty;
                 foreach (var runElem in paraElem.Elements<Run>())
                 {
-                    string allText = string.Empty;
                     foreach (var textElem in runElem.Elements<Text>())
                     {
                         allText += textElem.Text;
                         textElem.Remove();
                     }
+
+                    if (allText.Contains(tabPrefix) && !allText.Contains(tagPostfix))
+                        continue;
 
                     var matchedTags = GetTags(allText, tags, tabPrefix, tagPostfix);
                     foreach (var tag in matchedTags.Keys)
@@ -169,6 +172,7 @@ namespace BaseLibrary.Utilities.Files
                         Text = allText
                     };
 
+                    allText = string.Empty;
                     runElem.Append(newText);
                 }
             }
