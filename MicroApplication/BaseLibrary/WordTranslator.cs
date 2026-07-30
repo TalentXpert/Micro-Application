@@ -11,6 +11,10 @@ namespace BaseLibrary
         protected SettingLevel(string text, int value) : base(text, value)
         {
         }
+        public bool AreEuqualSettingLevel(int level)
+        {
+            return level == this.Value;
+        }
     }
     public class WordTranslator
     {
