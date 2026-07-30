@@ -16,7 +16,7 @@ namespace BaseLibrary.Utilities.Adapters
             }
             catch
             {
-                throw new ValidationException($"{typeof(T).Name} can is not serializable from [{json}].");
+                throw new ValidationException($"{typeof(T).Name} is not serializable from [{json}].");
             }
         }
 
