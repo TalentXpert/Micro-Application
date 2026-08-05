@@ -292,7 +292,7 @@ namespace BaseLibrary.Controllers
             if (model is null)
                 throw new ValidationException("Input model is null. Please verify model binding.");
         }
-
+        
         protected static void GaurdForUploadFile(IFormFile file, string argName, string extension, int fileSize = 5)
         {
             if (C.HasNoContents(file))

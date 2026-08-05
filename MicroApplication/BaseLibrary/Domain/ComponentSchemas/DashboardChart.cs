@@ -13,6 +13,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public int MinWidth { get; set; }
         public List<ChartColumn> Columns { get; set; } = [];
         public List<List<string>> SeriesData { get; set; } = []; ///This hold series data for chart one cell for one column. 
+        public string Dscription { get; set; } = "";
+        public decimal? Average { get; set; }
         public DashboardChart(ChartSchema schema, DataTable data)
         {
             ChartType = schema.ChartType;
@@ -39,6 +41,51 @@ namespace BaseLibrary.Domain.ComponentSchemas
                 SeriesData.Add(d);
             }
         }
+        public DashboardChart(ChartSchema schema, List<List<object>> seriesObjectData)
+        {
+            ChartType = schema.ChartType;
+            Title = schema.Name;
+            MinHeight = schema.MinHeight;
+            MinWidth = schema.MinWidth;
+            foreach (var c in schema.Columns)
+                Columns.Add(new ChartColumn { Title = c.Title, DataType = c.DataType, Color = c.Color });
+
+            var myObject = seriesObjectData.First().FirstOrDefault();
+            if (myObject is null)
+                return;
+            Type objectType = myObject.GetType();
+            Dictionary<string, PropertyInfo> propertyInfo = new Dictionary<string, PropertyInfo>();
+            foreach (var c in schema.Columns)
+            {
+                PropertyInfo? propInfo = objectType.GetProperty(c.DatabaseColumnName);
+                if (propInfo is null)
+                    continue;
+                propertyInfo[c.DatabaseColumnName] = propInfo;
+            }
+
+            foreach (var objectData in seriesObjectData)
+            {
+                foreach (object o in objectData)
+                {
+                    var d = new List<string>();
+                    foreach (var c in schema.Columns)
+                    {
+                        string? seriesData = null;
+                        if (propertyInfo.TryGetValue(c.DatabaseColumnName, out PropertyInfo pi))
+                        {
+                            object? propertyValue = pi.GetValue(o, null);
+                            seriesData = propertyValue?.ToString()?.Trim();
+                        }
+                        if (string.IsNullOrWhiteSpace(seriesData) == false)
+                            d.Add(seriesData);
+                        else
+                            d.Add(GetEmptyData(c.DataType));
+                    }
+                    SeriesData.Add(d);
+                }
+            }
+        }
+
         public DashboardChart(ChartSchema schema, List<object> objectData)
         {
             ChartType = schema.ChartType;
