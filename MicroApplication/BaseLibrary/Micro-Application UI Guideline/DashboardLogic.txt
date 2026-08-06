@@ -4,3 +4,15 @@ Row
 DashboardPanel
 DashboardPanelContent
 Chart
+
+
+To add a new Dashboard
+1. add a new dashboard class in your project like  public class RiskAnalysisDashboard : MacroDashboard
+2. make an entry of new dashboard in public class ApplicationDashboard : BaseDashboard class to register with framework. 
+3. add chart class like public class SiteSignalScoreChart that implement two methods- 1 that return chart and other return datasource. public static MacroSqlDataSource GetDataSource(), public static MacroSqlDataSource GetDataSource()
+4. Add filter control in ApplicationControl.cs
+5. add datasource int ApplicationDataSource.cs 
+6. Add chart to ApplicationChart.cs
+7. add filter as parameter in ApplicationDataSourceParameter 
+8. use any defined parameter in RiskAnalysisDashboard for filtering chart data 
+9. define control options in UIControlFactory.cs if required like for dropdown control. 
