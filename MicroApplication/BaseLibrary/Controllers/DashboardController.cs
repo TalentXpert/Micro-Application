@@ -37,7 +37,7 @@ namespace BaseLibrary.Controllers
                     var appControl = BSF.MicroAppContract.GetBaseControl().GetControls().FirstOrDefault(c => c.Id == macroParameter.AppControlId.Value);
                     if (appControl is null)
                         continue;
-                    var smartControl = factory.GetFilterUIControl(LoggedInUser, appControl, null, null, parameter.IsMandatory);
+                    var smartControl = factory.GetFilterUIControl(LoggedInUser, appControl, null, null, parameter.AddEmptyEntry);
                     if (smartControl != null)
                         dashboard.Dashboard.Filters.Add(smartControl);
                 }

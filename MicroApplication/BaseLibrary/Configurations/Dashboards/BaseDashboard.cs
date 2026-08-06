@@ -57,6 +57,7 @@
     {
         public Guid MacroDataSourceParameterId { get; set; } 
         public bool IsMandatory { get; set; } = false;
+        public bool AddEmptyEntry { get; set; } = false;
     }
 }
 
