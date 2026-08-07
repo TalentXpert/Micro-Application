@@ -147,6 +147,7 @@ namespace BaseLibrary.Controllers
             {
                 if (model is null)
                     throw new ValidationException("Input model is null.");
+                model.AddInternalParametersToGlobalFilterValues();
                 var chart = BSF.ChartService.GetChart(model, LoggedInUser);
                 if (chart != null)
                     return Ok(chart);
@@ -164,5 +165,18 @@ namespace BaseLibrary.Controllers
         public Dictionary<string, string> GlobalFilterValues { get; set; } = new();
         public List<ControlValue> ControlFilterValues { get; set; } = [];
         public string? InternalParameters { get; set; } // comma separated parameters set from server side. 
+        public void AddInternalParametersToGlobalFilterValues()
+        {
+            if (string.IsNullOrWhiteSpace(InternalParameters))
+                return;
+            var parts = InternalParameters.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 0) 
+                return;
+            foreach (var part in parts)
+            {
+                var paramPairParts = part.Split(":", StringSplitOptions.RemoveEmptyEntries);
+                GlobalFilterValues.Add(paramPairParts[0], paramPairParts[1]);
+            }
+        }
     }
 }

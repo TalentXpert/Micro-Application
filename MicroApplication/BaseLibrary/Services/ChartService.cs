@@ -36,7 +36,7 @@ namespace BaseLibrary.Services
             if (datasource is null)
                 throw new ValidationException($"Data source with id {chartSchema.DataSourceId} not found for chart {model.ChartId}.");
             if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.Sql))
-                return GetDashboardChartFromSqlDataSource(datasource.GetSqlDataSource(), model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues, model.InternalParameters);
+                return GetDashboardChartFromSqlDataSource(datasource.GetSqlDataSource(), model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues);
             if (MacroDataSourceType.AreEqual(datasource.DataSourceType, MacroDataSourceType.CustomObjectList))
                 return GetDashboardChartFromCustomObjectList(datasource, model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues);
             throw new ValidationException($"No datasource found for {model.ChartId}.");
@@ -49,7 +49,7 @@ namespace BaseLibrary.Services
             return chart;
         }
 
-        private DashboardChart GetDashboardChartFromSqlDataSource(MacroSqlDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, string? internalParameters)
+        private DashboardChart GetDashboardChartFromSqlDataSource(MacroSqlDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser? loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
             var microSqlQuery = datasource.GetSqlQuery();
             if (microSqlQuery is null)
@@ -57,7 +57,7 @@ namespace BaseLibrary.Services
 
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser,SF.MicroAppContract.GetBaseDataSourceParameter(), internalParameters,out string query);
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser,SF.MicroAppContract.GetBaseDataSourceParameter(), out string query);
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);
                 return chart;

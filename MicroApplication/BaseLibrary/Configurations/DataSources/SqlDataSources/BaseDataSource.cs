@@ -77,7 +77,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return title.Trim();
         }
         
-        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseDataSourceParameter baseDataSourceParameter,string? internalParameters, out string query)
+        public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseDataSourceParameter baseDataSourceParameter, out string query)
         {
             var parameters = new List<SqlParameter>();
             var mandatoryParameters = microSqlQuery.GetAllParameters(microSqlQuery.QueryTextWithMandatoryParameters);
@@ -87,7 +87,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                 var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
                 if(parameter == null)
                     throw new Exception($"Parameter {param} is not defined in data source parameters.");
-                var sqlParameter = GetParameter(parameter, true, filterValues, globalFilterIds, internalParameters, user);
+                var sqlParameter = GetParameter(parameter, true, filterValues, globalFilterIds, user);
                 if (sqlParameter == null)
                     throw new Exception($"Mandatory parameter {param} is missing for query.");
                 parameters.Add(sqlParameter);
@@ -102,7 +102,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                     var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
                     if (parameter == null)
                         throw new Exception($"Parameter {param} is not defined in data source parameters.");
-                    SqlParameter? sqlParameter = GetParameter(parameter,false,filterValues, globalFilterIds, internalParameters, user);
+                    SqlParameter? sqlParameter = GetParameter(parameter,false,filterValues, globalFilterIds, user);
                     if (sqlParameter != null)
                         parameters.Add(sqlParameter);
                     else
@@ -115,28 +115,14 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return parameters;
         }
 
-        private SqlParameter? GetParameter(MacroDataSourceParameter parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, string? internalParameters, ApplicationUser? user)
+        private SqlParameter? GetParameter(MacroDataSourceParameter parameter, bool isMandatory, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user)
         {
             var sqlParameter = GetStandardParameter(user, parameter.SqlParameterName);
             if (sqlParameter is null)
                 sqlParameter = GetParameter(parameter, isMandatory, filterValues, globalFilterIds);
-            if (sqlParameter is null)
-                sqlParameter = GetInternalParameter(internalParameters, parameter.SqlParameterName);
             return sqlParameter;
         }
-
-        private SqlParameter? GetInternalParameter(string? internalParameters, string? parameter)
-        {
-            if (parameter is null || internalParameters is null)
-                return null;
-            var parts = internalParameters.Split('|',StringSplitOptions.RemoveEmptyEntries);
-            if(parts.Length == 0) return null;
-            var paramPair = parts.FirstOrDefault(x=>x.Contains(parameter));
-            if(paramPair is null) return null;
-            var paramPairParts = paramPair.Split(":", StringSplitOptions.RemoveEmptyEntries);
-            return new SqlParameter(parameter, paramPairParts[1]);
-        }
-
+       
         private static SqlParameter? GetStandardParameter(ApplicationUser? user, string? parameter)
         {
             if(parameter is null)
