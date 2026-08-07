@@ -52,6 +52,14 @@ namespace BaseLibrary.Domain.ComponentSchemas
             Position= position;
             Width = width;
         }
+        public DashboardPanel(DashboardPanelContentType contentType, Guid contentId, string title, int position, int width,string internalParams) : this(contentType)
+        {
+            ContentId = contentId;
+            Title = title;
+            Position = position;
+            Width = width;
+            InternalParameters= internalParams;
+        }
     }
 
     public class DashboardPanelContentType
