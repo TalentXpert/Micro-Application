@@ -163,5 +163,6 @@ namespace BaseLibrary.Controllers
         public Guid ChartId { get; set; }
         public Dictionary<string, string> GlobalFilterValues { get; set; } = new();
         public List<ControlValue> ControlFilterValues { get; set; } = [];
+        public string? InternalParameters { get; set; } // comma separated parameters set from server side. 
     }
 }

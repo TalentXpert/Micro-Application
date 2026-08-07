@@ -38,7 +38,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
         /// <summary>
         /// This specify actual content id from - ComponentSchema table
         /// </summary>
-        public Guid? ContentId { get; set; } 
+        public Guid? ContentId { get; set; }
+        public string? InternalParameters { get; set; } // pipe separated parameters set from server side. 
         public DashboardPanel() { }
         public DashboardPanel(DashboardPanelContentType contentType)
         {
