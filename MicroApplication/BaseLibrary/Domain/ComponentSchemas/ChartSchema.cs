@@ -13,7 +13,7 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public string ChartType { get; set; } = "";
         public int MinWidth { get; set; }
         public int MinHeight { get; set; }
-        public List<ChartColumnSchema> Columns { get; set; } = new List<ChartColumnSchema>();
+        public List<ChartColumnSchema> Columns { get; set; } = [];
     }
 
     /// <summary>

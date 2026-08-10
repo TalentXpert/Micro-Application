@@ -1,5 +1,7 @@
 ﻿using BaseLibrary.Controls.Charts;
+using BaseLibrary.Controls.Dashboard;
 using BaseLibrary.Domain.ComponentSchemas;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace BaseLibrary.Configurations.Dashboards.Charts
 {
@@ -9,6 +11,7 @@ namespace BaseLibrary.Configurations.Dashboards.Charts
         /// Implement this method to return your application charts 
         /// </summary>
         protected abstract List<ChartSchema> GetApplicationCharts();
+        protected abstract string GetApplicationChartDescription(GetDashboardChartInputVM model);
 
         public static Guid UserStatusChartId = Guid.Parse("05BEFE97-C159-4861-B095-5745BFE1B069");
 
@@ -35,13 +38,21 @@ namespace BaseLibrary.Configurations.Dashboards.Charts
             charts.Add(chart);
             return charts;
         }
-
+        public string GetChartDescription(GetDashboardChartInputVM model)
+        {
+            return GetApplicationChartDescription(model);
+        }
         public List<ChartSchema> GetCharts()
         {
             var sqlDataSources = new List<ChartSchema>();
             sqlDataSources.AddRange(GetApplicationCharts());
             sqlDataSources.AddRange(GetBaseCharts());
             return sqlDataSources;
+        }
+        public ChartSchema? GetChartSchema(Guid id)
+        {
+            var chart = GetCharts().FirstOrDefault(c => c.Id == id);
+            return chart;
         }
     }
 }

@@ -22,7 +22,17 @@ namespace BaseLibrary.Services
         public DashboardChart GetChart(GetDashboardChartInputVM model, ApplicationUser loggedInUser)
         {
             var chartSchema = SF.ComponentSchemaService.GetChartSchema(model.ChartId);
-            return GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues,model.GlobalFilterValues);
+            var chart = GetChartPreview(model.ChartId, chartSchema, loggedInUser, model.ControlFilterValues, model.GlobalFilterValues);
+
+            var description = GetChartDescription(model);
+            if (string.IsNullOrWhiteSpace(description) == false)
+                chart.Description = description;
+
+            return chart;
+        }
+        private string GetChartDescription(GetDashboardChartInputVM model)
+        {
+            return SF.MicroAppContract.GetBaseChart().GetChartDescription(model);
         }
         public DashboardChart GetChartPreview(Guid chartId, ChartSchema chartSchema, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
@@ -45,7 +55,7 @@ namespace BaseLibrary.Services
 
         private DashboardChart GetDashboardChartFromCustomObjectList(MacroDataSource datasource, Guid chartId, ChartSchema chartSchema, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds)
         {
-            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(SF,datasource, loggedInUser, filterValues, globalFilterIds);
+            var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(SF, datasource, loggedInUser, filterValues, globalFilterIds);
             var chart = new DashboardChart(chartSchema, dataObjects);
             return chart;
         }
@@ -58,7 +68,7 @@ namespace BaseLibrary.Services
 
             using (var db = new SqlCommandExecutor())
             {
-                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser,SF.MicroAppContract.GetBaseDataSourceParameter(), out string query);
+                var param = SF.MicroAppContract.GetBaseSqlDataSource().GetQueryParameters(microSqlQuery, filterValues, globalFilterIds, loggedInUser, SF.MicroAppContract.GetBaseDataSourceParameter(), out string query);
                 var dataTable = db.GetDataTable(query, param);
                 var chart = new DashboardChart(chartSchema, dataTable);
                 return chart;
