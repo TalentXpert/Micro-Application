@@ -5,7 +5,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
 {
     public abstract class BaseDataSource : CleanCode
     {
-        
+
         /// <summary>
         /// Implement this method to return your application SqlDataSources
         /// </summary>
@@ -47,8 +47,8 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
         public List<MacroDataSource> GetAllDataSources()
         {
             var dataSources = new List<MacroDataSource>();
-            dataSources.AddRange(GetSqlDataSources().Select(s=>MacroDataSource.CreateSqlDataSource(s)));
-            dataSources.AddRange(GetApplicationCustomObjectDataSources().Select(s=>MacroDataSource.CreateCustomObjectDataSource(s)));
+            dataSources.AddRange(GetSqlDataSources().Select(s => MacroDataSource.CreateSqlDataSource(s)));
+            dataSources.AddRange(GetApplicationCustomObjectDataSources().Select(s => MacroDataSource.CreateCustomObjectDataSource(s)));
             //var sqlDataSources = GetSqlDataSources();
             //dataSources.AddRange(sqlDataSources);
             return dataSources;
@@ -76,7 +76,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             }
             return title.Trim();
         }
-        
+
         public List<SqlParameter> GetQueryParameters(MicroSqlQuery microSqlQuery, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds, ApplicationUser? user, BaseDataSourceParameter baseDataSourceParameter, out string query)
         {
             var parameters = new List<SqlParameter>();
@@ -85,11 +85,13 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             foreach (var param in mandatoryParameters)
             {
                 var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
-                if(parameter == null)
+                if (parameter == null)
                     throw new Exception($"Parameter {param} is not defined in data source parameters.");
                 var sqlParameter = GetParameter(parameter, true, filterValues, globalFilterIds, user);
                 if (sqlParameter == null)
                     throw new Exception($"Mandatory parameter {param} is missing for query.");
+                if (parameters.Any(p => p.ParameterName == sqlParameter.ParameterName))
+                        continue;
                 parameters.Add(sqlParameter);
             }
             var optionalQueryText = new StringBuilder();
@@ -102,7 +104,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                     var parameter = baseDataSourceParameter.GetMacroDataSourceParameterBySqlParameterName(param);
                     if (parameter == null)
                         throw new Exception($"Parameter {param} is not defined in data source parameters.");
-                    SqlParameter? sqlParameter = GetParameter(parameter,false,filterValues, globalFilterIds, user);
+                    SqlParameter? sqlParameter = GetParameter(parameter, false, filterValues, globalFilterIds, user);
                     if (sqlParameter != null)
                         parameters.Add(sqlParameter);
                     else
@@ -122,10 +124,10 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                 sqlParameter = GetParameter(parameter, isMandatory, filterValues, globalFilterIds);
             return sqlParameter;
         }
-       
+
         private static SqlParameter? GetStandardParameter(ApplicationUser? user, string? parameter)
         {
-            if(parameter is null)
+            if (parameter is null)
                 return null;
             if (user is not null && user.OrganizationId.HasValue)
             {
@@ -135,7 +137,7 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
                     "@organizationId",
                     "@OrganisationId",
                 };
-                if (orgParamsList.Any(p=>AreEqualsIgnoreCase(parameter,p)))
+                if (orgParamsList.Any(p => AreEqualsIgnoreCase(parameter, p)))
                     return new SqlParameter(parameter, user.OrganizationId.Value);
             }
             if (user is not null && AreEqualsIgnoreCase(parameter, "@userId"))
