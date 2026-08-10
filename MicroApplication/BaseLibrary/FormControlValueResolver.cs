@@ -1,6 +1,4 @@
-﻿using BaseLibrary.Configurations;
-using System.Data;
-
+﻿
 namespace BaseLibrary
 {
     public class DashboardDataSource
@@ -9,44 +7,10 @@ namespace BaseLibrary
         public string Name { get; set; }
         public DashboardDataSource(string name)
         {
-            Forms = new List<AppForm>();
+            Forms = [];
             Name = name;
         }
     }
-
-    //public class FormControlValueDataSource
-    //{
-    //    public PageDataStore? City { get; set; }
-    //    public PageDataStore? State { get; set; }
-    //    public PageDataStore? Country { get; set; }
-    //    public AppControl? Control { get; set; }
-    //    public ApplicationUser? User { get; set; }
-    //    public PageDataStore? Form { get; set; }
-    //}
-
-    //public interface IFormControlValueResolver
-    //{
-    //    string? GetFormControlValue(AppForm form, AppControl control);
-    //}
-    //public class FormControlValueResolver: IFormControlValueResolver
-    //{
-    //    public BaseLinqFormDataSource FormControlValueDataSource { get; }
-    //    public FormControlValueResolver(BaseLinqFormDataSource formControlValueDataSource)
-    //    {
-    //        FormControlValueDataSource = formControlValueDataSource;
-    //    }
-    //    public virtual string? GetFormControlValue(AppForm form, AppControl control)
-    //    {
-    //        //if (control.ControlIdentifier == BaseControl.Name.ControlIdentifier)
-    //        //    return FormControlValueDataSource.Form?.Name;
-    //        //if (control.ControlIdentifier == BaseControl.Description.ControlIdentifier)
-    //        //    return FormControlValueDataSource.Form?.Description;
-    //        //return FormControlValueDataSource.Form?.GetValue(control.ControlIdentifier);
-    //        return null;
-    //    }
-    //}
-
-    
 
     public class GraphBuilder : CleanCode
     {
@@ -65,7 +29,7 @@ namespace BaseLibrary
         private AppControl DataControl { get; }
         private GraphDataType GraphDataType { get; }
 
-        public new List<List<string>> GetDashboardChart()
+        public List<List<string>> GetDashboardChart()
         {
             var data = new List<List<string>>();
             var dataDictionary = new Dictionary<string, decimal>();

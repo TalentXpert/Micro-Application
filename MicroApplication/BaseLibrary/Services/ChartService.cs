@@ -1,5 +1,6 @@
 ﻿
 using BaseLibrary.Controllers;
+using BaseLibrary.Controls.Dashboard;
 using BaseLibrary.Domain.ComponentSchemas;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
