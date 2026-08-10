@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Reflection;
 
 namespace BaseLibrary.Domain.ComponentSchemas
 {
@@ -7,23 +8,30 @@ namespace BaseLibrary.Domain.ComponentSchemas
     /// </summary>
     public class DashboardChart
     {
-        public string ChartType { get; set; } //It is of type ChartType
+        public string ChartType { get; set; }  //It is of type ChartType
         public string Title { get; set; }
         public int MinHeight { get; set; }
         public int MinWidth { get; set; }
         public List<ChartColumn> Columns { get; set; } = [];
         public List<List<string>> SeriesData { get; set; } = []; ///This hold series data for chart one cell for one column. 
-        public string Dscription { get; set; } = "";
+        public string Description { get; set; } = "";
         public decimal? Average { get; set; }
-        public DashboardChart(ChartSchema schema, DataTable data)
+        public DashboardChart() 
+        {
+            
+        }
+        public DashboardChart(ChartSchema schema) 
         {
             ChartType = schema.ChartType;
             Title = schema.Name;
             MinHeight = schema.MinHeight;
             MinWidth = schema.MinWidth;
+            Description = schema.Description;
             foreach (var c in schema.Columns)
                 Columns.Add(new ChartColumn { Title = c.Title, DataType = c.DataType, Color = c.Color });
-
+        }
+        public DashboardChart(ChartSchema schema, DataTable data):this(schema) 
+        {
             foreach (DataRow dr in data.Rows)
             {
                 var d = new List<string>();
@@ -41,15 +49,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
                 SeriesData.Add(d);
             }
         }
-        public DashboardChart(ChartSchema schema, List<List<object>> seriesObjectData)
+        public DashboardChart(ChartSchema schema, List<List<object>> seriesObjectData) : this(schema)
         {
-            ChartType = schema.ChartType;
-            Title = schema.Name;
-            MinHeight = schema.MinHeight;
-            MinWidth = schema.MinWidth;
-            foreach (var c in schema.Columns)
-                Columns.Add(new ChartColumn { Title = c.Title, DataType = c.DataType, Color = c.Color });
-
             var myObject = seriesObjectData.First().FirstOrDefault();
             if (myObject is null)
                 return;
@@ -86,15 +87,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
             }
         }
 
-        public DashboardChart(ChartSchema schema, List<object> objectData)
+        public DashboardChart(ChartSchema schema, List<object> objectData) : this(schema)
         {
-            ChartType = schema.ChartType;
-            Title = schema.Name;
-            MinHeight = schema.MinHeight;
-            MinWidth = schema.MinWidth;
-            foreach (var c in schema.Columns)
-                Columns.Add(new ChartColumn { Title = c.Title, DataType = c.DataType, Color = c.Color });
-
             var myObject = objectData.FirstOrDefault();
             if (myObject is null)
                 return;
