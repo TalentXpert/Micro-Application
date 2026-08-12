@@ -66,7 +66,8 @@ namespace BaseLibrary.Configurations.PageHandlers
         {
             var actions = new List<SmartAction>
             {
-                new SmartAction(form,FormTypes.DynamicForm, "View","View","View", SmartActionFormMode.View),
+                //new SmartAction(form,FormTypes.DynamicForm, "View","View","View", SmartActionFormMode.View),
+                new SmartAction(BaseForm.AuditForm,FormTypes.TableViewForm, "Audit Details","AuditDetails","AuditDetails",SmartActionFormMode.View),
                 //new SmartAction(form,FormTypes.DynamicForm,"Edit","Edit","Edit", SmartActionFormMode.Edit),
                 //new SmartAction(BaseForm.UserRoleForm,FormTypes.SelectFromListForm, "Manage Roles","ManageRoles","ManageRoles",SmartActionFormMode.Add),
             };

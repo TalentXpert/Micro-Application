@@ -1,5 +1,11 @@
 ﻿namespace BaseLibrary.Configurations.Models
 {
+    public class FormViewTable
+    {
+        public List<string> Columns { get; set; } = new List<string>();
+        public List<List<string>> Rows { get; set; }= new List<List<string>>();
+    }
+
     /// <summary>
     /// This class is used to hold data needed to render SelectFromList form.
     /// </summary>

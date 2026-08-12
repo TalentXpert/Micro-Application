@@ -24,6 +24,14 @@ namespace BaseLibrary.Configurations
             }
             throw new ValidationException($"No form handler found for form id -{formId}");
         }
-
+        public virtual FormTableFormHandler GetFormTableFormHandler(Guid formId, ApplicationUser loggedInUser)
+        {
+            switch (formId.ToString().ToUpper())
+            {
+                case BaseForm.AuditFormId:
+                    return new AuditFormFormHandler(BaseLibraryServiceFactory, loggedInUser);
+            }
+            throw new ValidationException($"No table view form handler found for form id -{formId}");
+        }
     }
 }
