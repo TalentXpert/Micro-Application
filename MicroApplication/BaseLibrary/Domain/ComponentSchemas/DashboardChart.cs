@@ -3,6 +3,27 @@ using System.Reflection;
 
 namespace BaseLibrary.Domain.ComponentSchemas
 {
+    public class DashboardData
+    {
+        public List<ChartData> ChartData { get; set; } = [];
+    }
+
+    public class ChartData
+    {
+        public string ChartType { get; set; } = "";
+        public List<ChartColumn> Columns { get; set; } = [];
+        public List<ChartColumn> RowHeaders { get; set; } = [];
+        public List<List<string>> SeriesData { get; set; } = [];
+        public List<ChartAdditionalInformation> RelativeData {  get; set; } = [];
+        public List<ChartAdditionalInformation> ChartAdditionalInformations {  get; set; } = [];
+    }
+    
+    public class ChartAdditionalInformation
+    {
+        public string Label { get; set; } = "";
+        public string Data { get; set; } = "";
+    }
+
     /// <summary>
     /// This class represent chart data that is used to render chart on dashboard
     /// </summary>
@@ -13,6 +34,7 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public int MinHeight { get; set; }
         public int MinWidth { get; set; }
         public List<ChartColumn> Columns { get; set; } = [];
+        public List<ChartColumn> RowHeaders { get; set; } = [];
         public List<List<string>> SeriesData { get; set; } = []; ///This hold series data for chart one cell for one column. 
         public string Description { get; set; } = "";
         public decimal? Average { get; set; }

@@ -193,7 +193,17 @@ namespace BaseLibrary.DatabaseMigrations
             }
             return false;
         }
-
+        protected bool CreateIntColumnWithDefaultValue(string table, string column, int value)
+        {
+            if (HasColumn(table, column) is false)
+            {
+                AddColumn(table, column, "int", true);
+                ExecuteQuery($"Update {table} Set {column}={value} where {column} is null");
+                ChangeColumnDataType(table, column, "int", false);
+                return true;
+            }
+            return false;
+        }
         protected bool CreateBooleanColumnWithDefaultValue(string table, string column, bool defaultValue)
         {
             if (HasColumn(table, column) is false)
