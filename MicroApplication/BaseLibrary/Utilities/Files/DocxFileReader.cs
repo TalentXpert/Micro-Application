@@ -129,7 +129,7 @@ namespace BaseLibrary.Utilities.Files
         }
 
         // https://stackoverflow.com/questions/77054239/replace-text-in-docx-document
-        public static bool ReplaceTags(string templatePath, string destinationPath, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
+        public static bool ReplaceTags(string templatePath, string destinationPath, Dictionary<string, object> tags, string tabPrefix, string tagPostfix)
         {
             string fileName = Path.GetFileName(templatePath);
             using WordprocessingDocument doc = WordprocessingDocument.Open(templatePath, true);
@@ -138,7 +138,7 @@ namespace BaseLibrary.Utilities.Files
             doc.SaveAs(documentPath);
             return true;
         }
-        public static void ReplaceTagsInDocument(WordprocessingDocument doc, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
+        public static void ReplaceTagsInDocument(WordprocessingDocument doc, Dictionary<string, object> tags, string tabPrefix, string tagPostfix)
         {
             var body = doc.MainDocumentPart?.Document.Body;
 
@@ -164,7 +164,7 @@ namespace BaseLibrary.Utilities.Files
                     var matchedTags = GetTags(allText, tags, tabPrefix, tagPostfix);
                     foreach (var tag in matchedTags.Keys)
                     {
-                        allText = allText.Replace(tag, matchedTags[tag]);
+                        allText = allText.Replace(tag, matchedTags[tag].ToString());
                     }
 
                     var newText = new Text()
@@ -177,9 +177,9 @@ namespace BaseLibrary.Utilities.Files
                 }
             }
         }
-        private static Dictionary<string, string> GetTags(string allText, Dictionary<string, string> tags, string tabPrefix, string tagPostfix)
+        private static Dictionary<string, object> GetTags(string allText, Dictionary<string, object> tags, string tabPrefix, string tagPostfix)
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, object>();
             if (allText.Contains(tabPrefix) == false)
                 return result;
             
