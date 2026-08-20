@@ -36,9 +36,9 @@ namespace BaseLibrary.Tests.Utilities.Extensions
             Assert.IsTrue(result);
         }
 
-        private Dictionary<string,string> GetData()
+        private Dictionary<string,object> GetData()
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, object>();
             result["<<BIOMETA: Protocol Title>>"] = @"Open-label, randomized, multicenter, phase IV trial comparing parenteral nutrition using Eurotubes® vs. traditional 2/3-chamber bags in subjects with metastatic or localized solid tumors requiring parenteral nutrition – The PEKANNUSS Trial";
             result["<<BIOMETA: Sponsor>>"] = @"Institut für Klinische Krebsforschung IKF GmbH at Krankenhaus Nordwest Steinbacher Hohl 2-26 60488 Frankfurt am Main";
             result["<<BIOMETA: Protocol Number>>"] = @"PEKANNUSS";

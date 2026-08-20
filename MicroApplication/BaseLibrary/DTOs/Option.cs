@@ -17,8 +17,40 @@ namespace BaseLibrary.DTOs
             Value = value;
         }
     }
-
-    public class Option
+    public class NumberItemModel
+    {
+        public string Text { get; set; } = "";
+        public int Id { get; set; }
+        public NumberItemModel() { }
+        public NumberItemModel(string text, int id)
+        {
+            Text = text;
+            Id = id;
+        }
+    }
+    public class GuidItemModel
+    {
+        public string Text { get; set; } = "";
+        public Guid Id { get; set; }
+        public GuidItemModel() { }
+        protected GuidItemModel(string text, Guid id)
+        {
+            Text = text;
+            Id = id;
+        }
+    }
+    public class TextItemModel
+    {
+        public string Text { get; set; } = "";
+        public string Value { get; set; } = "";
+        public TextItemModel() { }
+        public TextItemModel(string text, string value)
+        {
+            Text = text;
+            Value = value;
+        }
+    }
+        public class Option
     {
         public string Text { get; set; }
         public string Value { get; set; }

@@ -14,8 +14,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public List<ChartColumn> Columns { get; set; } = [];
         public List<ChartColumn> RowHeaders { get; set; } = [];
         public List<List<string>> SeriesData { get; set; } = [];
-        public List<ChartAdditionalInformation> RelativeData {  get; set; } = [];
-        public List<ChartAdditionalInformation> ChartAdditionalInformations {  get; set; } = [];
+        public List<List<ChartAdditionalInformation>> RelativeData {  get; set; } = [];
+        public List<List<ChartAdditionalInformation>> ChartAdditionalInformations {  get; set; } = [];
     }
     
     public class ChartAdditionalInformation
