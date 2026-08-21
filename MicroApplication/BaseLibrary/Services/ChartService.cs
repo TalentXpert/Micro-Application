@@ -57,6 +57,8 @@ namespace BaseLibrary.Services
         {
             var dataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetCustomObjectList(SF, datasource, loggedInUser, filterValues, globalFilterIds);
             var chart = new DashboardChart(chartSchema, dataObjects);
+            var additionalDataObjects = SF.MicroAppContract.GetBaseSqlDataSource().GetChartData(SF, datasource, loggedInUser, filterValues, globalFilterIds, chartId);
+            chart.AddAdditionalData(additionalDataObjects);
             return chart;
         }
 

@@ -148,6 +148,8 @@ namespace BaseLibrary.Configurations.DataSources.SqlDataSources
             return null;
         }
 
-        public abstract List<object> GetCustomObjectList(IBaseLibraryServiceFactory sF, MacroDataSource datasource, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
+        public abstract List<object> GetCustomObjectList(IBaseLibraryServiceFactory sf, MacroDataSource datasource, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds);
+
+        public abstract ChartData? GetChartData(IBaseLibraryServiceFactory sf, MacroDataSource datasource, ApplicationUser loggedInUser, List<ControlValue> filterValues, Dictionary<string, string> globalFilterIds,Guid chartId);
     }
 }

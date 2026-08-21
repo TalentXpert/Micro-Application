@@ -14,8 +14,9 @@ namespace BaseLibrary.Utilities.Adapters
                     return default(T);
                 return JsonConvert.DeserializeObject<T>(json);
             }
-            catch
+            catch(Exception e) 
             {
+                var m = e.Message;
                 throw new ValidationException($"{typeof(T).Name} is not serializable from [{json}].");
             }
         }

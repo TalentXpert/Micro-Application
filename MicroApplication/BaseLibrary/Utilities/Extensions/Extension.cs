@@ -24,6 +24,9 @@ namespace BaseLibrary.Utilities
         RegExExtension _regEx;
         public RegExExtension RegEx { get { return _regEx ?? (_regEx = new RegExExtension()); } }
 
+        IntegerExtension _number;
+        public IntegerExtension Integer { get { return _number ?? (_number = new IntegerExtension()); } }
+
     }
 
    

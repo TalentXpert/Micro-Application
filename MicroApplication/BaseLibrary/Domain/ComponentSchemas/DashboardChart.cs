@@ -5,6 +5,9 @@ namespace BaseLibrary.Domain.ComponentSchemas
 {
     public class DashboardData
     {
+        public string status { get; set; }
+        public string study_id { get; set; }
+        public string message { get; set; }
         public List<ChartData> ChartData { get; set; } = [];
     }
 
@@ -14,10 +17,10 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public List<ChartColumn> Columns { get; set; } = [];
         public List<ChartColumn> RowHeaders { get; set; } = [];
         public List<List<string>> SeriesData { get; set; } = [];
-        public List<List<ChartAdditionalInformation>> RelativeData {  get; set; } = [];
-        public List<List<ChartAdditionalInformation>> ChartAdditionalInformations {  get; set; } = [];
+        public List<List<ChartAdditionalInformation>> RelativeData { get; set; } = [];
+        public List<List<ChartAdditionalInformation>> ChartAdditionalInformations { get; set; } = [];
     }
-    
+
     public class ChartAdditionalInformation
     {
         public string Label { get; set; } = "";
@@ -29,8 +32,8 @@ namespace BaseLibrary.Domain.ComponentSchemas
     /// </summary>
     public class DashboardChart
     {
-        public string ChartType { get; set; }  //It is of type ChartType
-        public string Title { get; set; }
+        public string ChartType { get; set; } = ""; //It is of type ChartType
+        public string Title { get; set; } = "";
         public int MinHeight { get; set; }
         public int MinWidth { get; set; }
         public List<ChartColumn> Columns { get; set; } = [];
@@ -38,11 +41,13 @@ namespace BaseLibrary.Domain.ComponentSchemas
         public List<List<string>> SeriesData { get; set; } = []; ///This hold series data for chart one cell for one column. 
         public string Description { get; set; } = "";
         public decimal? Average { get; set; }
-        public DashboardChart() 
+        public List<List<ChartAdditionalInformation>> RelativeData { get; set; } = [];
+        public List<List<ChartAdditionalInformation>> ChartAdditionalInformations { get; set; } = [];
+        public DashboardChart()
         {
-            
+
         }
-        public DashboardChart(ChartSchema schema) 
+        public DashboardChart(ChartSchema schema)
         {
             ChartType = schema.ChartType;
             Title = schema.Name;
@@ -52,7 +57,7 @@ namespace BaseLibrary.Domain.ComponentSchemas
             foreach (var c in schema.Columns)
                 Columns.Add(new ChartColumn { Title = c.Title, DataType = c.DataType, Color = c.Color });
         }
-        public DashboardChart(ChartSchema schema, DataTable data):this(schema) 
+        public DashboardChart(ChartSchema schema, DataTable data) : this(schema)
         {
             foreach (DataRow dr in data.Rows)
             {
@@ -132,16 +137,21 @@ namespace BaseLibrary.Domain.ComponentSchemas
                     string? seriesData = null;
                     if (propertyInfo.TryGetValue(c.DatabaseColumnName, out PropertyInfo pi))
                     {
-                        object? propertyValue = pi.GetValue(o,null);
+                        object? propertyValue = pi.GetValue(o, null);
                         seriesData = propertyValue?.ToString()?.Trim();
                     }
-                    if(string.IsNullOrWhiteSpace(seriesData)==false)
+                    if (string.IsNullOrWhiteSpace(seriesData) == false)
                         d.Add(seriesData);
                     else
                         d.Add(GetEmptyData(c.DataType));
                 }
                 SeriesData.Add(d);
             }
+        }
+
+        public DashboardChart(ChartSchema schema, List<List<string>> seriesData) : this(schema)
+        {
+            SeriesData = seriesData;
         }
 
         private string GetEmptyData(string dataType)
@@ -160,6 +170,17 @@ namespace BaseLibrary.Domain.ComponentSchemas
                     return "";
             }
             return "0";
+        }
+
+        public void AddAdditionalData(ChartData? data)
+        {
+            if (data == null)
+                return;
+            RowHeaders = data.RowHeaders;
+            RelativeData= data.RelativeData;
+            ChartAdditionalInformations = data.ChartAdditionalInformations;
+            if (SeriesData.Count == 0)
+                SeriesData = data.SeriesData;
         }
     }
 

@@ -3,6 +3,18 @@ using System.Text.RegularExpressions;
 
 namespace BaseLibrary.Utilities
 {
+    public class IntegerExtension
+    {
+        public int GetInt(string? input)
+        {
+            if (string.IsNullOrWhiteSpace(input) == false && int.TryParse(input, out int i))
+            {
+                return i;
+            }
+            return 0;
+        }
+    }
+
     public class StringExtension
     {
         public string RemoveEmptySpace(string input)
@@ -44,7 +56,7 @@ namespace BaseLibrary.Utilities
             return output;
         }
 
-        public bool AreEqual(string input1,string input2)
+        public bool AreEqual(string input1, string input2)
         {
             return input1.Equals(input2, System.StringComparison.OrdinalIgnoreCase);
         }
@@ -63,7 +75,7 @@ namespace BaseLibrary.Utilities
             }
         }
 
-        public List<string> GetAllWordStartWith(string inputText,string startWith="@")
+        public List<string> GetAllWordStartWith(string inputText, string startWith = "@")
         {
             string pattern = @$"{startWith}\w+";
 

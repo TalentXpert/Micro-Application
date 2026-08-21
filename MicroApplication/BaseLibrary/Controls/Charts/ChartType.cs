@@ -14,12 +14,15 @@
         public static ChartType HorizontalLine = new ChartType("HorizontalLine");
         public static ChartType Pie = new ChartType("PieChart");
         public static ChartType Bar = new ChartType("Bar");
-
+        public static ChartType Heatmap = new ChartType("Heatmap");
+        public static ChartType Histogram = new ChartType("Histogram");
+        public static ChartType BoxPlot = new ChartType("BoxPlot");
+        public static ChartType KDEPlot = new ChartType("KDEPlot");
         public static List<ChartType> GetGraphTypes()
         {
             return new List<ChartType>
             {
-                VerticalBar, HorizontalBar, VerticalLine, HorizontalLine, Pie, Bar
+                VerticalBar, HorizontalBar, VerticalLine, HorizontalLine, Pie, Bar, Heatmap, Histogram, BoxPlot,
             };
         }
     }
