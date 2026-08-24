@@ -18,6 +18,7 @@
         public static ChartType Histogram = new ChartType("Histogram");
         public static ChartType BoxPlot = new ChartType("BoxPlot");
         public static ChartType KDEPlot = new ChartType("KDEPlot");
+        public static ChartType QQPlot = new ChartType("QQPlot");
         public static List<ChartType> GetGraphTypes()
         {
             return new List<ChartType>
