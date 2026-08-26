@@ -11,7 +11,7 @@ namespace BaseLibrary.Utilities.Formaters
 {
     public class WordTagFormatter
     {
-        public Table PrepareDocTable(DataTable dataTable)
+        public static Table PrepareDocTable(DataTable dataTable)
         {
             // Initialize the table
             Table table = new Table();
@@ -81,8 +81,20 @@ namespace BaseLibrary.Utilities.Formaters
             return cell;
         }
 
+
+        public static Paragraph GetPageBreakParagraph()
+        {
+            Paragraph pageBreakParagraph = new Paragraph(
+                    new Run(
+                        new Break() { Type = BreakValues.Page }
+                    )
+                );
+            return pageBreakParagraph;
+        }
+
+        /*
         //https://learn.microsoft.com/en-us/office/open-xml/word/how-to-insert-a-table-into-a-word-processing-document?tabs=cs-0%2Ccs-1%2Ccs-2%2Ccs-3%2Ccs-4%2Ccs
-        public static void Main(Body body)
+        public static void TableAfterPageBreak(Body body)
         {
             string filePath = @"C:\path\to\your\document.docx";
 
@@ -143,22 +155,10 @@ namespace BaseLibrary.Utilities.Formaters
                 //Console.WriteLine("Successfully added a new page with a table!");
             }
         }
-    }
-
-    #region 
-
+    */
     /// <summary>
     /// how to add a table in docx file in c# that replaces a tag or text
     /// </summary>
-    public class Program
-    {
-        static void Main()
-        {
-            string filePath = @"C:\Temp\template.docx";
-            string tagToReplace = "{{MyTableTag}}";
-
-            ReplaceTagWithTable(filePath, tagToReplace);
-        }
 
         public static void ReplaceTagWithTable(string docPath, string tag)
         {
@@ -253,6 +253,6 @@ namespace BaseLibrary.Utilities.Formaters
         }
     }
 
-    #endregion 
+
 }
 

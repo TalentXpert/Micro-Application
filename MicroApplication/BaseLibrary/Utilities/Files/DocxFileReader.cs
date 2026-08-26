@@ -185,7 +185,7 @@ namespace BaseLibrary.Utilities.Files
             
             foreach (var tag in tags.Keys)
             {
-                string placeholder = $"<<BIOMETA: {tag}>>";
+                string placeholder = $"<<@: {tag}>>";
                 if (allText.Contains(placeholder))
                     result.Add(placeholder, tags[tag]);
             }
