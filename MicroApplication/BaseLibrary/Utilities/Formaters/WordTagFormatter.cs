@@ -85,12 +85,31 @@ namespace BaseLibrary.Utilities.Formaters
 
         public static void AddPageBreakParagraph(Body body)
         {
-            Paragraph pageBreakParagraph = new Paragraph(
-                    new Run(
-                        new Break() { Type = BreakValues.Page }
-                    )
-                );
-            body.AppendChild(pageBreakParagraph);
+            //Paragraph pageBreakParagraph = new Paragraph(
+            //        new Run(
+            //            new Break() { Type = BreakValues.Page }
+            //        )
+            //    );
+            //body.AppendChild(pageBreakParagraph);
+
+            //// Access the main document body
+            //Body body = wordDoc.MainDocumentPart.Document.Body;
+
+            // Create a new paragraph to host the page break
+            Paragraph paragraph = new Paragraph();
+            Run run = new Run();
+
+            // Create the page break element
+            Break pageBreak = new Break { Type = BreakValues.Page };
+
+            // Assemble the elements
+            run.AppendChild(pageBreak);
+            paragraph.AppendChild(run);
+
+            // Append the paragraph with the page break to the end of the document
+            body.AppendChild(paragraph);
+
+            
         }
 
         /*
@@ -291,7 +310,7 @@ namespace BaseLibrary.Utilities.Formaters
             
         }
 
-        public static Paragraph AddParagraphWithHeading(Paragraph afterThisParagraph,string heading, string headingStyle= "Heading1")
+        public static Paragraph AddParagraphWithHeading(Paragraph afterThisParagraph,string heading,bool startOnNewPage=false, string headingStyle= "Heading1")
         {
 
             // 1. Create a new Paragraph
@@ -311,9 +330,27 @@ namespace BaseLibrary.Utilities.Formaters
             ParagraphProperties pPr = para.Elements<ParagraphProperties>().First();
             pPr.ParagraphStyleId = new ParagraphStyleId() { Val = headingStyle };
 
+            if (startOnNewPage)
+            {
+                PageBreakBefore pageBreak = new PageBreakBefore();
+                pPr.Append(pageBreak);
+            }
+
             afterThisParagraph.InsertAfterSelf(para);
             return para;
         }
+        /*
+         // Create paragraph properties
+            ParagraphProperties pPr = new ParagraphProperties();
+
+            // Instantiate and apply PageBreakBefore
+            PageBreakBefore pageBreak = new PageBreakBefore();
+            pPr.Append(pageBreak);
+
+            // Attach properties to your paragraph
+            Paragraph para = new Paragraph();
+            para.Append(pPr);
+         */
         public static Paragraph AddParagraphWithText(Paragraph afterThisParagraph, string text)
         {
 

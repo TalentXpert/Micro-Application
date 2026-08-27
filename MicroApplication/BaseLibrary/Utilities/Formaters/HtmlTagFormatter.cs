@@ -13,12 +13,12 @@ namespace BaseLibrary.Utilities.Formaters
             html.Append($"<p>{text}</p>");
 
             // Add Table
-            html.Append("<table border='1'>");
-            html.Append("<tr><th>ID</th><th>Name</th></tr>");
-            html.Append("<tr><td>1</td><td>Alice</td></tr>");
-            html.Append("<tr><td>2</td><td>Bob</td></tr>");
-            html.Append("</table>");
-
+            //html.Append("<table border='1'>");
+            //html.Append("<tr><th>ID</th><th>Name</th></tr>");
+            //html.Append("<tr><td>1</td><td>Alice</td></tr>");
+            //html.Append("<tr><td>2</td><td>Bob</td></tr>");
+            //html.Append("</table>");
+            html.Append(htmlTable);
             // Assign to the Div
            // myDiv.InnerHtml = html.ToString();
            return html.ToString();
@@ -30,7 +30,7 @@ namespace BaseLibrary.Utilities.Formaters
             StringBuilder sb = new StringBuilder();
 
             // 1. Start the table tag (add classes or inline styles if desired)
-            sb.AppendLine("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; font-family: Arial, sans-serif;'>");
+            sb.AppendLine("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; font-family: Arial, sans-serif;width: 90%'>");
 
             // 2. Build the Header Row (<thead> and <th>)
             sb.AppendLine("  <thead>");
