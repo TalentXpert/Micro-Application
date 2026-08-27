@@ -291,6 +291,42 @@ namespace BaseLibrary.Utilities.Formaters
             
         }
 
+        public static Paragraph AddParagraphWithHeading(Paragraph afterThisParagraph,string heading, string headingStyle= "Heading1")
+        {
+
+            // 1. Create a new Paragraph
+            Paragraph para =new Paragraph();
+
+            // 2. Add text content using a Run element
+            Run run = para.AppendChild(new Run());
+            run.AppendChild(new Text(heading));
+
+            // 3. Initialize ParagraphProperties if they do not exist
+            if (!para.Elements<ParagraphProperties>().Any())
+            {
+                para.PrependChild(new ParagraphProperties());
+            }
+
+            // 4. Retrieve properties and assign the built-in "Heading1" style ID
+            ParagraphProperties pPr = para.Elements<ParagraphProperties>().First();
+            pPr.ParagraphStyleId = new ParagraphStyleId() { Val = headingStyle };
+
+            afterThisParagraph.InsertAfterSelf(para);
+            return para;
+        }
+        public static Paragraph AddParagraphWithText(Paragraph afterThisParagraph, string text)
+        {
+
+            // 1. Create a new Paragraph
+            Paragraph para = new Paragraph();
+
+            // 2. Add text content using a Run element
+            Run run = para.AppendChild(new Run());
+            run.AppendChild(new Text(text));
+            
+            afterThisParagraph.InsertAfterSelf(para);
+            return para;
+        }
         #endregion
     }
 }
