@@ -4,6 +4,25 @@ namespace BaseLibrary.Utilities.Formaters
 {
     public class HtmlTagFormatter
     {
+        public static string GetDiv(string htmlTable,string heading, string text)
+        {
+            StringBuilder html = new StringBuilder();
+
+            // Add Header and Paragraph
+            html.Append($"<h2>{heading}</h2>");
+            html.Append($"<p>{text}</p>");
+
+            // Add Table
+            html.Append("<table border='1'>");
+            html.Append("<tr><th>ID</th><th>Name</th></tr>");
+            html.Append("<tr><td>1</td><td>Alice</td></tr>");
+            html.Append("<tr><td>2</td><td>Bob</td></tr>");
+            html.Append("</table>");
+
+            // Assign to the Div
+           // myDiv.InnerHtml = html.ToString();
+           return html.ToString();
+        }
         public static string ConvertDataTableToHtml(DataTable dt)
         {
             if (dt == null) return string.Empty;

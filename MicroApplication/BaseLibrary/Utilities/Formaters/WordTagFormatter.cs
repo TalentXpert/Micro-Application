@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace BaseLibrary.Utilities.Formaters
 {
@@ -82,14 +83,14 @@ namespace BaseLibrary.Utilities.Formaters
         }
 
 
-        public static Paragraph GetPageBreakParagraph()
+        public static void AddPageBreakParagraph(Body body)
         {
             Paragraph pageBreakParagraph = new Paragraph(
                     new Run(
                         new Break() { Type = BreakValues.Page }
                     )
                 );
-            return pageBreakParagraph;
+            body.AppendChild(pageBreakParagraph);
         }
 
         /*
@@ -156,43 +157,51 @@ namespace BaseLibrary.Utilities.Formaters
             }
         }
     */
-    /// <summary>
-    /// how to add a table in docx file in c# that replaces a tag or text
-    /// </summary>
+        /// <summary>
+        /// how to add a table in docx file in c# that replaces a tag or text
+        /// </summary>
 
-        public static void ReplaceTagWithTable(string docPath, string tag)
+        public static void ReplaceTagWithTable(Paragraph paragraph, Run run, Table table, string tag, string text)
         {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(docPath, true))
+            //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(docPath, true))
             {
-                var body = wordDoc.MainDocumentPart.Document.Body;
+                // var body = wordDoc.MainDocumentPart.Document.Body;
 
                 // Find the specific text node containing the target placeholder tag
-                Text targetTextNode = body.Descendants<Text>().FirstOrDefault(t => t.Text.Contains(tag));
+                //  Text targetTextNode = body.Descendants<Text>().FirstOrDefault(t => t.Text.Contains(tag));
 
-                if (targetTextNode != null)
+                if (run != null && paragraph != null)
                 {
                     // Navigate up to find the parent Paragraph containing this text node
-                    Paragraph parentParagraph = targetTextNode.Ancestors<Paragraph>().FirstOrDefault();
+                    // Paragraph? parentParagraph = run.Ancestors<Paragraph>().FirstOrDefault();
 
-                    if (parentParagraph != null)
+                    // if (parentParagraph != null)
                     {
                         // 1. Generate the table structure
-                        Table table = CreateSampleTable();
+                        // Table table = CreateSampleTable();
 
                         // 2. Insert the table directly after the placeholder paragraph
-                        parentParagraph.InsertAfterSelf(table);
+                        paragraph.InsertAfterSelf(table);
 
                         // 3. Remove or clear the tag text
-                        targetTextNode.Text = targetTextNode.Text.Replace(tag, "");
+                        text = text.Replace(tag, "");
 
                         // If the paragraph is now completely empty, remove it to prevent a blank line
-                        if (string.IsNullOrWhiteSpace(parentParagraph.InnerText))
+                        if (string.IsNullOrWhiteSpace(text) == false)
                         {
-                            parentParagraph.Remove();
-                        }
+                            var newText = new Text()
+                            {
+                                Text = text
+                            };
 
+                            run.Append(newText);
+                        }
+                        if (string.IsNullOrWhiteSpace(paragraph.InnerText))
+                        {
+                            paragraph.Remove();
+                        }
                         // Save modifications back to the document container
-                        wordDoc.MainDocumentPart.Document.Save();
+                        //wordDoc.MainDocumentPart.Document.Save();
                     }
                 }
             }
@@ -251,8 +260,38 @@ namespace BaseLibrary.Utilities.Formaters
 
             return cell;
         }
+
+
+        #region Paragraph
+
+        public static void AddParagraph(MainDocumentPart? mainPart, string heading, string text)
+        {
+            if (mainPart is null) return;
+            Body? body = mainPart.Document?.Body;
+            if (body is null) return;
+            // 1. Create the Header Part
+            HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+            string headerPartId = mainPart.GetIdOfPart(headerPart);
+
+            // 2. Add a paragraph into the header object
+            Header header = new Header();
+            Paragraph headerPara = new Paragraph(new Run(new Text("This text is in the Document Header.")));
+            header.Append(headerPara);
+            headerPart.Header = header;
+
+            // 3. Add a paragraph into the main body object
+            Paragraph bodyPara = new Paragraph(new Run(new Text("This text is in the main body.")));
+            body.Append(bodyPara);
+
+            // 4. Bind the header to the section properties inside the body
+            SectionProperties sectionProps = new SectionProperties();
+            HeaderReference headerRef = new HeaderReference() { Type = HeaderFooterValues.Default, Id = headerPartId };
+            sectionProps.Append(headerRef);
+            body.Append(sectionProps);
+            
+        }
+
+        #endregion
     }
-
-
 }
 
