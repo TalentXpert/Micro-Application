@@ -1,5 +1,9 @@
 ﻿
 using System.Security.Cryptography;
+using System;
+using System.IO;
+using System.Text;
+
 
 namespace BaseLibrary.Utilities
 {
@@ -44,6 +48,57 @@ namespace BaseLibrary.Utilities
             return UTF8Encoding.UTF8.GetString(resultArray);
         }
     }
+
+
+
+    public class AesGcmEncryption
+    {
+        // Key must be exactly 32 bytes (256 bits) for AES-256
+        private static readonly byte[] Key = RandomNumberGenerator.GetBytes(32);
+
+        public static (byte[] CipherText, byte[] Nonce, byte[] Tag) Encrypt(string plainText)
+        {
+            byte[] plainBytes = GetBytes(plainText);
+
+            // AES-GCM requires a 12-byte (96-bit) Nonce (similar to an IV)
+            byte[] nonce = new byte[12];
+            RandomNumberGenerator.Fill(nonce);
+
+            // Tag ensures data integrity (detects tampering)
+            byte[] tag = new byte[16];
+            byte[] cipherText = new byte[plainBytes.Length];
+
+            using (AesGcm aesGcm = new AesGcm(Key, tagSizeInBytes: 16))
+            {
+                aesGcm.Encrypt(nonce, plainBytes, cipherText, tag);
+            }
+
+            return (cipherText, nonce, tag);
+        }
+
+        public static string Decrypt(byte[] cipherText, byte[] nonce, byte[] tag)
+        {
+            byte[] decryptedBytes = new byte[cipherText.Length];
+
+            using (AesGcm aesGcm = new AesGcm(Key, tagSizeInBytes: 16))
+            {
+                aesGcm.Decrypt(nonce, cipherText, tag, decryptedBytes);
+            }
+
+            return GetString(decryptedBytes);
+        }
+        public static string GetString(byte[] bytes)
+        {
+            var text = Encoding.UTF8.GetString(bytes);
+            return text;
+        }
+        public static byte[] GetBytes(string text)
+        {
+            var bytes = Encoding.UTF8.GetBytes(text);
+            return bytes;
+        }
+    }
+
 
     public class PasswordHasher
     {
